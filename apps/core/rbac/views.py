@@ -7,7 +7,7 @@ def registration(request):
 
 
 def login(request):
-    return render(request, 'rbac/user.html')
+    return render(request, 'rbac/login.html')
 
 
 def logout(request):
