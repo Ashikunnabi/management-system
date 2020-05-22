@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from html.codedthemes.com/datta-able/bootstrap/default/auth-signup.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 06 Mar 2020 08:52:11 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+<title>{{APPLICATION_NAME}}</title>
+
+
+<!--[if lt IE 10]>
+		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="description" content="" />
+<meta name="keywords" content="" />
+<meta name="author" content="CodedThemes" />
+
+<link rel="icon" href="http://html.codedthemes.com/datta-able/bootstrap/assets/images/favicon.ico" type="image/x-icon">
+
+<link rel="stylesheet" href="{% static 'base/fonts/fontawesome/css/fontawesome-all.min.css' %}">
+
+<link rel="stylesheet" href="{% static 'base/plugins/animation/css/animate.min.css' %}">
+
+<link rel="stylesheet" href="{% static 'base/css/style.css' %}">
+</head>
+<body>
+<div class="auth-wrapper">
+<div class="auth-content">
+<div class="auth-bg">
+<span class="r"></span>
+<span class="r s"></span>
+<span class="r s"></span>
+<span class="r"></span>
+</div>
+<div class="card">
+<div class="card-body text-center">
+<div class="mb-4">
+<i class="feather icon-user-plus auth-icon"></i>
+</div>
+<h3 class="mb-4">Sign up</h3>
+<div class="input-group mb-3">
+<input type="text" class="form-control" placeholder="Username">
+</div>
+<div class="input-group mb-3">
+<input type="email" class="form-control" placeholder="Email">
+</div>
+<div class="input-group mb-4">
+<input type="password" class="form-control" placeholder="password">
+</div>
+<div class="form-group text-left">
+<div class="checkbox checkbox-fill d-inline">
+<input type="checkbox" name="checkbox-fill-2" id="checkbox-fill-2">
+<label for="checkbox-fill-2" class="cr">Send me the <a href="#!"> Newsletter</a> weekly.</label>
+</div>
+</div>
+<button class="btn btn-primary shadow-2 mb-4">Sign up</button>
+<p class="mb-0 text-muted">Allready have an account? <a href="{% url 'rbac:login' %}"> Log in</a></p>
+</div>
+</div>
+</div>
+</div>
+
+<script src="{% static 'base/js/vendor-all.min.js' %}"></script>
+<script src="{% static 'base/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'base/js/pcoded.min.js' %}"></script>
+</body>
+
+<!-- Mirrored from html.codedthemes.com/datta-able/bootstrap/default/auth-signup.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 06 Mar 2020 08:52:11 GMT -->
+</html>

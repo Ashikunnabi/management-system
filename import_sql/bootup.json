@@ -1,0 +1,323 @@
+[
+    {
+        "model": "rbac.permission",
+        "pk": 1,
+        "fields": {
+            "name": "View User",
+            "code": "view.rbac_user",
+            "feature": 1,
+            "is_active": true,
+            "created_at": "2020-04-22T14:16:23.084Z",
+            "updated_at": "2020-04-24T03:22:41.834Z"
+        }
+    },
+    {
+        "model": "rbac.permission",
+        "pk": 2,
+        "fields": {
+            "name": "Add User",
+            "code": "add.rbac_user",
+            "feature": 1,
+            "is_active": true,
+            "created_at": "2020-04-22T14:16:23.084Z",
+            "updated_at": "2020-04-24T03:22:41.834Z"
+        }
+    },
+    {
+        "model": "rbac.permission",
+        "pk": 3,
+        "fields": {
+            "name": "Edit User",
+            "code": "change.rbac_user",
+            "feature": 1,
+            "is_active": false,
+            "created_at": "2020-04-22T14:16:23.084Z",
+            "updated_at": "2020-04-24T03:22:41.834Z"
+        }
+    },
+    {
+        "model": "rbac.permission",
+        "pk": 4,
+        "fields": {
+            "name": "Delete User",
+            "code": "delete.rbac_user",
+            "feature": 1,
+            "is_active": false,
+            "created_at": "2020-04-22T14:16:23.084Z",
+            "updated_at": "2020-04-24T03:22:41.834Z"
+        }
+    },
+        {
+        "model": "rbac.permission",
+        "pk": 5,
+        "fields": {
+            "name": "View Role",
+            "code": "view.rbac_role",
+            "feature": 1,
+            "is_active": true,
+            "created_at": "2020-04-22T14:16:23.084Z",
+            "updated_at": "2020-04-24T03:22:41.834Z"
+        }
+    },
+    {
+        "model": "rbac.permission",
+        "pk": 6,
+        "fields": {
+            "name": "Add Role",
+            "code": "add.rbac_role",
+            "feature": 1,
+            "is_active": true,
+            "created_at": "2020-04-22T14:16:23.084Z",
+            "updated_at": "2020-04-24T03:22:41.834Z"
+        }
+    },
+    {
+        "model": "rbac.permission",
+        "pk": 7,
+        "fields": {
+            "name": "Edit Role",
+            "code": "change.rbac_role",
+            "feature": 1,
+            "is_active": false,
+            "created_at": "2020-04-22T14:16:23.084Z",
+            "updated_at": "2020-04-24T03:22:41.834Z"
+        }
+    },
+    {
+        "model": "rbac.permission",
+        "pk": 8,
+        "fields": {
+            "name": "Delete Role",
+            "code": "delete.rbac_role",
+            "feature": 1,
+            "is_active": false,
+            "created_at": "2020-04-22T14:16:23.084Z",
+            "updated_at": "2020-04-24T03:22:41.834Z"
+        }
+    },
+        {
+        "model": "rbac.permission",
+        "pk": 9,
+        "fields": {
+            "name": "View Permission",
+            "code": "view.rbac_permission",
+            "feature": 1,
+            "is_active": true,
+            "created_at": "2020-04-22T14:16:23.084Z",
+            "updated_at": "2020-04-24T03:22:41.834Z"
+        }
+    },
+    {
+        "model": "rbac.permission",
+        "pk": 10,
+        "fields": {
+            "name": "Add Permission",
+            "code": "add.rbac_permission",
+            "feature": 1,
+            "is_active": true,
+            "created_at": "2020-04-22T14:16:23.084Z",
+            "updated_at": "2020-04-24T03:22:41.834Z"
+        }
+    },
+    {
+        "model": "rbac.permission",
+        "pk": 11,
+        "fields": {
+            "name": "Edit Permission",
+            "code": "change.rbac_permission",
+            "feature": 1,
+            "is_active": false,
+            "created_at": "2020-04-22T14:16:23.084Z",
+            "updated_at": "2020-04-24T03:22:41.834Z"
+        }
+    },
+    {
+        "model": "rbac.permission",
+        "pk": 12,
+        "fields": {
+            "name": "Delete Permission",
+            "code": "delete.rbac_permission",
+            "feature": 1,
+            "is_active": false,
+            "created_at": "2020-04-22T14:16:23.084Z",
+            "updated_at": "2020-04-24T03:22:41.834Z"
+        }
+    },
+        {
+        "model": "rbac.permission",
+        "pk": 13,
+        "fields": {
+            "name": "View Customer",
+            "code": "view.rbac_customer",
+            "feature": 1,
+            "is_active": true,
+            "created_at": "2020-04-22T14:16:23.084Z",
+            "updated_at": "2020-04-24T03:22:41.834Z"
+        }
+    },
+    {
+        "model": "rbac.permission",
+        "pk": 14,
+        "fields": {
+            "name": "Add Customer",
+            "code": "add.rbac_customer",
+            "feature": 1,
+            "is_active": true,
+            "created_at": "2020-04-22T14:16:23.084Z",
+            "updated_at": "2020-04-24T03:22:41.834Z"
+        }
+    },
+    {
+        "model": "rbac.permission",
+        "pk": 15,
+        "fields": {
+            "name": "Edit Customer",
+            "code": "change.rbac_customer",
+            "feature": 1,
+            "is_active": false,
+            "created_at": "2020-04-22T14:16:23.084Z",
+            "updated_at": "2020-04-24T03:22:41.834Z"
+        }
+    },
+    {
+        "model": "rbac.permission",
+        "pk": 16,
+        "fields": {
+            "name": "Delete Customer",
+            "code": "delete.rbac_customer",
+            "feature": 1,
+            "is_active": false,
+            "created_at": "2020-04-22T14:16:23.084Z",
+            "updated_at": "2020-04-24T03:22:41.834Z"
+        }
+    },
+        {
+        "model": "rbac.permission",
+        "pk": 17,
+        "fields": {
+            "name": "View Feature",
+            "code": "view.rbac_feature",
+            "feature": 1,
+            "is_active": true,
+            "created_at": "2020-04-22T14:16:23.084Z",
+            "updated_at": "2020-04-24T03:22:41.834Z"
+        }
+    },
+    {
+        "model": "rbac.permission",
+        "pk": 18,
+        "fields": {
+            "name": "Add Feature",
+            "code": "add.rbac_feature",
+            "feature": 1,
+            "is_active": true,
+            "created_at": "2020-04-22T14:16:23.084Z",
+            "updated_at": "2020-04-24T03:22:41.834Z"
+        }
+    },
+    {
+        "model": "rbac.permission",
+        "pk": 19,
+        "fields": {
+            "name": "Edit Feature",
+            "code": "change.rbac_feature",
+            "feature": 1,
+            "is_active": false,
+            "created_at": "2020-04-22T14:16:23.084Z",
+            "updated_at": "2020-04-24T03:22:41.834Z"
+        }
+    },
+    {
+        "model": "rbac.permission",
+        "pk": 20,
+        "fields": {
+            "name": "Delete Feature",
+            "code": "delete.rbac_feature",
+            "feature": 1,
+            "is_active": false,
+            "created_at": "2020-04-22T14:16:23.084Z",
+            "updated_at": "2020-04-24T03:22:41.834Z"
+        }
+    },
+    {
+        "model": "rbac.role",
+        "pk": 1,
+        "fields": {
+            "name": "Super User",
+            "code": "super_user",
+            "is_active": true,
+            "created_at": "2020-04-22T14:16:23.084Z",
+            "updated_at": "2020-04-24T03:22:41.834Z",
+            "permission": [
+                1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20
+            ]
+        }
+    },
+    {
+        "model": "rbac.feature",
+        "pk": 1,
+        "fields": {
+            "title": "User Management",
+            "icon": "<i class=\"feather icon-home\"></i>",
+            "code": "user_management",
+            "url": null,
+            "parent": null,
+            "is_active": true,
+            "customers": [],
+            "created_at": "2020-04-22T14:16:23.084Z",
+            "updated_at": "2020-04-24T03:22:41.834Z"
+        }
+    },
+    {
+        "model": "rbac.feature",
+        "pk": 2,
+        "fields": {
+            "title": "User",
+            "icon": null,
+            "code": "user",
+            "url": null,
+            "parent": "1",
+            "is_active": true,
+            "customers": [],
+            "created_at": "2020-04-22T14:16:23.084Z",
+            "updated_at": "2020-04-24T03:22:41.834Z"
+        }
+    },
+    {
+        "model": "rbac.feature",
+        "pk": 3,
+        "fields": {
+            "title": "Role",
+            "icon": null,
+            "code": "role",
+            "url": null,
+            "parent": "1",
+            "is_active": true,
+            "customers": [],
+            "created_at": "2020-04-22T14:16:23.084Z",
+            "updated_at": "2020-04-24T03:22:41.834Z"
+        }
+    },
+    {
+        "model": "rbac.user",
+        "pk": 1,
+        "fields": {
+            "password": "pbkdf2_sha256$180000$2afR5A5rOlWZ$DOqvGVhN1KW5frffJ4kk8LRa/bnG72nghxp068k9Xms=",
+            "last_login": "2020-04-22T14:18:29.538Z",
+            "is_superuser": true,
+            "first_name": "",
+            "last_name": "",
+            "is_staff": true,
+            "is_active": true,
+            "date_joined": "2020-04-22T14:17:08.834Z",
+            "position": "",
+            "email": "admin@admin.com",
+            "username": "admin",
+            "role": 1,
+            "activation_url": "06f9f80fe2ecbb477bee240cbd35a0df",
+            "has_to_change_password": true,
+            "groups": [],
+            "user_permissions": []
+        }
+    }
+]
