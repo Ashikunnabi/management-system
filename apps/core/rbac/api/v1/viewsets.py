@@ -1,7 +1,8 @@
+import json, requests
 from django.conf import settings
 from django.contrib.auth.models import Group, User
 from django.db import transaction
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import redirect, reverse, get_object_or_404
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
@@ -130,12 +131,22 @@ def reset_password(request, activation_url):
     else:
         return Response({"details": "Password does not matched."}, status=400)
         
-        
 
+@api_view(['POST'])
 def login(request):
-    pass
+    param = request.data    
+    required_params = ['username', 'password']    
+    # validating data
+    error_param = json_parameter_validation(param, required_params)
+    if error_param is not None:
+        return Response({"details": "'{}' required.".format(error_param)}, status=400)
     
-
+    url = f"{request.build_absolute_uri().split('/api')[0]}{reverse('core:rbac:token_obtain_pair')}"
+    token = requests.post(url, json=param)
+    return Response(token.json(), status=token.status_code)
+    
+    
+@api_view(['GET'])
 def logout(request):
     pass
  
