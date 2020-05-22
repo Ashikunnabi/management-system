@@ -1,9 +1,11 @@
 asgiref==3.2.7
 Django==3.0.5
 django-tenant-schemas==1.10.0
+django-tenants==3.0.3
 djangorestframework==3.11.0
 djangorestframework-simplejwt==4.4.0
 ordered-set==3.1.1
+Pillow==7.1.2
 psycopg2-binary==2.8.5
 PyJWT==1.7.1
 python-dotenv==0.12.0
