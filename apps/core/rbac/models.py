@@ -2,12 +2,16 @@ import secrets
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.db import models
-from django_tenants.models import TenantMixin, DomainMixin
+from django_tenants.models import TenantMixin, DomainMixin    
+
+
+def get_activation_url():
+    return secrets.token_hex(nbytes=16)    
 
     
 class AuditTrail(models.Model):
-    created_by = models.CharField(max_length=500, blank=True)
-    updated_by = models.CharField(max_length=500, blank=True)
+    created_by = models.CharField(max_length=500, blank=True, null=True)
+    updated_by = models.CharField(max_length=500, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated_at = models.DateTimeField(auto_now_add=False, auto_now=True)
     
@@ -22,11 +26,14 @@ class AuditTrail(models.Model):
         else:
             self.updated_by = exposed_request.user.id
         super(AuditTrail, self).save(*args, **kwargs)
+        
+
+class ActivityLog(AuditTrail):
+    store_json = models.TextField(blank=True)
+    description = models.CharField(max_length=500)
     
-
-
-def get_activation_url():
-    return secrets.token_hex(nbytes=16)
+    def __str__(self):
+        return self.description
     
     
 class Customer(TenantMixin):

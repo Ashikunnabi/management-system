@@ -1,6 +1,7 @@
 import json, requests
 from django.conf import settings
-from django.contrib.auth.models import Group, User
+# from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login as auth_login
 from django.db import transaction
 from django.shortcuts import redirect, reverse, get_object_or_404
 from rest_framework import viewsets
@@ -12,6 +13,11 @@ from apps.core.rbac.utils import *
 from apps.core.rbac.viewset import CustomViewSet
 from .serializers import *  
 from apps.core.rbac.models import *
+
+
+def store_user_activity(store_json='', description=''):        
+    ActivityLog.objects.create(store_json=store_json, description=description)
+    return True
 
             
 @api_view(['POST'])
@@ -143,6 +149,17 @@ def login(request):
     
     url = f"{request.build_absolute_uri().split('/api')[0]}{reverse('core:rbac:token_obtain_pair')}"
     token = requests.post(url, json=param)
+    
+    if token.status_code == 200:
+        # activating session based authentication
+        user = authenticate(username=request.data['username'], password=request.data['password'])
+        auth_login(request, user)
+        # storing user activity in ActivityLog
+        user = User.objects.get(username=request.data['username'])
+        store_user_activity(
+            UserSerializer(user).data, 
+            f'{user.get_full_name()}({user.username}) logged in successfully.'
+        )
     return Response(token.json(), status=token.status_code)
     
     

@@ -1,7 +1,7 @@
 class Helper {
 
     constructor() {
-        // this._storage = new Storage();
+        this._storage = new Storage();
         this._dateTimeOpt = {
             autoApply: true,
             autoUpdate: true,
@@ -51,17 +51,17 @@ class Helper {
                 firstDay: 0
 
             },
-            // minDate: moment().startOf("day").format("DD-MM-YYYY"),
-            // maxDate: moment().add(4, "months").format("DD-MM-YYYY"),
-            // startDate: moment().startOf("day").format("DD-MM-YYYY"),
-            // maxSpan: {
-                // days: 7
-            // },
-            // isCustomDate: function (date) {
-                // if (date.day() == 5 || date.day() == 6) {
-                    // return ['text-red'];
-                // }
-            // }
+            minDate: moment().startOf("day").format("DD-MM-YYYY"),
+            maxDate: moment().add(4, "months").format("DD-MM-YYYY"),
+            startDate: moment().startOf("day").format("DD-MM-YYYY"),
+            maxSpan: {
+                days: 7
+            },
+            isCustomDate: function (date) {
+                if (date.day() == 5 || date.day() == 6) {
+                    return ['text-red'];
+                }
+            }
         };
         // this._api = API;
         this._type = {
@@ -78,7 +78,7 @@ class Helper {
             'mcash': 'ibbl',
             'mycash': 'mobilebank'
         };
-        // this._user = this.storage.getStorage('local', '_arU');
+        this._user = this.storage.getStorage('local', '_arU');
     }
 
     set api($val) {
@@ -305,8 +305,11 @@ class Helper {
         }
         return obj;
     };
-
     httpRequest(url, method, inputs, contentType) {
+        $.ajaxSetup({
+          headers: { 'Authentication': 'JWT '+this.storage.getStorage('local', 'token').access }
+        });
+        
         method = method || 'GET';
         inputs = inputs || '';
         contentType = contentType || "application/json";
