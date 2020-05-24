@@ -5,14 +5,12 @@ class Login {
     }
     
     login(data){ 
+        let object = this;
         let url = this._api_v1+'login/';
-        var promise = this._helper.httpRequest(url, 'POST', JSON.stringify(data));
-            console.log(this._helper.storage);
-            console.log(promise);
+        var promise = this._helper.httpRequestWithoutHeaders(url, 'POST', JSON.stringify(data));
         promise.done(function (response) {
             // store token in browser session
-            this._helper = new Helper();
-            this._helper.storage.saveStorage('local', 'token', response)
+            object._helper.storage.saveStorage('local', 'token', response)
             // redirect to dashboard
             window.location.replace("/");
         });

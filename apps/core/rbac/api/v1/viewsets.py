@@ -1,6 +1,5 @@
 import json, requests
 from django.conf import settings
-# from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as auth_login
 from django.db import transaction
 from django.shortcuts import redirect, reverse, get_object_or_404
@@ -46,7 +45,7 @@ def registration(request):
         user = User.objects.create_user(**params)
     
     # send email with activation url
-    
+
     return Response({"details": "Registration Successful"}, status=201)    
 
     
@@ -140,7 +139,7 @@ def reset_password(request, activation_url):
 
 @api_view(['POST'])
 def login(request):
-    param = request.data    
+    param = request.data
     required_params = ['username', 'password']    
     # validating data
     error_param = json_parameter_validation(param, required_params)
@@ -149,7 +148,6 @@ def login(request):
     
     url = f"{request.build_absolute_uri().split('/api')[0]}{reverse('core:rbac:token_obtain_pair')}"
     token = requests.post(url, json=param)
-    
     if token.status_code == 200:
         # activating session based authentication
         user = authenticate(username=request.data['username'], password=request.data['password'])
