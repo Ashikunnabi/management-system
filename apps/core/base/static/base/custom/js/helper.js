@@ -305,9 +305,38 @@ class Helper {
         }
         return obj;
     };
+    
+    httpRequestWithoutHeaders(url, method, inputs, contentType) {
+        method = method || 'GET';
+        inputs = inputs || '';
+        contentType = contentType || "application/json";
+        var obj = {
+            url: url,
+            type: method,
+            data: inputs,
+            cache: true,
+            dataType: 'json',
+            crossDomain: true,
+            ifModified: true,
+        };
+
+        if (contentType != 'false') {
+            obj.contentType = contentType;
+        }
+        return $.ajax(obj);
+    };
+    
     httpRequest(url, method, inputs, contentType) {
         $.ajaxSetup({
-          headers: { 'Authentication': 'JWT '+this.storage.getStorage('local', 'token').access }
+            headers: { 'Authorization': 'JWT '+this.storage.getStorage('local', 'token').access },        
+            error: function (x, status, error) {
+                if (x.status == 401) {
+                    if (error === "Unauthorized"){
+                        alert("Sorry, your session has expired. Please login again to continue");
+                        window.location.href ="/logout/";                    
+                    }
+                }
+            }        
         });
         
         method = method || 'GET';
