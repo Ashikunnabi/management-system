@@ -27,6 +27,7 @@ def dashboard(request):
 
 @api_view(['get'])
 def sidebar(request):
+    current_url = request.GET.get('current_url')
     url = f"{request.scheme}://{request.get_host()}/api/v1/feature/"
     response = requests.get(url, headers=request.headers).json()
     rearranged_list = []
@@ -37,6 +38,8 @@ def sidebar(request):
             level_1 = []
             for v in response:
                 if v["parent"] == str(value["id"]):
+                    if current_url is not None and current_url == v["url"]:
+                        v["status"] = True
                     level_1.append(v)
             value['level_1'] = level_1
             rearranged_list.append(value)
