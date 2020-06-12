@@ -38,6 +38,8 @@ def sidebar(request):
             level_1 = []
             for v in response:
                 if v["parent"] == str(value["id"]):
+                    if current_url is not None and current_url == v["url"]:
+                        v["status"] = True
                     level_1.append(v)
             value['level_1'] = level_1
             rearranged_list.append(value)
