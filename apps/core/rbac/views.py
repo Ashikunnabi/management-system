@@ -40,6 +40,10 @@ def user(request):
     return render(request, 'rbac/user.html')
     
     
+def user_add(request):
+    return render(request, 'rbac/user_add.html')
+    
+    
 def customer(request):
     return render(request, 'rbac/customer.html')
     

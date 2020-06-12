@@ -90,6 +90,14 @@ class User {
         });     
     }
     
+    redirect_to_user_add_page(){
+        let self = this;
+        $('#add_user').on( 'click', '', function () {
+            let url = '/user/add/';
+            window.open(url, "");
+        });     
+    }
+    
     redirect_to_user_edit_page(){
         let self = this;
         $('#edit_user').on( 'click', '', function () {
@@ -139,6 +147,7 @@ let user = new User();
 $(document).ready(function(e){
     user.user_list();
     user.user_list_row_select();
+    user.redirect_to_user_add_page();
     user.redirect_to_user_edit_page();
     user.user_delete();
 });
