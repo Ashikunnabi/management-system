@@ -12,6 +12,7 @@ router.register('customer', CustomerViewSet) #done
 router.register('domain', DomainViewSet) #done
 router.register('tenant', TenantViewSet) #done
 router.register('feature', FeatureViewSet) #done
+router.register('sidebar', SidebarViewSet) #done
 router.register('permission', PermissionViewSet) #done
 router.register('role', RoleViewSet) #done
 router.register('user', UserViewSet) #done

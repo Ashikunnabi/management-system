@@ -7,8 +7,6 @@ class Registration {
     registration(data){ 
         let url = this._api_v1+'Registration/';
         var promise = this._helper.httpRequest(url, 'POST', JSON.stringify(data));
-            console.log(this._helper.storage);
-            console.log(promise);
         promise.done(function (response) {
             // redirect to dashboard
             window.location.replace("/");
