@@ -12,10 +12,12 @@ from apps.core.rbac.utils import *
 from apps.core.rbac.viewset import CustomViewSet
 from .serializers import *  
 from apps.core.rbac.models import *
+from rest_framework_datatables import pagination as dt_pagination
 
 
-def store_user_activity(store_json='', description=''):        
-    ActivityLog.objects.create(store_json=store_json, description=description)
+def store_user_activity(request, store_json='', description=''):
+    ActivityLog.objects.create(store_json=store_json, description=description, 
+                                ip_address=get_user_ip_address(request), browser_details=get_user_browser_details(request))
     return True
 
             
@@ -155,6 +157,7 @@ def login(request):
         # storing user activity in ActivityLog
         user = User.objects.get(username=request.data['username'])
         store_user_activity(
+            request,
             UserSerializer(user).data, 
             f'{user.get_full_name()}({user.username}) logged in successfully.'
         )
@@ -212,6 +215,15 @@ class TenantViewSet(CustomViewSet):
     model = Domain
  
 
+class SidebarViewSet(CustomViewSet):
+    permission_classes = [UserAccessApiBasePermission]
+    serializer_class = FeatureSerializer
+    queryset = Feature.objects.all()
+    render_class = None
+    pagination_class = None
+    model = Feature
+ 
+
 class FeatureViewSet(CustomViewSet):
     permission_classes = [UserAccessApiBasePermission]
     serializer_class = FeatureSerializer
@@ -238,8 +250,9 @@ class RoleViewSet(CustomViewSet):
 class UserViewSet(CustomViewSet):
     permission_classes = [UserAccessApiBasePermission]
     serializer_class = UserSerializer
+    # pagination_class = dt_pagination.DatatablesLimitOffsetPagination
     queryset = User.objects.all()
-    model = User    
+    model = User 
         
     def destroy(self, request, pk=None):
         """ User can not be deleted. """

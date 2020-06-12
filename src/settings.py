@@ -40,6 +40,7 @@ TENANT_APPS = (
     'apps.core.base',
     'apps.core.rbac',
     'rest_framework',
+    'rest_framework_datatables',
 )
 
 
@@ -66,12 +67,6 @@ MIDDLEWARE = [
     'apps.core.rbac.middleware.RequestExposerMiddleware',  # this will expose request object to rbac.models
 ]
 
-
-REST_FRAMEWORK = {
-    'DEFAULT_PARSER_CLASSES': [
-        'rest_framework.parsers.JSONParser',
-    ]
-}
 
 
 TEMPLATES = [
@@ -136,9 +131,21 @@ AUTH_PASSWORD_VALIDATORS = [
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    ),
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        # 'rest_framework.renderers.BrowsableAPIRenderer',
+        'rest_framework_datatables.renderers.DatatablesRenderer',
+    ),
+    'DEFAULT_FILTER_BACKENDS': (
+        'rest_framework_datatables.filters.DatatablesFilterBackend',
+    ),    
+    # 'DEFAULT_PARSER_CLASSES': (
+        # 'rest_framework.parsers.JSONParser',
+    # ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework_datatables.pagination.DatatablesPageNumberPagination',
+    'PAGE_SIZE': 50,
 }
-
 
 # JWT config
 SIMPLE_JWT = {

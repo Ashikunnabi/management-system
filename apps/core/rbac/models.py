@@ -31,6 +31,8 @@ class AuditTrail(models.Model):
 class ActivityLog(AuditTrail):
     store_json = models.TextField(blank=True)
     description = models.CharField(max_length=500)
+    ip_address = models.CharField(max_length=50)
+    browser_details = models.CharField(max_length=500)
     
     def __str__(self):
         return self.description

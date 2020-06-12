@@ -1,6 +1,3 @@
-import uuid
-
-
 def json_parameter_validation(json_data, required_params):
     """ Check parameter is available in json or not
         parameter:
@@ -30,5 +27,3 @@ def get_user_ip_address(request):
 
 def get_user_browser_details(request):    
     return request.headers.get('User-Agent')
-            
-    

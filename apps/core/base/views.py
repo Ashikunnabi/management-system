@@ -27,7 +27,8 @@ def dashboard(request):
 
 @api_view(['get'])
 def sidebar(request):
-    url = f"{request.scheme}://{request.get_host()}/api/v1/feature/"
+    current_url = request.GET.get('current_url')
+    url = f"{request.scheme}://{request.get_host()}/api/v1/sidebar/"
     response = requests.get(url, headers=request.headers).json()
     rearranged_list = []
     rearranged_dict = dict()
