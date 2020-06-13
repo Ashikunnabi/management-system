@@ -3,7 +3,16 @@
 
 {% block css %}
 <style>
-
+    .image_preview {
+        width: 192px;
+        height: 192px;
+        border: 1px solid black;
+        display: block;
+        margin: 0 auto;
+    }
+    .image_capture_buttons {
+        margin-top: 5px;
+    }
 </style>
 {% endblock %}
 {% block content %}
@@ -18,64 +27,103 @@
                     <div class="card-block">
                         <form id="validation-form123" action="#!">
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="form-label">First Name</label><span style="color:red">*</span>
+                                                <input type="text" class="form-control" name="validation-required" placeholder="First name" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Last Name</label>
+                                                <input type="text" class="form-control" name="validation-required" placeholder="Last name">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Username</label><span style="color:red">*</span>
+                                                <input type="text" class="form-control" name="validation-required" placeholder="Username" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
                                     <div class="form-group">
-                                        <label class="form-label">First Name</label>
-                                        <input type="text" class="form-control" name="validation-required" placeholder="Required">
+                                        <label class="form-label">Profile picture</label>
+                                        <div class="text-center">
+                                            <span class="image_preview"></span>
+                                            <input type="file" class="validation-file" name="validation-file" hidden>
+                                            <div class="image_capture_buttons">
+                                                <button type="button" class="btn btn-icon btn-outline-primary"><i class="feather icon-upload"></i></button>
+                                                <button type="button" class="btn btn-icon btn-outline-secondary"><i class="feather icon-camera"></i></button>
+                                                <button type="button" class="btn btn-icon btn-outline-warning"><i class="feather icon-delete"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="form-label">Signature</label>
+                                        <div class="text-center">
+                                            <span class="image_preview"></span>
+                                            <input type="file" class="validation-file" name="validation-file" hidden>
+                                            <div class="image_capture_buttons">
+                                                <button type="button" class="btn btn-icon btn-outline-primary"><i class="feather icon-upload"></i></button>
+                                                <button type="button" class="btn btn-icon btn-outline-secondary"><i class="feather icon-camera"></i></button>
+                                                <button type="button" class="btn btn-icon btn-outline-warning"><i class="feather icon-delete"></i></button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label">Last Name</label>
-                                        <input type="text" class="form-control" name="validation-required" placeholder="Required">
+                                        <label class="form-label">Email Address</label><span style="color:red">*</span>
+                                        <input type="email" class="form-control" name="validation-required" placeholder="Email address" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label">Username</label>
-                                        <input type="text" class="form-control" name="validation-email" placeholder="Email">
+                                        <label class="form-label">Mobile Number</label><span style="color:red">*</span>
+                                        <input type="text" class="form-control mob_no" data-mask="9999-999-999" placeholder="Mobile number" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label">Email</label>
-                                        <input type="text" class="form-control" name="validation-email" placeholder="Email">
+                                        <label class="form-label mb-4">Gender</label><span style="color:red">*</span></br>
+                                        <div class="form-group d-inline">
+                                            <div class="radio radio-primary d-inline">
+                                                <input type="radio" name="radio-p-fill-5" id="radio-p-fill-5" checked>
+                                                <label for="radio-p-fill-5" class="cr">Male</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group d-inline">
+                                            <div class="radio radio-primary d-inline">
+                                                <input type="radio" name="radio-p-fill-5" id="radio-p-fill-6">
+                                                <label for="radio-p-fill-6" class="cr">Female</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group d-inline">
+                                            <div class="radio radio-primary d-inline">
+                                                <input type="radio" name="radio-p-fill-5" id="radio-p-fill-7">
+                                                <label for="radio-p-fill-7" class="cr">Other</label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label">Password</label>
-                                        <input type="password" class="form-control" name="validation-password" placeholder="Password">
+                                        <label class="form-label">Address</label>
+                                        <textarea class="form-control" name="validation-text"></textarea>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label">Confirm password</label>
-                                        <input type="password" class="form-control" name="validation-password-confirmation" placeholder="Confirm password">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Required</label>
-                                        <input type="text" class="form-control" name="validation-required" placeholder="Required">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">URL</label>
-                                        <input type="text" class="form-control" name="validation-url" placeholder="Url">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Phone</label>
-                                        <input type="text" class="form-control" name="validation-phone" placeholder="Phone: (999) 999-9999">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Select</label>
-                                        <select class="form-control" name="validation-select">
+                                        <label class="form-label">Country</label><span style="color:red">*</span>
+                                        <select class="form-control" name="validation-select" required>
                                             <option value>Select gear...</option>
                                             <optgroup label="Climbing">
                                                 <option value="pitons">Pitons</option>
@@ -95,84 +143,67 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label">Text</label>
-                                        <textarea class="form-control" name="validation-text"></textarea>
+                                        <label class="form-label">Position</label><span style="color:red">*</span>
+                                        <select class="form-control" name="validation-select" required>
+                                            <option value>Select gear...</option>
+                                            <optgroup label="Climbing">
+                                                <option value="pitons">Pitons</option>
+                                                <option value="cams">Cams</option>
+                                                <option value="nuts">Nuts</option>
+                                                <option value="bolts">Bolts</option>
+                                                <option value="stoppers">Stoppers</option>
+                                                <option value="sling">Sling</option>
+                                            </optgroup>
+                                            <optgroup label="Skiing">
+                                                <option value="skis">Skis</option>
+                                                <option value="skins">Skins</option>
+                                                <option value="poles">Poles</option>
+                                            </optgroup>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label">File</label>
-                                        <div>
-                                            <input type="file" class="validation-file" name="validation-file">
-                                        </div>
+                                        <label class="form-label">Role</label><span style="color:red">*</span>
+                                        <select class="form-control" name="validation-select" required>
+                                            <option value>Select gear...</option>
+                                            <optgroup label="Climbing">
+                                                <option value="pitons">Pitons</option>
+                                                <option value="cams">Cams</option>
+                                                <option value="nuts">Nuts</option>
+                                                <option value="bolts">Bolts</option>
+                                                <option value="stoppers">Stoppers</option>
+                                                <option value="sling">Sling</option>
+                                            </optgroup>
+                                            <optgroup label="Skiing">
+                                                <option value="skis">Skis</option>
+                                                <option value="skins">Skins</option>
+                                                <option value="poles">Poles</option>
+                                            </optgroup>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
+                                        <label class="form-label">Password</label>
+                                        <input type="password" class="form-control" name="validation-password" placeholder="Password">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Confirm password</label>
+                                        <input type="password" class="form-control" name="validation-password-confirmation" placeholder="Confirm password">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Account Status</label></br>
                                         <div class="switch d-inline m-r-10">
+                                            <span>Inactive</span>
                                             <input type="checkbox" class="switcher-input" name="validation-switcher" id="switch-1">
                                             <label for="switch-1" class="cr"></label>
+                                            <span>Active</span>
                                         </div>
-                                        <label>Check me</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Radios</label>
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                            <input class="form-check-input" type="radio" name="validation-radios"> Option one is this and that—be sure to include why it's great
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                            <input class="form-check-input" type="radio" name="validation-radios"> Option two can be something else and selecting it will deselect option one
-                                            </label>
-                                        </div>
-                                        <div class="form-check disabled">
-                                            <label class="form-check-label">
-                                            <input class="form-check-input" type="radio" name="validation-radios"> Option three is disabled
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Custom radios</label>
-                                        <div class="custom-controls-stacked">
-                                            <label class="custom-control custom-radio">
-                                            <input name="validation-radios-custom" type="radio" class="custom-control-input">
-                                            <span class="custom-control-label">Option one is this and that—be sure to include why it's great</span>
-                                            </label>
-                                            <label class="custom-control custom-radio">
-                                            <input name="validation-radios-custom" type="radio" class="custom-control-input">
-                                            <span class="custom-control-label">Option two can be something else and selecting it will deselect option one</span>
-                                            </label>
-                                            <label class="custom-control custom-radio">
-                                            <input name="validation-radios-custom" type="radio" class="custom-control-input">
-                                            <span class="custom-control-label">Option three is disabled</span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Checkbox</label>
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" name="validation-checkbox"> Check me out
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Custom checkbox</label>
-                                        <br>
-                                        <label class="custom-control custom-checkbox d-block">
-                                        <input type="checkbox" class="custom-control-input" name="validation-checkbox-custom">
-                                        <span class="custom-control-label">Check me</span>
-                                        </label>
                                     </div>
                                 </div>
                             </div>
@@ -186,5 +217,8 @@
 </div>
 {% endblock %}
 {% block js %}
-<script src="{% static 'rbac/js/user.js' %}"></script>
+<script src="{% static 'base/plugins/inputmask/js/inputmask.min.js' %}"></script>
+<script src="{% static 'base/plugins/inputmask/js/jquery.inputmask.min.js' %}"></script>
+<script src="{% static 'base/plugins/inputmask/js/autoNumeric.js' %}"></script>
+<script src="{% static 'base/js/pages/form-masking-custom.js' %}"></script>
 {% endblock %}
