@@ -142,39 +142,6 @@ class User {
             }
         });
     }
-		
-    user_add(){
-        let self = this;
-		let user_add_form = $('#user_add_form');
-        user_add_form.on( 'submit', '', function (e) {
-			e.preventDefault();
-			let data_parsley = user_add_form.parsley();
-            if (!data_parsley.isValid()){
-                // button is disabled that means not table row selected, so do nothing
-            }else{
-				let data = self._helper.getFormDataToJson(user_add_form);
-				console.log(data.account_status)
-				if (data.account_status === undefined) data.account_status = '0';
-				console.log(data);
-				
-				let url = self._api+'user/';
-				var promise = self._helper.httpRequest(url, 'POST', JSON.stringify(data));
-				promise.done(function (response) {
-					// redirect to dashboard
-					window.location.replace("/");
-				});
-				promise.fail(function (response) {
-					// send back to login page with an error notification
-					$.each(response, function(i, v){
-						$.each(v, function(j, w){
-							$.growl(w, { type: 'danger' });
-						});
-					});
-					
-				});
-            }
-        });
-    }
 }
 
 let user = new User();
@@ -186,8 +153,4 @@ $(document).ready(function(e){
     user.redirect_to_user_add_page();
     user.redirect_to_user_edit_page();
     user.user_delete();
-    user.user_add();  // rbac/user_add.html
 });
-
-
-	
