@@ -142,6 +142,29 @@ class User {
             }
         });
     }
+    
+    set_role_in_dropdown(){        
+        let self = this;
+        let url = self._api + 'role/';
+        let role_dropdown = $('#role');        
+        
+        var promise = this._helper.httpRequest(url);
+        promise.done(function (response) {
+            let data = [];
+            $.each(response.results, function(i, v){
+                data.push({
+                    id: v.id,
+                    text: v.name,
+                });
+            });
+            role_dropdown.select2({
+                data: data
+            });
+        });
+        promise.fail(function (response) {
+            alert(response.responseJSON.detail);
+        });
+    }
 		
     user_add(){
         let self = this;
@@ -186,6 +209,7 @@ $(document).ready(function(e){
     user.redirect_to_user_add_page();
     user.redirect_to_user_edit_page();
     user.user_delete();
+    user.set_role_in_dropdown();
     user.user_add();  // rbac/user_add.html
 });
 
