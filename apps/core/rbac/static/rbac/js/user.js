@@ -213,5 +213,9 @@ $(document).ready(function(e){
     user.user_add();  // rbac/user_add.html
 });
 
+$(document).on('click', '#profile_picture_capture, #signature_capture', function () {
+    imageCapture();
+});
+
 
 	

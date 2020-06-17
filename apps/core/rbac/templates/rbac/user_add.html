@@ -62,7 +62,7 @@
                                             <input type="file" class="validation-file" name="file_profile_picture" hidden>
                                             <div class="image_capture_buttons">
                                                 <button type="button" class="btn btn-icon btn-outline-primary" data-toggle="tooltip" data-placement="bottom" title="Upload profile picture"><i class="feather icon-upload"></i></button>
-                                                <button type="button" class="btn btn-icon btn-outline-secondary" data-toggle="tooltip" data-placement="bottom" title="Capture profile picture"><i class="feather icon-camera"></i></button>
+                                                <button type="button" id="profile_picture_capture" class="btn btn-icon btn-outline-secondary md-trigger" data-modal="modal-3" data-toggle="tooltip" data-placement="bottom" title="Capture profile picture"><i class="feather icon-camera"></i></button>
                                                 <button type="button" class="btn btn-icon btn-outline-warning" data-toggle="tooltip" data-placement="bottom" title="Clear picture"><i class="feather icon-delete"></i></button>
                                             </div>
                                         </div>
@@ -76,7 +76,7 @@
                                             <input type="file" class="validation-file" name="file_signature" hidden>
                                             <div class="image_capture_buttons">
                                                 <button type="button" class="btn btn-icon btn-outline-primary" data-toggle="tooltip" data-placement="bottom" title="Upload signature"><i class="feather icon-upload"></i></button>
-                                                <button type="button" class="btn btn-icon btn-outline-secondary" data-toggle="tooltip" data-placement="bottom" title="Capture signature"><i class="feather icon-camera"></i></button>
+                                                <button type="button" id="signature_capture" class="btn btn-icon btn-outline-secondary" data-toggle="tooltip" data-placement="bottom" title="Capture signature"><i class="feather icon-camera"></i></button>
                                                 <button type="button" class="btn btn-icon btn-outline-warning" data-toggle="tooltip" data-placement="bottom" title="Clear signature"><i class="feather icon-delete"></i></button>
                                             </div>
                                         </div>
@@ -210,12 +210,15 @@
             </div>
         </div>
     </div>
+                        {% include 'rbac/image_capture_modal.html' %}
 </div>
+
 {% endblock %}
 {% block js %}
 	<script src="{% static 'base/plugins/inputmask/js/inputmask.min.js' %}"></script>
 	<script src="{% static 'base/plugins/inputmask/js/jquery.inputmask.min.js' %}"></script>
 	<script src="{% static 'base/plugins/inputmask/js/autoNumeric.js' %}"></script>
 	<script src="{% static 'base/js/pages/form-masking-custom.js' %}"></script>
+	<script src="{% static 'rbac/js/image_capture.js' %}"></script>
 	<script src="{% static 'rbac/js/user.js' %}"></script>
 {% endblock %}
