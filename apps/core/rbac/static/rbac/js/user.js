@@ -197,8 +197,38 @@ class User {
 				});
             }
         });
+        
+        // Image upload from system
+        $(document).on('click', '#profile_picture_upload, #signature_upload', function () {
+            // profile picture upload from system
+            if ($(this).attr("id") === 'profile_picture_upload'){
+                $('#file_profile_picture').trigger('click');
+                imageupload('profile_picture_preview', 'file_profile_picture');        
+            }
+            // signature upload from system
+            if ($(this).attr("id") === 'signature_upload'){
+                $('#file_signature').trigger('click');
+                imageupload('signature_preview', 'file_signature');       
+            }
+        });
+
+        // image capture using camera
+        $(document).on('click', '#profile_picture_capture, #signature_capture', function () {
+            // profile picture capture using camera
+            if ($(this).attr("id") === 'profile_picture_capture'){
+                imageCapture('profile_picture_preview', 'file_profile_picture');
+            }
+            // signature capture using camera
+            if ($(this).attr("id") === 'signature_capture'){
+                imageCapture('signature_preview', 'file_signature');
+            }
+        });
+        
     }
 }
+
+
+
 
 let user = new User();
 
@@ -211,10 +241,6 @@ $(document).ready(function(e){
     user.user_delete();
     user.set_role_in_dropdown();
     user.user_add();  // rbac/user_add.html
-});
-
-$(document).on('click', '#profile_picture_capture, #signature_capture', function () {
-    imageCapture();
 });
 
 

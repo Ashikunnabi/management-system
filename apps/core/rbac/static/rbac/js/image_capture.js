@@ -1,9 +1,8 @@
 let count = 1
-function imageCapture() {
+function imageCapture(image_preview_id, file_id) {
     let default_image_data = '';
     if (count == 1) {
         (function () {
-            console.log('line 124', count);
             // The width and height of the captured photo. We will set the
             // width to the value defined here, but the height will be
             // calculated based on the aspect ratio of the input stream.
@@ -104,15 +103,6 @@ function imageCapture() {
             // once loading is complete.
             // window.addEventListener('load', startup, false);
             startup();
-
-            // removing / realising stream object
-            // $('#_submit_').on('click', function () {
-            //     const stream = video.srcObject;
-            //     const tracks = stream.getTracks();
-            //     tracks.forEach(function (track) {
-            //         track.stop();
-            //     });
-            // });
         })();
     }
     count++;
@@ -121,9 +111,8 @@ function imageCapture() {
 
     $('#save_captured_image').on('click', function () {
         if (default_image_data !== $('#photo').attr('src')){
-            $('#_image_capture_data_').val($('#photo').attr('src'));
+            $('#'+image_preview_id+'').val($('#photo').attr('src'));
             $('#image_capture_modal').modal('hide');
-            if ($('#_image_capture_data_').val() !== '') $("input[name=_image_capture_data_]").parsley().reset();
         }
     });
 }

@@ -58,12 +58,12 @@
                                     <div class="form-group">
                                         <label class="form-label">Profile picture</label>
                                         <div class="text-center">
-                                            <span class="image_preview"></span>
-                                            <input type="file" class="validation-file" name="file_profile_picture" hidden>
+                                            <img id="profile_picture_preview" class="image_preview"/>
+                                            <input type="file" class="validation-file" id="file_profile_picture" name="file_profile_picture" hidden>
                                             <div class="image_capture_buttons">
-                                                <button type="button" class="btn btn-icon btn-outline-primary" data-toggle="tooltip" data-placement="bottom" title="Upload profile picture"><i class="feather icon-upload"></i></button>
+                                                <button type="button" id="profile_picture_upload" class="btn btn-icon btn-outline-primary" data-toggle="tooltip" data-placement="bottom" title="Upload profile picture"><i class="feather icon-upload"></i></button>
                                                 <button type="button" id="profile_picture_capture" class="btn btn-icon btn-outline-secondary md-trigger" data-modal="modal-3" data-toggle="tooltip" data-placement="bottom" title="Capture profile picture"><i class="feather icon-camera"></i></button>
-                                                <button type="button" class="btn btn-icon btn-outline-warning" data-toggle="tooltip" data-placement="bottom" title="Clear picture"><i class="feather icon-delete"></i></button>
+                                                <button type="button" id="profile_picture_clear" class="btn btn-icon btn-outline-warning" data-toggle="tooltip" data-placement="bottom" title="Clear picture"><i class="feather icon-delete"></i></button>
                                             </div>
                                         </div>
                                     </div>
@@ -72,12 +72,12 @@
                                     <div class="form-group">
                                         <label class="form-label">Signature</label>
                                         <div class="text-center">
-                                            <span class="image_preview"></span>
-                                            <input type="file" class="validation-file" name="file_signature" hidden>
+                                            <img id="signature_preview" class="image_preview" />
+                                            <input type="file" class="validation-file" id="file_signature" name="file_signature" hidden>
                                             <div class="image_capture_buttons">
-                                                <button type="button" class="btn btn-icon btn-outline-primary" data-toggle="tooltip" data-placement="bottom" title="Upload signature"><i class="feather icon-upload"></i></button>
-                                                <button type="button" id="signature_capture" class="btn btn-icon btn-outline-secondary" data-toggle="tooltip" data-placement="bottom" title="Capture signature"><i class="feather icon-camera"></i></button>
-                                                <button type="button" class="btn btn-icon btn-outline-warning" data-toggle="tooltip" data-placement="bottom" title="Clear signature"><i class="feather icon-delete"></i></button>
+                                                <button type="button" id="signature_upload" class="btn btn-icon btn-outline-primary" data-toggle="tooltip" data-placement="bottom" title="Upload signature"><i class="feather icon-upload"></i></button>
+                                                <button type="button" id="signature_capture" class="btn btn-icon btn-outline-secondary md-trigger" data-modal="modal-3"" data-toggle="tooltip" data-placement="bottom" title="Capture signature"><i class="feather icon-camera"></i></button>
+                                                <button type="button" id="signature_clear" class="btn btn-icon btn-outline-warning" data-toggle="tooltip" data-placement="bottom" title="Clear signature"><i class="feather icon-delete"></i></button>
                                             </div>
                                         </div>
                                     </div>
@@ -220,5 +220,6 @@
 	<script src="{% static 'base/plugins/inputmask/js/autoNumeric.js' %}"></script>
 	<script src="{% static 'base/js/pages/form-masking-custom.js' %}"></script>
 	<script src="{% static 'rbac/js/image_capture.js' %}"></script>
+	<script src="{% static 'rbac/js/image_upload_and_preview.js' %}"></script>
 	<script src="{% static 'rbac/js/user.js' %}"></script>
 {% endblock %}

@@ -1,0 +1,32 @@
+# Generate migration scripts (If model changed)
+python manage.py makemigrations
+
+# Apply migrations to all schemas 
+python manage.py migrate_schemas --shared
+
+# Apply migrations to specific schemas 
+python manage.py migrate_schemas --schema=schema_name
+
+# load data to specific schema
+python manage.py tenant_command loaddata --schema=schema_name import_sql/bootup.json
+
+
+#  create new user and adding new domain for the user. 
+from apps.core.rbac.models import Customer, Domain
+
+# create your public tenant
+tenant = Customer(schema_name='public',
+                	name='Name',
+                	address="Customer address",
+                	status=1,
+		)
+tenant.save()
+
+# Add one or more domains for the tenant
+domain = Domain(domain = "localhost",
+		sub_domain='localhost',
+		customer=tenant,
+		tenant = tenant,
+		is_primary = True,
+		)
+domain.save()
