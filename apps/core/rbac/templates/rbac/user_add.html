@@ -132,28 +132,15 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">Country</label><span style="color:red">*</span>
-                                        <select class="form-control" name="country" required>
-                                            <option value>Select gear...</option>
-                                            <optgroup label="Climbing">
-                                                <option value="pitons">Pitons</option>
-                                                <option value="cams">Cams</option>
-                                                <option value="nuts">Nuts</option>
-                                                <option value="bolts">Bolts</option>
-                                                <option value="stoppers">Stoppers</option>
-                                                <option value="sling">Sling</option>
-                                            </optgroup>
-                                            <optgroup label="Skiing">
-                                                <option value="skis">Skis</option>
-                                                <option value="skins">Skins</option>
-                                                <option value="poles">Poles</option>
-                                            </optgroup>
+                                        <select class="form-control" id="country" name="country" required>
+                                            <option value hidden>Select Country</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">Position</label><span style="color:red">*</span>
-                                        <select class="form-control" name="position" required>
+                                        <select class="form-control" id="position" name="position" required>
                                             <option value>Select gear...</option>
                                             <optgroup label="Climbing">
                                                 <option value="pitons">Pitons</option>
@@ -221,5 +208,6 @@
 	<script src="{% static 'base/js/pages/form-masking-custom.js' %}"></script>
 	<script src="{% static 'rbac/js/image_capture.js' %}"></script>
 	<script src="{% static 'rbac/js/image_upload_and_preview.js' %}"></script>
+	<script src="{% static 'rbac/js/country_list.js' %}"></script>
 	<script src="{% static 'rbac/js/user.js' %}"></script>
 {% endblock %}

@@ -120,7 +120,6 @@ class User {
             }else{
                 var table = $('#user_table').DataTable();
 				let selected_row_data = table.row('.selected').data();
-                console.log(selected_row_data)
                 swal({
                     title: "Are you sure?",
                     text: "User can not be deleted. This will make the user inactive! You are going to inactive user: '"+selected_row_data.username+"'",
@@ -130,8 +129,23 @@ class User {
                 })
                 .then((willDelete) => {
                     if (willDelete) {
-                        swal("Poof! User: '"+selected_row_data.username+"' has been inactive!", {
-                            icon: "success",
+                        let url = self._api+'user/' + selected_row_data.id + '/';
+                        var promise = self._helper.httpRequest(url, 'DELETE');
+                        promise.done(function (response) {
+                            // redirect to dashboard
+                            swal("Poof! User: '"+selected_row_data.username+"' has been inactive!", {
+                                icon: "success",
+                            });
+                            setTimeout(function(e){window.location.replace("/user");}, 1000);                            
+                        });
+                        promise.fail(function (response) {
+                            // send back to login page with an error notification
+                            $.each(response.responseJSON, function(i, v){
+                                $.each(v, function(j, w){
+                                    let message = i +": " + w
+                                    $.growl(message, { type: 'danger' });
+                                });
+                            });                            
                         });
                     } else {
                         swal("User: '"+selected_row_data.username+"' is safe and active!", {
@@ -165,6 +179,30 @@ class User {
             alert(response.responseJSON.detail);
         });
     }
+    
+    set_country_in_dropdown(){        
+        let self = this;
+        // let url = self._api + 'role/';
+        // let url = 'https://restcountries.eu/rest/v2/all';
+        let country_dropdown = $('#country');        
+        
+        // var promise = this._helper.httpRequest(url);
+        // promise.done(function (response) {
+            let data = [];
+            $.each(countries, function(i, v){
+                data.push({
+                    id: i,
+                    text: v.name,
+                });
+            });
+            country_dropdown.select2({
+                data: data
+            });
+        // });
+        // promise.fail(function (response) {
+            // alert(response.responseJSON.detail);
+        // });
+    }
 		
     user_add(){
         let self = this;
@@ -173,24 +211,24 @@ class User {
 			e.preventDefault();
 			let data_parsley = user_add_form.parsley();
             if (!data_parsley.isValid()){
-                // button is disabled that means not table row selected, so do nothing
+                // Invalid Form Data
             }else{
 				let data = self._helper.getFormDataToJson(user_add_form);
 				console.log(data.account_status)
 				if (data.account_status === undefined) data.account_status = '0';
-				console.log(data);
 				
 				let url = self._api+'user/';
 				var promise = self._helper.httpRequest(url, 'POST', JSON.stringify(data));
 				promise.done(function (response) {
 					// redirect to dashboard
-					window.location.replace("/");
+					window.location.replace("/user");
 				});
 				promise.fail(function (response) {
 					// send back to login page with an error notification
-					$.each(response, function(i, v){
+					$.each(response.responseJSON, function(i, v){
 						$.each(v, function(j, w){
-							$.growl(w, { type: 'danger' });
+                            let message = i +": " + w
+							$.growl(message, { type: 'danger' });
 						});
 					});
 					
@@ -240,6 +278,7 @@ $(document).ready(function(e){
     user.redirect_to_user_edit_page();
     user.user_delete();
     user.set_role_in_dropdown();
+    user.set_country_in_dropdown();
     user.user_add();  // rbac/user_add.html
 });
 
