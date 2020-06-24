@@ -176,56 +176,60 @@ SIMPLE_JWT = {
 }
 
 
-# # Log config
-# LOGGING = {
-    # 'version': 1,
-    # 'disable_existing_loggers': False,
-    # 'formatters': {
-        # 'default': {
-            # 'format': '[%(asctime)s] %(levelname)s::(%(process)d %(thread)d)::%(module)s - %(message)s'
-        # },
-    # },
-    # 'handlers': {
-        # 'error': {
-            # 'level': 'ERROR',
-            # 'class': 'logging.FileHandler',
-            # 'filename': 'log/critical_error-{}.log'.format(datetime.datetime.now().date()),
-            # 'formatter': 'default'
-        # },
-        # 'warning': {
-            # 'level': 'WARNING',
-            # 'class': 'logging.FileHandler',
-            # 'filename': 'log/error-{}.log'.format(datetime.datetime.now().date()),
-            # 'formatter': 'default'
-        # },
-        # 'success': {
-            # 'level': 'INFO',
-            # 'class': 'logging.FileHandler',
-            # 'filename': 'log/success-{}.log'.format(datetime.datetime.now().date()),
-            # 'formatter': 'default'
-        # },
-        # "console": {
-            # "class": "logging.StreamHandler",
-        # },
-    # },
-    # 'loggers': {
-        # 'django': {
-            # 'handlers': ['error'],
-            # 'level': 'ERROR',
-            # 'propagate': False,
-        # },
-        # 'warning_logger': {
-            # 'handlers': ['warning'],
-            # 'level': 'WARNING',
-            # 'propagate': False,
-        # },
-        # 'success_logger': {
-            # 'handlers': ['success'],
-            # 'level': 'INFO',
-            # 'propagate': False,
-        # },
-    # },
-# }
+# Logging 
+# creating a log folder in basedir if not exists
+if not os.path.exists(os.path.join(BASE_DIR, 'log')):
+    os.mkdir(os.path.join(BASE_DIR, 'log'))
+# Log config   
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'default': {
+            'format': '[%(asctime)s] %(levelname)s::(%(process)d %(thread)d)::%(module)s - %(message)s'
+        },
+    },
+    'handlers': {
+        'error': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': 'log/critical_error-{}.log'.format(datetime.datetime.now().date()),
+            'formatter': 'default'
+        },
+        'warning': {
+            'level': 'WARNING',
+            'class': 'logging.FileHandler',
+            'filename': 'log/error-{}.log'.format(datetime.datetime.now().date()),
+            'formatter': 'default'
+        },
+        'success': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'log/success-{}.log'.format(datetime.datetime.now().date()),
+            'formatter': 'default'
+        },
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['error'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'warning_logger': {
+            'handlers': ['warning'],
+            'level': 'WARNING',
+            'propagate': False,
+        },
+        'success_logger': {
+            'handlers': ['success'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
@@ -252,3 +256,19 @@ STATICFILES_DIRS = (
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MULTITENANT_RELATIVE_MEDIA_ROOT = "%s/"
+
+
+# SMS API
+SMS_API_TOKEN = os.getenv("SMS_API_TOKEN")
+SMS_API_ENDPOINT = os.getenv("SMS_API_ENDPOINT")
+
+
+
+
+
+
+
+
+
+
+

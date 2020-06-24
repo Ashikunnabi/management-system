@@ -1,3 +1,7 @@
+from django.conf import settings
+import requests
+
+
 def json_parameter_validation(json_data, required_params):
     """ Check parameter is available in json or not
         parameter:
@@ -27,3 +31,35 @@ def get_user_ip_address(request):
 
 def get_user_browser_details(request):    
     return request.headers.get('User-Agent')
+            
+
+def send_email(request, mobile_number, message): 
+    """
+        Send sms to specific phone number
+
+        :parameter
+            phone_no (string): phone number to send sms
+            message (string): message to send
+
+        :return:
+            json: list of parameters
+                    - success (boolean): is data successfully retrieved
+                    - message (string): response message
+                    - response_code (int): response code
+                    - sms_status (string): message sending status
+    """
+
+    response = requests.post(
+        '{}api.php?token={}&to={}&message={}'.format(settings.SMS_API_ENDPOINT, settings.SMS_API_TOKEN,
+                                                     mobile_number, message))
+    text = response.text.split("<")[0]
+    code = response.status_code
+
+    data = {
+        "response_code": code,
+        "sms_status": text
+    }
+    return JsonResponse(data)
+    
+    
+    
