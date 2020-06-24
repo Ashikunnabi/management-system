@@ -11,35 +11,148 @@ from .serializers import *
 from apps.core.rbac.models import User
 
             
-@api_view(['POST'])
-def test(request):
-    required_params = ['first_name', 'last_name', 'username', 'email', 'password', 'is_active']
-    params = request.data
-    
-    # validating post data
-    if params.get('is_admin') is True:
-        required_params.append('secret_code')
-    error_param = json_parameter_validation(params, required_params)
-    if error_param is not None:
-        return Response({0:"'{}' required.".format(error_param)}, status=400)
-        
-    if params.get('is_admin') is True:
-        if params.get('secret_code') == settings.SECRET_CODE_ADMIN:
-            params['is_staff'] = True
-            params['is_superuser'] = True
-            del params['is_admin']
-            del params['secret_code']
-        else:
-            return Response({0:"You are not allowed to be an admin"}, status=401)
-        
-    # creating new user
-    with transaction.atomic():
-        user = User.objects.create_user(**params)
-    
-    # send email with activation url
-    
-    return Response({0:"Registration Successful"}, status=201)    
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def check_balance(request):
+    """
+        Check total sms left in the API account
 
+        :parameter
+            None
+
+        :return:
+            json: list of parameters
+                    - success (boolean): is data successfully retrieved
+                    - message (string): response message
+                    - response_code (int): response code
+                    - available_sms (int): number of available sms left in the API Account
+    """
+
+    response = requests.get('{}g_api.php?token={}&totalsms'.format(settings.SMS_API_ENDPOINT, settings.SMS_API_TOKEN))
+    text = response.text.split("<")[0]
+    code = response.status_code
+
+    data = {
+        "response_code": code,
+        "available_sms": text
+    }
+
+    return JsonResponse(data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_sms_charge(request):
+    """
+        Get sms charge for per sms
+
+        :parameter
+            None
+
+        :return:
+            json: list of parameters
+                    - success (boolean): is data successfully retrieved
+                    - message (string): response message
+                    - response_code (int): response code
+                    - sms_charge (string): per sms rate
+    """
+
+    response = requests.get('{}g_api.php?token={}&totalsms'.format(settings.SMS_API_ENDPOINT, settings.SMS_API_TOKEN))
+    text = response.text.split("<")[0] + " BDT/per sms"
+    code = response.status_code
+
+    data = {
+        "response_code": code,
+        "sms_charge": text
+    }
+    return JsonResponse(data)
+    
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def check_total_sms_sent(request):
+    """
+        Check total sms sent by this account so far
+
+        :parameter
+            None
+
+        :return:
+            json: list of parameters
+                    - success (boolean): is data successfully retrieved
+                    - message (string): response message
+                    - response_code (int): response code
+                    - sent_sms (int): number of sms sent by the account user
+    """
+
+    response = requests.get('{}g_api.php?token={}&totalsms'.format(settings.SMS_API_ENDPOINT, settings.SMS_API_TOKEN))
+    text = response.text.split("<")[0]
+    code = response.status_code
+
+    data = {
+        "response_code": code,
+        "sent_sms": text
+    }
+    return JsonResponse(data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def check_sms_expiry_date(request):
+    """
+        Check sms balance expiry date
+
+        :parameter
+            None
+
+        :return:
+            json: list of parameters
+                    - success (boolean): is data successfully retrieved
+                    - message (string): response message
+                    - response_code (int): response code
+                    - expiry_date (string): expiry date
+    """
+
+    response = requests.get('{}g_api.php?token={}&totalsms'.format(settings.SMS_API_ENDPOINT, settings.SMS_API_TOKEN))
+    text = response.text.split("<")[0]
+    code = response.status_code
+
+    data = {
+        "response_code": code,
+        "expiry_date": text
+    }
+    return JsonResponse(data)
+    
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def send_sms(request):
+    """
+        Send sms to specific phone number
+
+        :parameter
+            phone_no (string): phone number to send sms
+            message (string): message to send
+
+        :return:
+            json: list of parameters
+                    - success (boolean): is data successfully retrieved
+                    - message (string): response message
+                    - response_code (int): response code
+                    - sms_status (string): message sending status
+    """
+
+    response = requests.post(
+        '{}api.php?token={}&to={}&message={}'.format(settings.SMS_API_ENDPOINT, settings.SMS_API_TOKEN,
+                                                     request.data['mobile_number'], request.data['message']))
+    text = response.text.split("<")[0]
+    code = response.status_code
+
+    data = {
+        "success": success,
+        "message": message,
+    }
+    return JsonResponse(data)
     
 
 
