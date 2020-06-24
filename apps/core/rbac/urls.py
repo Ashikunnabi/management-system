@@ -15,6 +15,7 @@ urlpatterns = [
     path('role/', role, name='role'),
     path('user/', user, name='user'),
     path('user/add/', user_add, name='user_add'),
+    path('user/<int:id>/', user_edit, name='user_edit'),
     path('customer/', customer, name='customer'),
     path('feature/', feature, name='feature'),
 ]

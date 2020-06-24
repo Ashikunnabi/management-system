@@ -51,7 +51,8 @@ TENANT_MODEL = 'rbac.Customer'
 TENANT_DOMAIN_MODEL = "rbac.Domain"
 ROOT_URLCONF = 'src.urls'
 AUTH_USER_MODEL = 'rbac.User'
-DEFAULT_FILE_STORAGE = 'tenant_schemas.storage.TenantFileSystemStorage'
+# DEFAULT_FILE_STORAGE = 'tenant_schemas.storage.TenantFileSystemStorage'
+DEFAULT_FILE_STORAGE = 'django_tenants.files.storage.TenantFileSystemStorage'
 
 
 MIDDLEWARE = [
@@ -247,3 +248,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MULTITENANT_RELATIVE_MEDIA_ROOT = "%s/"

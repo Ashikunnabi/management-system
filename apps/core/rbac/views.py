@@ -44,6 +44,10 @@ def user_add(request):
     return render(request, 'rbac/user_add.html')
     
     
+def user_edit(request, id):
+    return render(request, 'rbac/user_edit.html', context={'id':id})
+    
+    
 def customer(request):
     return render(request, 'rbac/customer.html')
     

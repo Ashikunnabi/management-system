@@ -67,20 +67,44 @@ class UserSerializer(serializers.ModelSerializer):
         
     def create(self, validated_data):
         """ Create and return a new User. """
-        user = User.objects.create(**validated_data)
+        user = User.objects.create(
+            first_name = validated_data.get('first_name'),
+            middle_name = validated_data.get('middle_name'),
+            last_name = validated_data.get('last_name'),
+            position = validated_data.get('position'),
+            email = validated_data.get('email'),
+            username = validated_data.get('username'),
+            role = validated_data.get('role'),
+            mobile_number = validated_data.get('mobile_number'),
+            gender = validated_data.get('gender'),
+            address = validated_data.get('address'),
+            is_active = int(validated_data.get('account_status', 0)),
+            country = validated_data.get('country'),
+            profile_picture = self.context['request'].data['file_profile_picture'],
+            signature = self.context['request'].data['file_signature']        
+        )
         user.set_password(validated_data.get('password'))
         user.save()
         return user
         
     def update(self, instance, validated_data):
-        """ Update and return an existing User instance. """        
+        """ Update and return an existing User instance. """ 
         instance.first_name = validated_data.get('first_name', instance.first_name)
+        instance.middle_name = validated_data.get('middle_name', instance.middle_name)
         instance.last_name = validated_data.get('last_name', instance.last_name)
         instance.position = validated_data.get('position', instance.position)
         instance.email = validated_data.get('email', instance.email)
         instance.role = validated_data.get('role', instance.role)
-        instance.is_active = validated_data.get('is_active', instance.is_active)
+        instance.mobile_number = validated_data.get('mobile_number', instance.mobile_number)
+        instance.gender = validated_data.get('gender', instance.gender)
+        instance.address = validated_data.get('address', instance.address)
+        instance.country = validated_data.get('country', instance.country)
+        instance.is_active = int(self.context['request'].data.get('account_status', instance.is_active))
         if 'password' in validated_data:
             instance.set_password(validated_data.get('password'))
+        if self.context['request'].data['file_profile_picture'] is not None:
+            instance.profile_picture = self.context['request'].data['file_profile_picture']
+        if self.context['request'].data['file_signature'] is not None:
+            instance.signature = self.context['request'].data['file_signature']
         instance.save()
         return instance

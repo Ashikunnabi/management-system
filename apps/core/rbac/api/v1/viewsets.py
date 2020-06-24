@@ -250,7 +250,6 @@ class RoleViewSet(CustomViewSet):
 class UserViewSet(CustomViewSet):
     permission_classes = [UserAccessApiBasePermission]
     serializer_class = UserSerializer
-    # pagination_class = dt_pagination.DatatablesLimitOffsetPagination
     queryset = User.objects.all()
     model = User 
         
@@ -259,7 +258,7 @@ class UserViewSet(CustomViewSet):
         queryset = User.objects.all()
         user = get_object_or_404(queryset, pk=pk)
         
-        if request.user.role == 1:
+        if request.user.role.id == 1:
             user.delete()
             return Response({'details': 'User has been deleted successfully.'})
         else:

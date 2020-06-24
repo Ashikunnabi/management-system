@@ -59,16 +59,6 @@ class Customer(TenantMixin):
     
 
 class Domain(DomainMixin):
-    sub_domain = models.CharField(max_length=100,
-                            blank=False,
-                            null=False,
-                            unique=True,
-                            validators=[RegexValidator(
-                                regex='[a-z]{4,100}$',
-                                message='Sub domain contains lower case alphabets only. Length: 4 to 100'
-                            )]
-                            )
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=False, blank=False, related_name='domain_customer')
     is_active = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated_at = models.DateTimeField(auto_now_add=False, auto_now=True)
@@ -132,7 +122,15 @@ class User(AbstractUser):
     activation_url = models.CharField(max_length=500, blank=False, default=get_activation_url)
     profile_picture = models.ImageField(upload_to='user/profile_picture/', blank=True, null=True)
     signature = models.ImageField(upload_to='user/signature/', blank=True, null=True)
-    has_to_change_password = models.BooleanField(default=True)
+    
+    initial = models.BooleanField(null=False, blank=False, default=True)
+    need_to_change_password = models.BooleanField(null=False, blank=False, default=False)
+    password_updated_at = models.DateTimeField(null=True, blank=True)
+    is_locked = models.BooleanField(null=False, blank=False, default=False)
+    locked_at = models.DateTimeField(null=True, blank=True)
+    unsuccessful_attempt = models.IntegerField(null=False, blank=False, default=0)   
+    
+    
     
     def get_full_name(self):
         return f'{self.first_name} {self.last_name}'
@@ -151,6 +149,12 @@ class Group(AuditTrail):
                             )
     status = models.BooleanField(default=True)
     user = models.ManyToManyField(User, blank=True, related_name='group_users')
+    
+    
+class UserPassword(AuditTrail):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
+    hash = models.CharField(null=False, blank=False, max_length=200)
+
     
     
     

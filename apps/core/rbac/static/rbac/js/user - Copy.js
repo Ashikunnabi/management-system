@@ -2,13 +2,10 @@ class User {
     constructor() {
         this._helper = new Helper();
         this._api = '/api/v1/';
-        this.user_list_url = this._api+'user/?format=datatables';;
-        this.user_add_url = '/user/add/';
     }
     
     user_list(){
-        let self = this;
-        let url = self.user_list_url;
+        let url = this._api+'user/?format=datatables';
         let table = $('#user_table').DataTable({
             "processing": true,
             // "serverSide": true,
@@ -96,7 +93,7 @@ class User {
     redirect_to_user_add_page(){
         let self = this;
         $('#add_user').on( 'click', '', function () {
-            let url = self.user_add_url;
+            let url = '/user/add/';
             window.open(url, "");
         });     
     }
@@ -108,7 +105,8 @@ class User {
                 // button is disabled that means not table row selected, so do nothing
             }else{
                 var table = $('#user_table').DataTable();
-                let url = '/user/' + table.row('.selected').data().id;
+                console.log(table.row('.selected').data())
+                let url = self._api + 'user/' + table.row('.selected').data().id;
                 window.open(url, "_blank");
             }
         });     
@@ -205,8 +203,39 @@ class User {
             // alert(response.responseJSON.detail);
         // });
     }
-	
-    image_capture_upload(){        
+		
+    user_add(){
+        let self = this;
+		let user_add_form = $('#user_add_form');
+        user_add_form.on( 'submit', '', function (e) {
+			e.preventDefault();
+			let data_parsley = user_add_form.parsley();
+            if (!data_parsley.isValid()){
+                // Invalid Form Data
+            }else{
+				let data = self._helper.getFormDataToJson(user_add_form);
+				console.log(data.account_status)
+				if (data.account_status === undefined) data.account_status = '0';
+				
+				let url = self._api+'user/';
+				var promise = self._helper.httpRequest(url, 'POST', JSON.stringify(data));
+				promise.done(function (response) {
+					// redirect to dashboard
+					window.location.replace("/user");
+				});
+				promise.fail(function (response) {
+					// send back to login page with an error notification
+					$.each(response.responseJSON, function(i, v){
+						$.each(v, function(j, w){
+                            let message = i +": " + w
+							$.growl(message, { type: 'danger' });
+						});
+					});
+					
+				});
+            }
+        });
+        
         // Image upload from system
         $(document).on('click', '#profile_picture_upload, #signature_upload', function () {
             // profile picture upload from system
@@ -232,114 +261,7 @@ class User {
                 imageCapture('signature_preview', 'file_signature');
             }
         });
-    }
-	
-    user_add(){
-        let self = this;
-		let user_add_form = $('#user_add_form');
-        user_add_form.submit(function (e) {
-			e.preventDefault();
-			let data_parsley = user_add_form.parsley();
-            if (!data_parsley.isValid()){
-                // Invalid Form Data
-            }else{
-				let data = new FormData($(this)[0]);
-				if (data.has('account_status') === false) data.append('account_status', '0');
-				
-				let url = self._api+'user/';
-                
-                $.ajax({
-                    type: "post",
-                    url: url,
-                    data: data,
-                    processData: false,
-                    contentType: false,
-                    success: function (data) {
-                        $.growl('Successfully user added', { type: 'success' });
-                        setTimeout(function () {
-                            window.location.href("/user");
-                        }, 1500);
-
-                    },
-                    error: function (response) {
-                        $.each(response.responseJSON, function(i, v){
-                            $.each(v, function(j, w){
-                                let message = i +": " + w
-                                $.growl(message, { type: 'danger' });
-                            });
-                        });
-                    }
-                });
-            }
-        });                
-    }	
         
-    user_edit_form_fillup(){
-        let self = this;
-		let user_edit_form = $('#user_edit_form');
-        user_edit_form.ready(function (e) {
-            let url = self._api+'user/' + user_id + '/';
-            var promise = self._helper.httpRequest(url, 'GET');
-            promise.done(function (response) { 
-                function populate(frm, data) {
-                  $.each(data, function(key, value){
-                      if(key == 'country' || key == 'role') $('[name='+key+']', frm).val(value).select2();
-                      else if(key == 'gender') $('[name='+key+'][value=' + value + ']', frm).attr('checked', 'checked');
-                      else $('[name='+key+']', frm).val(value);
-                  });
-                }
-                populate(user_edit_form, response);
-            });
-            promise.fail(function (response) {
-                $.each(response.responseJSON, function(i, v){
-                    $.each(v, function(j, w){
-                        let message = i +": " + w
-                        $.growl(message, { type: 'danger' });
-                    });
-                });                            
-            });
-        });       
-    }
-      
-    user_edit(){
-        let self = this;
-		let user_edit_form = $('#user_edit_form');
-        user_edit_form.submit(function (e) {
-			e.preventDefault();
-			let data_parsley = user_edit_form.parsley();
-            if (!data_parsley.isValid()){
-                // Invalid Form Data
-            }else{
-				let data = new FormData($(this)[0]);
-				if (data.has('account_status') === false) data.append('account_status', '0');
-				if (data.has('gender')) data.append('gender', $("input[name='gender']:checked").val());
-				
-				let url = self._api+'user/' + user_id + '/';
-               
-                $.ajax({
-                    type: "patch",
-                    url: url,
-                    data: data,
-                    processData: false,
-                    contentType: false,
-                    success: function (data) {
-                        $.growl('Successfully user updated', { type: 'success' });
-                        setTimeout(function () {
-                            window.location.href = "/user";
-                        }, 1500);
-
-                    },
-                    error: function (response) {
-                        $.each(response.responseJSON, function(i, v){
-                            $.each(v, function(j, w){
-                                let message = i +": " + w
-                                $.growl(message, { type: 'danger' });
-                            });
-                        });
-                    }
-                });
-            }
-        });        
     }
 }
 
@@ -350,26 +272,14 @@ let user = new User();
 
 // getting all users
 $(document).ready(function(e){
-    if(window.location.pathname == '/user/'){
-        user.user_list();
-        user.user_list_row_select();
-        user.redirect_to_user_add_page();
-        user.redirect_to_user_edit_page();
-        user.user_delete();        
-    }
-    if(window.location.pathname == '/user/add/'){
-        user.image_capture_upload();
-        user.set_role_in_dropdown();
-        user.set_country_in_dropdown();
-        user.user_add();  // rbac/user_add.html        
-    }
-    else if(window.location.pathname.match(/[\/user\/\d\/]/g)){
-        user.image_capture_upload();
-        user.set_role_in_dropdown();
-        user.set_country_in_dropdown();
-        user.user_edit_form_fillup();  // rbac/user_edit.html
-        user.user_edit();  // rbac/user_edit.html
-    }
+    user.user_list();
+    user.user_list_row_select();
+    user.redirect_to_user_add_page();
+    user.redirect_to_user_edit_page();
+    user.user_delete();
+    user.set_role_in_dropdown();
+    user.set_country_in_dropdown();
+    user.user_add();  // rbac/user_add.html
 });
 
 
