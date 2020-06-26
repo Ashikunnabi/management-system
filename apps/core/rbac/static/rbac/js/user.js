@@ -133,6 +133,8 @@ class User {
                 })
                 .then((willDelete) => {
                     if (willDelete) {
+                        self._helper.blockUI();
+                        $(document).ajaxComplete($.unblockUI);
                         let url = self._api+'user/' + selected_row_data.id + '/';
                         var promise = self._helper.httpRequest(url, 'DELETE');
                         promise.done(function (response) {
@@ -251,7 +253,7 @@ class User {
 				let url = self._api+'user/';
                 
                 self._helper.blockUI();
-                $(document).ajaxStop($.unblockUI);
+                $(document).ajaxComplete($.unblockUI);
                 
                 $.ajax({
                     type: "post",
@@ -262,7 +264,7 @@ class User {
                     success: function (data) {
                         $.growl('Successfully user added', { type: 'success' });
                         setTimeout(function () {
-                            window.location.href("/user");
+                            window.location.href = "/user";
                         }, 1500);
 
                     },
@@ -288,7 +290,7 @@ class User {
 		let user_edit_form = $('#user_edit_form');
         user_edit_form.ready(function (e) {
             self._helper.blockUI();
-            $(document).ajaxStop($.unblockUI);
+            $(document).ajaxComplete($.unblockUI);
             let url = self._api+'user/' + user_id + '/';
             var promise = self._helper.httpRequest(url, 'GET');
             promise.done(function (response) { 
@@ -301,9 +303,13 @@ class User {
                 }
                 populate(user_edit_form, response);
             });
-            promise.fail(function (response) {
+            promise.fail(function (response) { 
                 if(response.status == 403){
                     $.growl(response.responseJSON.detail, { type: 'danger' });
+                }
+                else if(response.status == 404){
+                    $.growl('No user found', { type: 'danger' });
+                    setTimeout(function(){window.location.href = "/user";}, 2000);
                 }else{
                     $.each(response.responseJSON, function(i, v){
                         $.each(v, function(j, w){
@@ -341,13 +347,10 @@ class User {
                     contentType: false,
                     success: function (data) {
                         $.growl('Successfully user updated', { type: 'success' });
-                        setTimeout(function () {
-                            window.location.href = "/user";
-                        }, 1500);
-
                     },
-                    error: function (response) {
-                        if(response.status == 403){
+                    error: function (response) {              
+                        $('body').unblock();
+                        if(response.status == 403 || response.status == 404){
                             $.growl(response.responseJSON.detail, { type: 'danger' });
                         }else{
                             $.each(response.responseJSON, function(i, v){
