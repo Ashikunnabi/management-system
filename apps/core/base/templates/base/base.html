@@ -29,6 +29,27 @@
         }
     </style>
     {% block css %} {% endblock %}
+    
+    <script>
+        let permission = []
+        "{% for permission in request.user.role.permission.all %}"
+            "{% if permission.is_active %}" 
+                permission.push("{{permission.id}}") 
+            "{% endif %}"
+        "{% endfor %}"
+
+        let request = {
+            'user': {
+                'id': "{{ request.user.id }}",
+                'username': "{{ request.user.username }}",
+                'full_name': "{{ request.user.first_name }}" + ' ' + "{{ request.user.middle_name|default_if_none:'' }}" + ' ' + "{{ request.user.last_name|default_if_none:'' }}",
+                'position': "{{ request.user.position }}",
+                'email': "{{ request.user.email }}",
+                'role': "{{ request.user.role.id }}",
+                'permissions': permission
+            }
+        }
+    </script>
 </head>
 
 <body>
