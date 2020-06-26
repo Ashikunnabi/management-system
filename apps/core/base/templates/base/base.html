@@ -34,7 +34,7 @@
         let permission = []
         "{% for permission in request.user.role.permission.all %}"
             "{% if permission.is_active %}" 
-                permission.push("{{permission.id}}") 
+                permission.push("{{permission.code}}") 
             "{% endif %}"
         "{% endfor %}"
 
