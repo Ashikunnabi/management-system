@@ -9,6 +9,8 @@ class User {
     user_list(){
         let self = this;
         let url = self.user_list_url;
+        self._helper.blockUI();
+        $(document).ajaxStop($.unblockUI);
         let table = $('#user_table').DataTable({
             "processing": true,
             // "serverSide": true,
@@ -248,6 +250,9 @@ class User {
 				
 				let url = self._api+'user/';
                 
+                self._helper.blockUI();
+                $(document).ajaxStop($.unblockUI);
+                
                 $.ajax({
                     type: "post",
                     url: url,
@@ -282,6 +287,8 @@ class User {
         let self = this;
 		let user_edit_form = $('#user_edit_form');
         user_edit_form.ready(function (e) {
+            self._helper.blockUI();
+            $(document).ajaxStop($.unblockUI);
             let url = self._api+'user/' + user_id + '/';
             var promise = self._helper.httpRequest(url, 'GET');
             promise.done(function (response) { 
@@ -324,6 +331,8 @@ class User {
 				
 				let url = self._api+'user/' + user_id + '/';
                
+                self._helper.blockUI();
+                $(document).ajaxStop($.unblockUI);
                 $.ajax({
                     type: "patch",
                     url: url,
@@ -349,7 +358,7 @@ class User {
                             });
                         }
                     }
-                });
+                });                
             }
         });        
     }
