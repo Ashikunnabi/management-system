@@ -438,15 +438,6 @@ class Helper {
         });
     };
 
-    getHotelCount($models, $id) {
-        for (var i = 0; i <= $models.length; i++) {
-            if ($models[i][0] == $id) {
-                return $models[i][1];
-                break;
-            }
-        }
-    };
-
     imageExists($imageUrl) {
         var http = new XMLHttpRequest();
         http.open('GET', $imageUrl, false);
@@ -478,19 +469,7 @@ class Helper {
             });
         }, 500);
     };
-
-    getParams($url) {
-        var $url = $url || document.URL;
-        var $param = this.getUrlParams($url);
-        var hotelpax = this.getHotelPax();
-        $param.adults = hotelpax.adult;
-        $param.rooms = hotelpax.rooms;
-        $param.checkin = hotelpax.checkin;
-        $param.checkout = hotelpax.checkout;
-        return $param;
-
-    };
-
+    
     dateRangePicker($sl, $options) {
         return $($sl).daterangepicker($options).data("daterangepicker");
     };
@@ -565,16 +544,18 @@ class Helper {
 
     blockUI() {
         $.blockUI({
-            message: '<img src="' + this.api.staticUrl + 'img/loading.gif">',
+            message: '<div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading...</span></div><div class="spinner-grow text-warning" role="status"><span class="sr-only">Loading...</span></div></div><div class="spinner-grow text-success" role="status"><span class="sr-only">Loading...</span></div><div class="spinner-grow text-danger" role="status"><span class="sr-only">Loading...</span></div>',
             // styles for the overlay
             overlayCSS: {
-                backgroundColor: 'rgb(85, 85, 85)',
-                opacity: 0.6,
+                zIndex: 2147483646,
+                backgroundColor: 'white',
+                opacity: 0.8,
                 cursor: 'wait'
             },
             css: {
-                top: ($(window).height() - 400) / 2 + 'px',
-                left: ($(window).width() - 400) / 2 + 'px',
+                zIndex: 2147483647,
+                top: ($(window).height() - 400) / 1.2 + 'px',
+                left: ($(window).width() - 400) / 1.8 + 'px',
                 width: '400px',
                 backgroundColor: 'rgba(0, 0, 0, 0)',
                 border: '0px',
@@ -642,43 +623,8 @@ class Helper {
         }
         return false;
     };
-
-    getDiscount($amount) {
-        var $promo = this.storage.getStorage('session', 'discount');
-        if ($.isEmptyObject($promo)) {
-            return 0;
-        }
-        if ($promo.hasOwnProperty('percentage')) {
-            return Math.abs($amount * $promo.percentage * .01);
-        }
-        return Math.abs($amount * $promo[0].discount * .01);
-
-    };
-
-    getDiscountPercentage() {
-        var $promo = this.storage.getStorage('session', 'discount');
-        if ($.isEmptyObject($promo)) {
-            return 0;
-        }
-        if ($promo.hasOwnProperty('percentage')) {
-            return $promo.percentage;
-        }
-        return $promo[0].discount;
-    };
-
-    //======================================================Tuhin 26/09/2019============================================
-    getPromo() {
-        var $promo = this.storage.getStorage('session', 'discount');
-        if ($.isEmptyObject($promo)) {
-            return 0;
-        }
-        if ($promo.hasOwnProperty('percentage')) {
-            return $promo;
-        }
-        return $promo[0];
-    };
-
-    //=============================================================END==================================================
+    
+    
     validateMobileOperator(mobileNumber, operator) {
         /* operator  -----  prefix
               0      -----   Robi
