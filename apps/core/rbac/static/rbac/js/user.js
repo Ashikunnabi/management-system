@@ -6,6 +6,18 @@ class User {
         this.user_add_url = '/user/add/';
     }
     
+    provide_permission_based_access(){
+        if (!(request.user.permissions.indexOf("add.rbac_user") > -1)){
+            $('#add_user').remove();
+        }
+        if (!(request.user.permissions.indexOf("change.rbac_user") > -1) && !(request.user.permissions.indexOf("view.rbac_user") > -1)){
+            $('#edit_user').remove();
+        }
+        if (!(request.user.permissions.indexOf("delete.rbac_user") > -1)){
+            $('#delete_user').remove();
+        }
+    }
+    
     user_list(){
         let self = this;
         let url = self.user_list_url;
@@ -375,24 +387,55 @@ let user = new User();
 // getting all users
 $(document).ready(function(e){
     if(window.location.pathname == '/user/'){
-        user.user_list();
-        user.user_list_row_select();
-        user.redirect_to_user_add_page();
-        user.redirect_to_user_edit_page();
-        user.user_delete();        
+        if (request.user.permissions.indexOf("view.rbac_user") > -1){
+            user.provide_permission_based_access();
+            user.user_list();
+            user.user_list_row_select();
+            user.redirect_to_user_add_page();
+            user.redirect_to_user_edit_page();
+            user.user_delete();
+        } else {            
+            $('.main-body').remove();
+            swal({
+                title: "No Access",
+                text: "Sorry! you do not have permission to view this page",
+                icon: "error",
+                dangerMode: true,
+            });
+        }
     }
     if(window.location.pathname == '/user/add/'){
-        user.image_capture_upload();
-        user.set_role_in_dropdown();
-        user.set_country_in_dropdown();
-        user.user_add();  // rbac/user_add.html        
+        if (request.user.permissions.indexOf("add.rbac_user") > -1){
+            user.image_capture_upload();
+            user.set_role_in_dropdown();
+            user.set_country_in_dropdown();
+            user.user_add();  // rbac/user_add.html 
+        } else {            
+            $('.main-body').remove();
+            swal({
+                title: "No Access",
+                text: "Sorry! you do not have permission to view this page",
+                icon: "error",
+                dangerMode: true,
+            });
+        }
     }
     else if(window.location.pathname.match(/[\/user\/\d\/]/g)){
-        user.image_capture_upload();
-        user.set_role_in_dropdown();
-        user.set_country_in_dropdown();
-        user.user_edit_form_fillup();  // rbac/user_edit.html
-        user.user_edit();  // rbac/user_edit.html
+        if ((request.user.permissions.indexOf("view.rbac_user") > -1) && (request.user.permissions.indexOf("change.rbac_user") > -1)){
+            user.image_capture_upload();
+            user.set_role_in_dropdown();
+            user.set_country_in_dropdown();
+            user.user_edit_form_fillup();  // rbac/user_edit.html
+            user.user_edit();  // rbac/user_edit.html
+        } else {            
+            $('.main-body').remove();
+            swal({
+                title: "No Access",
+                text: "Sorry! you do not have permission to view this page",
+                icon: "error",
+                dangerMode: true,
+            });
+        }
     }
 });
 
