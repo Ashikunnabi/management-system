@@ -296,7 +296,7 @@ class User {
             }
         });                
     }	
-        
+
     user_edit_form_fillup(){
         let self = this;
 		let user_edit_form = $('#user_edit_form');
@@ -333,7 +333,7 @@ class User {
             });
         });       
     }
-      
+
     user_edit(){
         let self = this;
 		let user_edit_form = $('#user_edit_form');

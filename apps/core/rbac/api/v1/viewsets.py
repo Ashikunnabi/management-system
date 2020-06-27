@@ -252,6 +252,10 @@ class UserViewSet(CustomViewSet):
     serializer_class = UserSerializer
     queryset = User.objects.all()
     model = User 
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.order_by('-id')
         
     def destroy(self, request, pk=None):
         """ User can not be deleted. """
