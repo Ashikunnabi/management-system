@@ -4,16 +4,20 @@ class User {
         this._api = '/api/v1/';
         this.user_list_url = this._api+'user/?format=datatables';;
         this.user_add_url = '/user/add/';
+        this.user_permissions = request.user.permissions;
     }
     
     provide_permission_based_access(){
-        if (!(request.user.permissions.indexOf("add.rbac_user") > -1)){
+        let self = this;
+        if (!(self.user_permissions.indexOf("add.rbac_user") > -1)){
             $('#add_user').remove();
         }
-        if (!(request.user.permissions.indexOf("change.rbac_user") > -1) && !(request.user.permissions.indexOf("view.rbac_user") > -1)){
+    if (!(self.user_permissions.indexOf("change.rbac_user") > -1) && 
+         (!(self.user_permissions.indexOf("self_view.rbac_user") > -1) || 
+          !(self.user_permissions.indexOf("list_view.rbac_user") > -1))){
             $('#edit_user').remove();
         }
-        if (!(request.user.permissions.indexOf("delete.rbac_user") > -1)){
+        if (!(self.user_permissions.indexOf("delete.rbac_user") > -1)){
             $('#delete_user').remove();
         }
     }
@@ -310,6 +314,7 @@ class User {
                   $.each(data, function(key, value){
                       if(key == 'country' || key == 'role') $('[name='+key+']', frm).val(value).select2();
                       else if(key == 'gender') $('[name='+key+'][value=' + value + ']', frm).attr('checked', 'checked');
+                      else if(key == 'is_active') (value==true) ? $('input[name=account_status]').click() : "";
                       else $('[name='+key+']', frm).val(value);
                   });
                 }
@@ -385,9 +390,11 @@ class User {
 let user = new User();
 
 // getting all users
-$(document).ready(function(e){
+$(document).ready(function(e){    
+    let user_permissions = request.user.permissions;
+    
     if(window.location.pathname == '/user/'){
-        if (request.user.permissions.indexOf("view.rbac_user") > -1){
+        if ((user_permissions.indexOf("self_view.rbac_user") > -1) || (user_permissions.indexOf("list_view.rbac_user") > -1)){
             user.provide_permission_based_access();
             user.user_list();
             user.user_list_row_select();
@@ -404,8 +411,8 @@ $(document).ready(function(e){
             });
         }
     }
-    if(window.location.pathname == '/user/add/'){
-        if (request.user.permissions.indexOf("add.rbac_user") > -1){
+    else if(window.location.pathname == '/user/add/'){
+        if (user_permissions.indexOf("add.rbac_user") > -1){
             user.image_capture_upload();
             user.set_role_in_dropdown();
             user.set_country_in_dropdown();
@@ -421,7 +428,7 @@ $(document).ready(function(e){
         }
     }
     else if(window.location.pathname.match(/[\/user\/\d\/]/g)){
-        if ((request.user.permissions.indexOf("view.rbac_user") > -1) && (request.user.permissions.indexOf("change.rbac_user") > -1)){
+        if ((user_permissions.indexOf("detail_view.rbac_user") > -1) && (user_permissions.indexOf("change.rbac_user") > -1)){
             user.image_capture_upload();
             user.set_role_in_dropdown();
             user.set_country_in_dropdown();

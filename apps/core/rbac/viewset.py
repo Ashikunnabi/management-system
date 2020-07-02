@@ -26,6 +26,7 @@ class CustomViewSet(viewsets.ModelViewSet):
 
     # defining user can see what depending on role
     def object_level_permission(self):
+        user_permissions = self.request.user.role.permission.values_list('code', flat=True)
         app_label = str(self.model._meta.app_label)
         object_class_name = str(self.model._meta.model_name)  
         app_label_class_name = app_label+ '_' + object_class_name
@@ -34,48 +35,56 @@ class CustomViewSet(viewsets.ModelViewSet):
         if app_label_class_name in ['rbac_feature']:
             if self.request.user.role.code in ['super_admin']:
                 queryset = self.model.objects.all()
-            elif self.request.user.role.code in ['admin']:
-                queryset = self.model.objects.filter(is_active=True)                
-            else:
+            elif 'list_view.rbac_feature' in user_permissions:
+                queryset = self.model.objects.filter(is_active=True)
+            elif 'self_view.rbac_feature' in user_permissions:
                 # Other users can see those features that they got permission to view
                 view_permissions = self.request.user.role.permission.filter(code__contains='view.').values_list('feature_id', flat=True)
                 queryset = self.model.objects.filter(is_active=True, permission_feature__in=view_permissions)
-        
+            else:
+                queryset = self.model.objects.none()
+   
         if app_label_class_name in ['rbac_customer']:
             if self.request.user.role.code in ['super_admin']:
                 queryset = self.model.objects.all()
-            elif self.request.user.role.code in ['admin']:
-                queryset = self.model.objects.filter(is_active=True)                
+            elif 'list_view.rbac_customer' in user_permissions:
+                queryset = self.model.objects.filter(is_active=True)
+            elif 'self_view.rbac_customer' in user_permissions:
+                queryset = self.model.objects.filter(is_active=True)
             else:
-                queryset = self.model.objects.filter(is_active=True)  # not completed yet
+                queryset = self.model.objects.none()
         
         if app_label_class_name == 'rbac_permission':
             if self.request.user.role.code in ['super_admin']:
                 queryset = self.model.objects.all()
-            elif self.request.user.role.code in ['admin']:
+            elif 'list_view.rbac_permission' in user_permissions:
                 queryset = self.model.objects.filter(is_active=True, feature__is_active=True)
-            else:
+            elif 'self_view.rbac_permission' in user_permissions:
                 queryset = self.model.objects.filter(is_active=True, id__in=self.request.user.role.permission.all())
+            else:
+                queryset = self.model.objects.none()
         
         if app_label_class_name == 'rbac_role':
             if self.request.user.role.code in ['super_admin']:
                 queryset = self.model.objects.all()
-            elif self.request.user.role.code in ['admin']:
+            elif 'list_view.rbac_role' in user_permissions:
                 queryset = self.model.objects.filter(~Q(id=1))  # admin can see all roles except role_id=1 or super_user
-            else:
+            elif 'self_view.rbac_role' in user_permissions:
                 queryset = self.model.objects.filter(id=self.request.user.role.id)
+            else:
+                queryset = self.model.objects.none()
         
         if app_label_class_name == 'rbac_user':
             if self.request.user.role.code in ['super_admin']:
                 queryset = self.model.objects.all()
-            elif self.request.user.role.code in ['admin']:
-                # admin can not see super_admin details
+            elif 'list_view.rbac_user' in user_permissions:
                 queryset = self.model.objects.filter(~Q(role_id=1))
+            elif 'self_view.rbac_user' in user_permissions:
+                queryset = self.model.objects.filter(id=self.request.user.id)
             else:
-                # Other user  can see only their personal user details
-                queryset = self.model.objects.filter(id=self.request.user.id)  
+                queryset = self.model.objects.none()
         return queryset
-        
+
         
         
         
