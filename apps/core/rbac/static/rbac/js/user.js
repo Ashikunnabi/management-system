@@ -62,7 +62,13 @@ class User {
                 }
             ],
             "lengthMenu": [ 10, 25, 50, 75, 100 ],
-            "ajax": url,
+            "ajax": {
+                    'url': url,
+                    'type': 'GET',
+                    'beforeSend': function (request) {
+                    request.setRequestHeader({ 'Authorization': 'JWT '+this.storage.getStorage('local', 'token').access });
+                    },
+            },
             "columns": [
                 { "data": "" },
                 { "data": "username" },
