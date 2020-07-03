@@ -12,6 +12,29 @@
     </div>
     <div class="navbar-content scroll-div">
       <ul class="nav pcoded-inner-navbar">
+        {% for sidebar_option in SIDEBAR_OPTIONS %}
+            {% if sidebar_option.level_1|length == 0 %}
+                <li class="nav-item  {{sidebar_option.status}}">
+                    <a href="{{sidebar_option.url}}" class="nav-link">
+                        <span class="pcoded-micon">{{sidebar_option.icon|safe}}</span>
+                        <span class="pcoded-mtext">{{sidebar_option.title}}</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="nav-item pcoded-hasmenu {{sidebar_option.status}}">
+                    <a href="#!" class="nav-link">
+                        <span class="pcoded-micon">{{sidebar_option.icon|safe}}</span>
+                        <span class="pcoded-mtext">{{sidebar_option.title}}</span>
+                    </a>
+                    <ul class="pcoded-submenu">
+                        {% for child in sidebar_option.level_1 %}
+                            <li class="{{child.status}}"><a href="{{child.url}}" class="">{{child.title}}</a></li>            
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endif %}
+        {% endfor %}
+
       <!-- <li data-username="dashboard Default Ecommerce CRM Analytics Crypto Project" class="nav-item pcoded-hasmenu active pcoded-trigger"> -->
         <!-- <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Dashboard</span></a> -->
         <!-- <ul class="pcoded-submenu"> -->
