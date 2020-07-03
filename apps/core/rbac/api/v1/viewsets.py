@@ -8,6 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from apps.core.rbac.permission import UserAccessApiBasePermission
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from apps.core.rbac.utils import *
 from apps.core.rbac.viewset import CustomViewSet
 from .serializers import *  
@@ -215,8 +216,8 @@ class TenantViewSet(CustomViewSet):
     model = Domain
  
 
-class SidebarViewSet(CustomViewSet):
-    permission_classes = [UserAccessApiBasePermission]
+class SidebarViewSet(viewsets.ModelViewSet):
+    # permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = FeatureSerializer
     queryset = Feature.objects.all()
     render_class = None
