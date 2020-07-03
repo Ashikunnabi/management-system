@@ -83,6 +83,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'src.context_processors.template_variables',           # custom
+                'apps.core.base.context_processors.left_sidebar',           # custom
             ],
         },
     },
