@@ -1,3 +1,12 @@
+// There are 6 types of user permission
+// 1. Add User 2. Edit User 3. Delete User 4. Self View User
+// 5. List View User 6. Detail View User
+// To add a new user, a role must have permission 1 & 5
+// To delete an exixting user, a role must have permission 3 & 5
+// To edit an exixting user (self), a role must have permission 2, 4 & 6
+// To edit an exixting user (list), a role must have permission 2, 5 & 6
+
+
 class User {
     constructor() {
         this._helper = new Helper();
@@ -5,19 +14,21 @@ class User {
         this.user_list_url = this._api+'user/?format=datatables';;
         this.user_add_url = '/user/add/';
         this.user_permissions = request.user.permissions;
+        this.clear_profile_picture = false;
+        this.clear_signature = false;
     }
     
     provide_permission_based_access(){
         let self = this;
-        if (!(self.user_permissions.indexOf("add.rbac_user") > -1)){
+        if (!(self.user_permissions.indexOf("add.rbac_user") > -1) || !(self.user_permissions.indexOf("list_view.rbac_user") > -1)){
             $('#add_user').remove();
         }
-    if (!(self.user_permissions.indexOf("change.rbac_user") > -1) && 
+    if (!(self.user_permissions.indexOf("detail_view.rbac_user") > -1) || !(self.user_permissions.indexOf("change.rbac_user") > -1) ||
          (!(self.user_permissions.indexOf("self_view.rbac_user") > -1) || 
           !(self.user_permissions.indexOf("list_view.rbac_user") > -1))){
             $('#edit_user').remove();
         }
-        if (!(self.user_permissions.indexOf("delete.rbac_user") > -1)){
+        if (!(self.user_permissions.indexOf("delete.rbac_user") > -1) || !(self.user_permissions.indexOf("list_view.rbac_user") > -1)){
             $('#delete_user').remove();
         }
     }
@@ -254,6 +265,20 @@ class User {
         });
     }
 	
+    clear_image(){
+        let self = this;
+        $('#profile_picture_clear').click(function(){
+            $('#profile_picture_preview').attr('src', '');
+            $('#file_profile_picture').val(null);
+            self.clear_profile_picture = true;
+        });
+        $('#signature_clear').click(function(){
+            $('#signature_preview').attr('src', '');
+            $('#file_signature').val(null);
+            self.clear_signature = true;
+        });
+    }
+    
     user_add(){
         let self = this;
 		let user_add_form = $('#user_add_form');
@@ -265,6 +290,8 @@ class User {
             }else{
 				let data = new FormData($(this)[0]);
 				if (data.has('account_status') === false) data.append('account_status', '0');
+                if (data.has('file_profile_picture')) (('#file_profile_picture').val() == null) ? data.delete('file_profile_picture') : '';
+                if (data.has('file_signature')) (('#file_signature').val() == null) ? data.delete('file_signature') : '';
 				
 				let url = self._api+'user/';
                 
@@ -315,6 +342,8 @@ class User {
                       if(key == 'country' || key == 'role') $('[name='+key+']', frm).val(value).select2();
                       else if(key == 'gender') $('[name='+key+'][value=' + value + ']', frm).attr('checked', 'checked');
                       else if(key == 'is_active') (value==true) ? $('input[name=account_status]').click() : "";
+                      else if(key == 'profile_picture') (value!=null) ? $('#profile_picture_preview').attr('src', value) : "";
+                      else if(key == 'signature') (value!=null) ? $('#signature_preview').attr('src', value) : "";
                       else $('[name='+key+']', frm).val(value);
                   });
                 }
@@ -351,6 +380,11 @@ class User {
 				let data = new FormData($(this)[0]);
 				if (data.has('account_status') === false) data.append('account_status', '0');
 				if (data.has('gender')) data.append('gender', $("input[name='gender']:checked").val());
+				if (data.has('mobile_number')) data.append('mobile_number', ($("input[name='mobile_number']").val()).replace('-', ''));
+                if (data.has('file_profile_picture')) ($("input[name='file_profile_picture']").val() == '') ? data.delete('file_profile_picture') : '';
+                if (data.has('file_signature')) ($("input[name='file_signature']").val() == '') ? data.delete('file_signature') : '';
+                self.clear_profile_picture ? data.append('file_profile_picture', null) : '';
+                self.clear_signature ? data.append('file_signature', null) : '';
 				
 				let url = self._api+'user/' + user_id + '/';
                
@@ -412,8 +446,9 @@ $(document).ready(function(e){
         }
     }
     else if(window.location.pathname == '/user/add/'){
-        if (user_permissions.indexOf("add.rbac_user") > -1){
+        if ((user_permissions.indexOf("add.rbac_user") > -1) && (user_permissions.indexOf("list_view.rbac_user") > -1)){
             user.image_capture_upload();
+            user.clear_image();
             user.set_role_in_dropdown();
             user.set_country_in_dropdown();
             user.user_add();  // rbac/user_add.html 
@@ -428,8 +463,10 @@ $(document).ready(function(e){
         }
     }
     else if(window.location.pathname.match(/[\/user\/\d\/]/g)){
-        if ((user_permissions.indexOf("detail_view.rbac_user") > -1) && (user_permissions.indexOf("change.rbac_user") > -1)){
+        if ((user_permissions.indexOf("detail_view.rbac_user") > -1) && (user_permissions.indexOf("change.rbac_user") > -1) &&         
+            ((user_permissions.indexOf("self_view.rbac_user") > -1) || (user_permissions.indexOf("list_view.rbac_user") > -1))){
             user.image_capture_upload();
+            user.clear_image();
             user.set_role_in_dropdown();
             user.set_country_in_dropdown();
             user.user_edit_form_fillup();  // rbac/user_edit.html
