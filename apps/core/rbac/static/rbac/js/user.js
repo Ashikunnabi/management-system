@@ -65,9 +65,7 @@ class User {
             "ajax": {
                     'url': url,
                     'type': 'GET',
-                    'beforeSend': function (request) {
-                    request.setRequestHeader({ 'Authorization': 'JWT '+this.storage.getStorage('local', 'token').access });
-                    },
+                    'headers': { 'Authorization': 'JWT '+self._helper.storage.getStorage('local', 'token').access },
             },
             "columns": [
                 { "data": "" },
@@ -432,7 +430,6 @@ let user = new User();
 // getting all users
 $(document).ready(function(e){    
     let user_permissions = request.user.permissions;
-    
     if(window.location.pathname == '/user/'){
         if ((user_permissions.indexOf("self_view.rbac_user") > -1) || (user_permissions.indexOf("list_view.rbac_user") > -1)){
             user.provide_permission_based_access();
