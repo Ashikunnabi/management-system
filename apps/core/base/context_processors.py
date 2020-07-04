@@ -1,47 +1,49 @@
 import json
 from django.conf import settings
-from apps.core.rbac.api.v1.viewsets import SidebarViewSet
 from apps.core.rbac.api.v1.serializers import FeatureSerializer
 from apps.core.rbac.models import Feature, Permission
 
 
 def left_sidebar(request):
-    # sidebar_options = json.dumps(SidebarViewSet.as_view({'get': 'list'})(request).data)
-            
-    user_permissions = request.user.role.permission.values_list('code', flat=True)        
-    if request.user.role.code in ['super_admin']:
-        queryset = Feature.objects.all()
-    elif 'list_view.rbac_feature' in user_permissions:
-        queryset = Feature.objects.filter(is_active=True)
-    elif 'self_view.rbac_feature' in user_permissions:
-        # Other users can see those features that they got permission to view
-        view_permissions = request.user.role.permission.filter(code__contains='view.').values_list('feature_id', flat=True)
-        queryset = Feature.objects.filter(is_active=True, permission_feature__in=view_permissions)
-    else:
-        queryset = Feature.objects.none()
-    sidebar_options = json.dumps(FeatureSerializer(queryset, many=True).data)
+    if request.user.is_authenticated:
     
-    rearranged_list = []
-    rearranged_dict = dict()
-    current_url = request.get_full_path
-    
-    for value in json.loads(sidebar_options):
-        if value["parent"] is None:
-            value["status"] = ''
-            level_1 = []
-            for v in json.loads(sidebar_options):
-                if v["parent"] == str(value["id"]):
-                    v["status"] = ''
-                    if current_url is not None and current_url == v["url"]:
-                        v["status"] = 'active'
-                        value["status"] = 'active pcoded-trigger'
-                    level_1.append(v)
-            value['level_1'] = level_1            
-            if len(value['level_1']) == 0:
-                if current_url is not None and current_url == value["url"]:
-                    value["status"] = 'active'
-            rearranged_list.append(value)
-    variables = {
-      'SIDEBAR_OPTIONS': rearranged_list
-    }
-    return variables
+        user_permissions = request.user.role.permission.values_list('code', flat=True)        
+        if request.user.role.code in ['super_admin']:
+            queryset = Feature.objects.all()
+        elif 'list_view.rbac_feature' in user_permissions:
+            queryset = Feature.objects.filter(is_active=True)
+        elif 'self_view.rbac_feature' in user_permissions:
+            # Other users can see those features that they got permission to view
+            view_permissions = request.user.role.permission.filter(code__contains='view.').values_list('feature_id', flat=True)
+            queryset = Feature.objects.filter(is_active=True, permission_feature__in=view_permissions)
+        else:
+            queryset = Feature.objects.none()
+        sidebar_options = json.dumps(FeatureSerializer(queryset.order_by('order_for_sidebar'), many=True).data)
+        
+        rearranged_list, rearranged_dict = [], dict()
+        current_url = request.get_full_path()
+        
+        for value in json.loads(sidebar_options):
+            if value["parent"] is None or value["parent"] == '':
+                value["status"] = ''
+                level_1 = []
+                for v in json.loads(sidebar_options):
+                    if v["parent"] == str(value["id"]):
+                        v["status"] = ''
+                        # print(current_url, v["url"])
+                        # if current_url is not None and current_url == v["url"]:
+                        if current_url is not None and v["url"] is not None:
+                            if v["url"] in current_url:
+                                v["status"] = 'active'
+                                value["status"] = 'active pcoded-trigger'
+                        level_1.append(v)
+                value['level_1'] = level_1            
+                if len(value['level_1']) == 0:
+                    if current_url is not None and current_url == value["url"]:
+                        value["status"] = 'active'
+                rearranged_list.append(value)
+        variables = {
+          'SIDEBAR_OPTIONS': rearranged_list
+        }
+        return variables
+    return ''

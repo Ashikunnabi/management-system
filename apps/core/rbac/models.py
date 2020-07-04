@@ -71,6 +71,7 @@ class Feature(AuditTrail):
     url = models.CharField(max_length=50, blank=True, null=True)
     parent = models.CharField(max_length=5, blank=True, null=True)
     customers = models.ManyToManyField(Customer, blank=True, related_name='feature_customers')
+    order_for_sidebar = models.FloatField(default=1111)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
