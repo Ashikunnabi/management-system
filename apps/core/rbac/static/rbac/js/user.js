@@ -294,8 +294,8 @@ class User {
             }else{
 				let data = new FormData($(this)[0]);
 				if (data.has('account_status') === false) data.append('account_status', '0');
-                if (data.has('file_profile_picture')) (('#file_profile_picture').val() == null) ? data.delete('file_profile_picture') : '';
-                if (data.has('file_signature')) (('#file_signature').val() == null) ? data.delete('file_signature') : '';
+                if (data.has('file_profile_picture')) ($("input[name='file_profile_picture']").val() == '') ? data.delete('file_profile_picture') : '';
+                if (data.has('file_signature')) ($("input[name='file_signature']").val() == '') ? data.delete('file_signature') : '';
 				
 				let url = self._api+'user/';
                 
