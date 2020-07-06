@@ -10,43 +10,53 @@
       </a>
       <a class="mobile-menu" id="mobile-collapse" href="#!"><span></span></a>
     </div>
+    
     <div class="navbar-content scroll-div">
-      <ul class="nav pcoded-inner-navbar">
-        {% for sidebar_option in SIDEBAR_OPTIONS %}
-            {% if sidebar_option.level_1|length == 0 %}
-                <li class="nav-item  {{sidebar_option.status}}">
-                    <a href="{{sidebar_option.url}}" class="nav-link">
-                        <span class="pcoded-micon">{{sidebar_option.icon|safe}}</span>
-                        <span class="pcoded-mtext">{{sidebar_option.title}}</span>
-                    </a>
-                </li>
-            {% else %}
-                <li class="nav-item pcoded-hasmenu {{sidebar_option.status}}">
-                    <a href="#!" class="nav-link">
-                        <span class="pcoded-micon">{{sidebar_option.icon|safe}}</span>
-                        <span class="pcoded-mtext">{{sidebar_option.title}}</span>
-                    </a>
-                    <ul class="pcoded-submenu">
-                        {% for child in sidebar_option.level_1 %}
-                            <li class="{{child.status}}"><a href="{{child.url}}" class="">{{child.title}}</a></li>            
+        <ul class="nav pcoded-inner-navbar">
+        
+            {% for permission in request.user.role.permission.all %}
+                {% if permission.is_active %}
+                    {% if permission.code == '_view_left_sidebar' %}
+                    
+                        {% for sidebar_option in SIDEBAR_OPTIONS %}
+                            {% if sidebar_option.level_1|length == 0 %}
+                                <li class="nav-item  {{sidebar_option.status}}">
+                                    <a href="{{sidebar_option.url}}" class="nav-link">
+                                        <span class="pcoded-micon">{{sidebar_option.icon|safe}}</span>
+                                        <span class="pcoded-mtext">{{sidebar_option.title}}</span>
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li class="nav-item pcoded-hasmenu {{sidebar_option.status}}">
+                                    <a href="#!" class="nav-link">
+                                        <span class="pcoded-micon">{{sidebar_option.icon|safe}}</span>
+                                        <span class="pcoded-mtext">{{sidebar_option.title}}</span>
+                                    </a>
+                                    <ul class="pcoded-submenu">
+                                        {% for child in sidebar_option.level_1 %}
+                                            <li class="{{child.status}}"><a href="{{child.url}}" class="">{{child.title}}</a></li>            
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                            {% endif %}
                         {% endfor %}
-                    </ul>
-                </li>
-            {% endif %}
-        {% endfor %}
 
-      <!-- <li data-username="dashboard Default Ecommerce CRM Analytics Crypto Project" class="nav-item pcoded-hasmenu active pcoded-trigger"> -->
-        <!-- <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Dashboard</span></a> -->
-        <!-- <ul class="pcoded-submenu"> -->
-        <!-- <li class="active"><a href="index.html" class="">Default</a></li> -->
-        <!-- <li class=""><a href="dashboard-ecommerce.html" class="">Ecommerce</a></li> -->
-        <!-- <li class=""><a href="dashboard-crm.html" class="">CRM</a></li> -->
-        <!-- <li class=""><a href="dashboard-analytics.html" class="">Analytics</a></li> -->
-        <!-- <li class=""><a href="dashboard-crypto.html" class="">Crypto<span class="pcoded-badge label label-danger">NEW</span></a></li> -->
-        <!-- <li class=""><a href="dashboard-project.html" class="">Project</a></li> -->
-        <!-- </ul> -->
-        <!-- </li> -->
-</ul>
+                      <!-- <li data-username="dashboard Default Ecommerce CRM Analytics Crypto Project" class="nav-item pcoded-hasmenu active pcoded-trigger"> -->
+                        <!-- <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Dashboard</span></a> -->
+                        <!-- <ul class="pcoded-submenu"> -->
+                        <!-- <li class="active"><a href="index.html" class="">Default</a></li> -->
+                        <!-- <li class=""><a href="dashboard-ecommerce.html" class="">Ecommerce</a></li> -->
+                        <!-- <li class=""><a href="dashboard-crm.html" class="">CRM</a></li> -->
+                        <!-- <li class=""><a href="dashboard-analytics.html" class="">Analytics</a></li> -->
+                        <!-- <li class=""><a href="dashboard-crypto.html" class="">Crypto<span class="pcoded-badge label label-danger">NEW</span></a></li> -->
+                        <!-- <li class=""><a href="dashboard-project.html" class="">Project</a></li> -->
+                        <!-- </ul> -->
+                        <!-- </li> -->
+                        
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </ul>
     </div>
   </div>
 </nav>

@@ -23,9 +23,10 @@ class User {
         if (!(self.user_permissions.indexOf("add.rbac_user") > -1) || !(self.user_permissions.indexOf("list_view.rbac_user") > -1)){
             $('#add_user').remove();
         }
-    if (!(self.user_permissions.indexOf("detail_view.rbac_user") > -1) || !(self.user_permissions.indexOf("change.rbac_user") > -1) ||
-         (!(self.user_permissions.indexOf("self_view.rbac_user") > -1) || 
-          !(self.user_permissions.indexOf("list_view.rbac_user") > -1))){
+        if (!(self.user_permissions.indexOf("detail_view.rbac_user") > -1) || !(self.user_permissions.indexOf("change.rbac_user") > -1)) {
+            $('#edit_user').remove();
+        }
+        if (!(self.user_permissions.indexOf("self_view.rbac_user") > -1) && !(self.user_permissions.indexOf("list_view.rbac_user") > -1)){
             $('#edit_user').remove();
         }
         if (!(self.user_permissions.indexOf("delete.rbac_user") > -1) || !(self.user_permissions.indexOf("list_view.rbac_user") > -1)){
