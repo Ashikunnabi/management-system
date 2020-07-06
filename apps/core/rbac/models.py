@@ -107,7 +107,7 @@ class User(AbstractUser):
     )
     
     middle_name = models.CharField(max_length=50, blank=True, null=True)  
-    position = models.CharField(max_length=50)
+    position = models.CharField(max_length=50, default='')
     email = models.EmailField(unique=True, null=False, blank=False)
     username = models.CharField(max_length=50, unique=True, null=False, blank=False,
                                 validators=[RegexValidator(
@@ -117,7 +117,7 @@ class User(AbstractUser):
     role = models.ForeignKey(
         Role, on_delete=models.PROTECT, null=False, blank=False, related_name='user_role', default=1)
     mobile_number = models.CharField(max_length=12)
-    gender = models.IntegerField(choices=GENDER)
+    gender = models.IntegerField(choices=GENDER, default=1)
     address = models.TextField(blank=True, null=True)
     country = models.IntegerField()
     activation_url = models.CharField(max_length=500, blank=False, default=get_activation_url)

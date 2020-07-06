@@ -154,13 +154,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">Password</label><span style="color:red">*</span>
-                                        <input type="password" class="form-control" name="password" placeholder="Password" required>
+                                        <input id="password" type="password" class="form-control" name="password" placeholder="Password" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">Confirm password</label><span style="color:red">*</span>
-                                        <input type="password" class="form-control" name="confirm_password" placeholder="Confirm password" required>
+                                        <input type="password" class="form-control" name="confirm_password" placeholder="Confirm password" data-parsley-equalto="#password" data-parsley-trigger="change" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">

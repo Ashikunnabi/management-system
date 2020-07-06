@@ -78,11 +78,13 @@ class UserSerializer(serializers.ModelSerializer):
             mobile_number = validated_data.get('mobile_number'),
             gender = validated_data.get('gender'),
             address = validated_data.get('address'),
-            is_active = int(validated_data.get('account_status', 0)),
-            country = validated_data.get('country'),
-            profile_picture = self.context['request'].data['file_profile_picture'],
-            signature = self.context['request'].data['file_signature']        
+            is_active = int(self.context['request'].data.get('account_status', 0)),
+            country = validated_data.get('country'),       
         )
+        if self.context['request'].data.get('file_profile_picture') is not None:
+            user.profile_picture = self.context['request'].data['file_profile_picture']
+        if self.context['request'].data.get('file_signature') is not None:
+            user.signature = self.context['request'].data['file_signature'] 
         user.set_password(validated_data.get('password'))
         user.save()
         return user
