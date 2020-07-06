@@ -432,6 +432,7 @@ $(document).ready(function(e){
     let user_permissions = request.user.permissions;
     if(window.location.pathname == '/user/'){
         if ((user_permissions.indexOf("self_view.rbac_user") > -1) || (user_permissions.indexOf("list_view.rbac_user") > -1)){
+            $('.main-body').css('display', 'block');  // do display block as user has permission to view
             user.provide_permission_based_access();
             user.user_list();
             user.user_list_row_select();
@@ -450,6 +451,7 @@ $(document).ready(function(e){
     }
     else if(window.location.pathname == '/user/add/'){
         if ((user_permissions.indexOf("add.rbac_user") > -1) && (user_permissions.indexOf("list_view.rbac_user") > -1)){
+            $('.main-body').css('display', 'block');  // do display block as user has permission to view
             user.image_capture_upload();
             user.clear_image();
             user.set_role_in_dropdown();
@@ -468,6 +470,7 @@ $(document).ready(function(e){
     else if(window.location.pathname.match(/[\/user\/\d\/]/g)){
         if ((user_permissions.indexOf("detail_view.rbac_user") > -1) && (user_permissions.indexOf("change.rbac_user") > -1) &&         
             ((user_permissions.indexOf("self_view.rbac_user") > -1) || (user_permissions.indexOf("list_view.rbac_user") > -1))){
+            $('.main-body').css('display', 'block');  // do display block as user has permission to view
             user.image_capture_upload();
             user.clear_image();
             user.set_role_in_dropdown();
