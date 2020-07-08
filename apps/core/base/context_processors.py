@@ -1,6 +1,6 @@
 import json
 from django.conf import settings
-from apps.core.rbac.api.v1.serializers import FeatureSerializer
+from apps.core.rbac.api.v1.serializers import FeatureSerializer, PermissionSerializer
 from apps.core.rbac.models import Feature, Permission
 
 

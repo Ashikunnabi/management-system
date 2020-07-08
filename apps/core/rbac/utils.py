@@ -33,7 +33,7 @@ def get_user_browser_details(request):
     return request.headers.get('User-Agent')
             
 
-def send_email(request, mobile_number, message): 
+def send_sms(request, mobile_number, message): 
     """
         Send sms to specific phone number
 

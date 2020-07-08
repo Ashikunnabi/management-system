@@ -1,0 +1,202 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block css %}
+<style>
+    .image_preview {
+        width: 192px;
+        height: 192px;
+        border: 1px solid black;
+        display: block;
+        margin: 0 auto;
+    }
+    .image_capture_buttons {
+        margin-top: 5px;
+    }
+    .parsley-errors-list {
+        color:red;
+    }
+    .main-body{
+        display:none;
+    }
+</style>
+{% endblock %}
+{% block content %}
+<div class="main-body">
+    <div class="page-wrapper">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Edit existing user</h5>
+                    </div>
+                    <div class="card-block">
+                        <form id="user_edit_form" action="" method="patch" enctype="multipart/form-data" data-parsley-validate="" autocomplete="off">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="form-label">First Name</label><span style="color:red">*</span>
+                                                <input type="text" class="form-control" name="first_name" placeholder="First name" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Middle Name</label>
+                                                <input type="text" class="form-control" name="middle_name" placeholder="Last name">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Last Name</label>
+                                                <input type="text" class="form-control" name="last_name" placeholder="Last name">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-label">Profile picture</label>
+                                        <div class="text-center">
+                                            <img id="profile_picture_preview" class="image_preview"/>
+                                            <input type="file" class="validation-file" id="file_profile_picture" name="file_profile_picture" accept="image/*" hidden>
+                                            <div class="image_capture_buttons">
+                                                <button type="button" id="profile_picture_upload" class="btn btn-icon btn-outline-primary" data-toggle="tooltip" data-placement="bottom" title="Upload profile picture"><i class="feather icon-upload"></i></button>
+                                                <button type="button" id="profile_picture_capture" class="btn btn-icon btn-outline-secondary md-trigger" data-modal="modal-3" data-toggle="tooltip" data-placement="bottom" title="Capture profile picture"><i class="feather icon-camera"></i></button>
+                                                <button type="button" id="profile_picture_clear" class="btn btn-icon btn-outline-warning" data-toggle="tooltip" data-placement="bottom" title="Clear picture"><i class="feather icon-delete"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-label">Signature</label>
+                                        <div class="text-center">
+                                            <img id="signature_preview" class="image_preview" />
+                                            <input type="file" class="validation-file" id="file_signature" name="file_signature" accept="image/*" hidden>
+                                            <div class="image_capture_buttons">
+                                                <button type="button" id="signature_upload" class="btn btn-icon btn-outline-primary" data-toggle="tooltip" data-placement="bottom" title="Upload signature"><i class="feather icon-upload"></i></button>
+                                                <button type="button" id="signature_capture" class="btn btn-icon btn-outline-secondary md-trigger" data-modal="modal-3"" data-toggle="tooltip" data-placement="bottom" title="Capture signature"><i class="feather icon-camera"></i></button>
+                                                <button type="button" id="signature_clear" class="btn btn-icon btn-outline-warning" data-toggle="tooltip" data-placement="bottom" title="Clear signature"><i class="feather icon-delete"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+									<div class="form-group">
+										<label class="form-label">Username</label><span style="color:red">*</span>
+										<input type="text" class="form-control" name="username" placeholder="Username" required>
+									</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Email Address</label><span style="color:red">*</span>
+                                        <input type="email" class="form-control" name="email" placeholder="Email address" data-parsley-trigger="change" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Mobile Number</label><span style="color:red">*</span>
+                                        <input type="text" class="form-control mob_no" name="mobile_number" data-mask="9999-999-999"placeholder="Mobile number" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label mb-4">Gender</label><span style="color:red">*</span></br>
+                                        <div class="form-group d-inline">
+                                            <div class="radio radio-primary d-inline">
+                                                <input type="radio" name="gender" value="1" id="radio-p-fill-5" checked>
+                                                <label for="radio-p-fill-5" class="cr">Male</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group d-inline">
+                                            <div class="radio radio-primary d-inline">
+                                                <input type="radio" name="gender" value="2" id="radio-p-fill-6">
+                                                <label for="radio-p-fill-6" class="cr">Female</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group d-inline">
+                                            <div class="radio radio-primary d-inline">
+                                                <input type="radio" name="gender" value="3" id="radio-p-fill-7">
+                                                <label for="radio-p-fill-7" class="cr">Other</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Address</label>
+                                        <textarea class="form-control" name="address"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Country</label><span style="color:red">*</span>
+                                        <select class="form-control" id="country" name="country" required>
+                                            <option value hidden>Select Country</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Position</label><span style="color:red">*</span>
+                                        <input type="text" class="form-control" name="position" placeholder="Position" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Role</label><span style="color:red">*</span>
+                                        <select class="form-control" id="role" name="role" required>
+                                            <option value hidden>Select Role</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Password</label><span style="color:red">*</span>
+                                        <input type="password" id="password" class="form-control" name="password" placeholder="Password" autocomplete="off" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Confirm password</label><span style="color:red">*</span>
+                                        <input type="password" class="form-control" name="confirm_password" placeholder="Confirm password" data-parsley-equalto="#password" data-parsley-trigger="change" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Account Status</label></br>
+                                        <div class="switch d-inline m-r-10">
+                                            <span>Inactive</span>
+                                            <input type="checkbox" class="switcher-input" name="account_status" value="1" id="switch-1">
+                                            <label for="switch-1" class="cr"></label>
+                                            <span>Active</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button id="user_add_submit_button" type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>            
+            </div>
+        </div>
+    </div>
+                        {% include 'rbac/image_capture_modal.html' %}
+</div>
+
+{% endblock %}
+{% block js %}
+    <script>let user_id = {{ id }}; </script>
+	<script src="{% static 'base/plugins/inputmask/js/inputmask.min.js' %}"></script>
+	<script src="{% static 'base/plugins/inputmask/js/jquery.inputmask.min.js' %}"></script>
+	<script src="{% static 'base/plugins/inputmask/js/autoNumeric.js' %}"></script>
+	<script src="{% static 'base/js/pages/form-masking-custom.js' %}"></script>
+	<script src="{% static 'rbac/js/image_capture.js' %}"></script>
+	<script src="{% static 'rbac/js/image_upload_and_preview.js' %}"></script>
+	<script src="{% static 'rbac/js/country_list.js' %}"></script>
+	<script src="{% static 'rbac/js/permission.js' %}"></script>
+{% endblock %}

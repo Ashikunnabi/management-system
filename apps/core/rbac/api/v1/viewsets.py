@@ -217,7 +217,7 @@ class TenantViewSet(CustomViewSet):
  
 
 class SidebarViewSet(viewsets.ModelViewSet):
-    # permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [UserAccessApiBasePermission]
     serializer_class = FeatureSerializer
     queryset = Feature.objects.all()
     render_class = None
