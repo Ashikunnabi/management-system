@@ -1,8 +1,10 @@
+# use below steps started with number if you are going to setup this sytem in a new server
+
 # Generate migration scripts (If model changed)
 python manage.py makemigrations
 
 # Apply migrations to all schemas 
-python manage.py migrate_schemas --shared
+1. python manage.py migrate_schemas --shared
 
 # Apply migrations to specific schemas 
 python manage.py migrate_schemas --schema=schema_name
@@ -12,10 +14,10 @@ python manage.py tenant_command loaddata --schema=schema_name import_sql/bootup.
 
 
 #  create new user and adding new domain for the user. 
-from apps.core.rbac.models import Customer, Domain
+2. from apps.core.rbac.models import Customer, Domain
 
 # create your public tenant
-tenant = Customer(schema_name='public',
+3. tenant = Customer(schema_name='public',
                 	name='Name',
                 	address="Customer address",
                 	status=1,
@@ -23,10 +25,15 @@ tenant = Customer(schema_name='public',
 tenant.save()
 
 # Add one or more domains for the tenant
-domain = Domain(domain = "localhost",
-		sub_domain='localhost',
-		customer=tenant,
+4. domain = Domain(domain = "localhost",
 		tenant = tenant,
 		is_primary = True,
 		)
 domain.save()
+
+# load configuration to db
+5. python manage.py tenant_command loaddata --schema=public import_sql/feature.json
+python manage.py tenant_command loaddata --schema=public import_sql/permission.json
+python manage.py tenant_command loaddata --schema=public import_sql/role.json
+python manage.py tenant_command loaddata --schema=public import_sql/user.json
+

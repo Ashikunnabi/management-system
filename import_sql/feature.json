@@ -50,9 +50,7 @@
       "parent": "1",
       "order_for_sidebar": 2.2,
       "is_active": true,
-      "customers": [
-        9
-      ]
+      "customers": []
     }
   },
   {
