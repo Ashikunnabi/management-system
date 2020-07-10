@@ -1,0 +1,184 @@
+[
+  {
+    "model": "rbac.feature",
+    "pk": 1,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-10T03:36:59.842Z",
+      "title": "User Management",
+      "icon": "<i class=\"fas fa-users-cog\"></i>",
+      "code": "user_management",
+      "url": null,
+      "parent": null,
+      "order_for_sidebar": 2,
+      "is_active": true,
+      "customers": []
+    }
+  },
+  {
+    "model": "rbac.feature",
+    "pk": 2,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-04T03:07:45.356Z",
+      "title": "User",
+      "icon": null,
+      "code": "user",
+      "url": "/user/",
+      "parent": "1",
+      "order_for_sidebar": 2.4,
+      "is_active": true,
+      "customers": []
+    }
+  },
+  {
+    "model": "rbac.feature",
+    "pk": 3,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-10T03:41:23.184Z",
+      "title": "Role",
+      "icon": null,
+      "code": "role",
+      "url": null,
+      "parent": "1",
+      "order_for_sidebar": 2.2,
+      "is_active": true,
+      "customers": [
+        9
+      ]
+    }
+  },
+  {
+    "model": "rbac.feature",
+    "pk": 4,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-05-08T02:37:31.867Z",
+      "updated_at": "2020-07-08T14:06:34.838Z",
+      "title": "Permission",
+      "icon": null,
+      "code": "permission",
+      "url": "/permission/",
+      "parent": "1",
+      "order_for_sidebar": 2.1,
+      "is_active": true,
+      "customers": []
+    }
+  },
+  {
+    "model": "rbac.feature",
+    "pk": 8,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-05-09T13:01:58.368Z",
+      "updated_at": "2020-05-09T13:21:36.339Z",
+      "title": "Customer",
+      "icon": null,
+      "code": "customer",
+      "url": null,
+      "parent": "9",
+      "order_for_sidebar": 1111,
+      "is_active": true,
+      "customers": []
+    }
+  },
+  {
+    "model": "rbac.feature",
+    "pk": 9,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-05-09T13:14:54.781Z",
+      "updated_at": "2020-07-04T03:08:04.797Z",
+      "title": "Tenant",
+      "icon": "<i class=\"fas fa-handshake\"></i>",
+      "code": "tenant",
+      "url": null,
+      "parent": null,
+      "order_for_sidebar": 3,
+      "is_active": true,
+      "customers": []
+    }
+  },
+  {
+    "model": "rbac.feature",
+    "pk": 10,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-05-09T13:15:17.965Z",
+      "updated_at": "2020-05-09T13:20:57.308Z",
+      "title": "Domain",
+      "icon": null,
+      "code": "domain",
+      "url": null,
+      "parent": "9",
+      "order_for_sidebar": 1111,
+      "is_active": true,
+      "customers": []
+    }
+  },
+  {
+    "model": "rbac.feature",
+    "pk": 11,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-05-09T13:24:39.716Z",
+      "updated_at": "2020-05-09T13:24:39.716Z",
+      "title": "Feature",
+      "icon": null,
+      "code": "feature",
+      "url": null,
+      "parent": "9",
+      "order_for_sidebar": 1111,
+      "is_active": true,
+      "customers": []
+    }
+  },
+  {
+    "model": "rbac.feature",
+    "pk": 12,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-05-09T16:01:55.128Z",
+      "updated_at": "2020-07-04T03:07:30.854Z",
+      "title": "Group",
+      "icon": null,
+      "code": "group",
+      "url": null,
+      "parent": "1",
+      "order_for_sidebar": 2.3,
+      "is_active": true,
+      "customers": []
+    }
+  },
+  {
+    "model": "rbac.feature",
+    "pk": 13,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-07-03T12:22:17.505Z",
+      "updated_at": "2020-07-04T03:09:57.333Z",
+      "title": "Dashboard",
+      "icon": "<i class=\"feather icon-home\"></i>",
+      "code": "dashboard",
+      "url": "/",
+      "parent": null,
+      "order_for_sidebar": 1,
+      "is_active": true,
+      "customers": []
+    }
+  }
+]

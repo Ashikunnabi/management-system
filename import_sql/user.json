@@ -1,0 +1,36 @@
+[
+  {
+    "model": "rbac.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$180000$2afR5A5rOlWZ$DOqvGVhN1KW5frffJ4kk8LRa/bnG72nghxp068k9Xms=",
+      "last_login": "2020-07-10T02:54:42.612Z",
+      "is_superuser": true,
+      "first_name": "Super",
+      "last_name": "Admin",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2020-04-22T14:17:08Z",
+      "middle_name": null,
+      "position": "Executive",
+      "email": "admin@admin.com",
+      "username": "admin",
+      "role": 1,
+      "mobile_number": "1",
+      "gender": 1,
+      "address": null,
+      "country": 1,
+      "activation_url": "06f9f80fe2ecbb477bee240cbd35a0df",
+      "profile_picture": "",
+      "signature": "",
+      "initial": true,
+      "need_to_change_password": false,
+      "password_updated_at": null,
+      "is_locked": false,
+      "locked_at": null,
+      "unsuccessful_attempt": 0,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+]

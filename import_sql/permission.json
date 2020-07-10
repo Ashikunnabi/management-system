@@ -1,0 +1,534 @@
+[
+  {
+    "model": "rbac.permission",
+    "pk": 2,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-10T02:53:53.096Z",
+      "name": "Add User",
+      "code": "add.rbac_user",
+      "is_active": true,
+      "feature": 2
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 3,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-05-09T17:45:20.082Z",
+      "name": "Edit User",
+      "code": "change.rbac_user",
+      "is_active": true,
+      "feature": 2
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 4,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-06-27T12:39:26.062Z",
+      "name": "Delete User",
+      "code": "delete.rbac_user",
+      "is_active": true,
+      "feature": 2
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 5,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-06T13:47:47.967Z",
+      "name": "Self View Role",
+      "code": "self_view.rbac_role",
+      "is_active": true,
+      "feature": 3
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 6,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-10T02:53:35.463Z",
+      "name": "Add Role",
+      "code": "add.rbac_role",
+      "is_active": true,
+      "feature": 3
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 7,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-10T02:53:27.525Z",
+      "name": "Edit Role",
+      "code": "change.rbac_role",
+      "is_active": true,
+      "feature": 3
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 8,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-10T02:53:19.707Z",
+      "name": "Delete Role",
+      "code": "delete.rbac_role",
+      "is_active": true,
+      "feature": 3
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 9,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-06T13:50:00.100Z",
+      "name": "Self View Permission",
+      "code": "self_view.rbac_permission",
+      "is_active": true,
+      "feature": 4
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 10,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-10T02:53:06.947Z",
+      "name": "Add Permission",
+      "code": "add.rbac_permission",
+      "is_active": true,
+      "feature": 4
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 11,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-08T14:37:03.832Z",
+      "name": "Edit Permission",
+      "code": "change.rbac_permission",
+      "is_active": true,
+      "feature": 4
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 12,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-08T14:37:36.754Z",
+      "name": "Delete Permission",
+      "code": "delete.rbac_permission",
+      "is_active": true,
+      "feature": 4
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 13,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-08T17:59:16.735Z",
+      "name": "Self View Customer",
+      "code": "self_view.rbac_customer",
+      "is_active": true,
+      "feature": 8
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 14,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-10T02:52:48.153Z",
+      "name": "Add Customer",
+      "code": "add.rbac_customer",
+      "is_active": true,
+      "feature": 8
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 15,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-10T02:52:39.743Z",
+      "name": "Edit Customer",
+      "code": "change.rbac_customer",
+      "is_active": true,
+      "feature": 8
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 16,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-10T02:52:33.220Z",
+      "name": "Delete Customer",
+      "code": "delete.rbac_customer",
+      "is_active": true,
+      "feature": 8
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 17,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-08T17:56:57.839Z",
+      "name": "Self View Feature",
+      "code": "self_view.rbac_feature",
+      "is_active": true,
+      "feature": 11
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 18,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-10T02:51:17.864Z",
+      "name": "Add Feature",
+      "code": "add.rbac_feature",
+      "is_active": true,
+      "feature": 11
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 19,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-10T03:00:32.874Z",
+      "name": "Edit Feature",
+      "code": "change.rbac_feature",
+      "is_active": true,
+      "feature": 11
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 20,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-10T03:00:45.161Z",
+      "name": "Delete Feature",
+      "code": "delete.rbac_feature",
+      "is_active": true,
+      "feature": 11
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 21,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-08T18:02:13.380Z",
+      "name": "Self View Domain",
+      "code": "self_view.rbac_domain",
+      "is_active": true,
+      "feature": 10
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 22,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-07-02T13:15:57.886Z",
+      "updated_at": "2020-07-02T13:15:57.886Z",
+      "name": "Detail View User",
+      "code": "detail_view.rbac_user",
+      "is_active": true,
+      "feature": 2
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 23,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-07-02T13:16:26.779Z",
+      "updated_at": "2020-07-06T14:13:46.155Z",
+      "name": "List View User",
+      "code": "list_view.rbac_user",
+      "is_active": true,
+      "feature": 2
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 24,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-07-02T13:21:04.898Z",
+      "updated_at": "2020-07-09T18:52:21.123Z",
+      "name": "Self View User",
+      "code": "self_view.rbac_user",
+      "is_active": true,
+      "feature": 2
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 25,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-07-06T13:48:46.506Z",
+      "updated_at": "2020-07-06T13:48:46.506Z",
+      "name": "List View Role",
+      "code": "list_view.rbac_role",
+      "is_active": true,
+      "feature": 3
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 26,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-07-06T13:49:04.689Z",
+      "updated_at": "2020-07-06T13:49:04.689Z",
+      "name": "Detail View Role",
+      "code": "detail_view.rbac_role",
+      "is_active": true,
+      "feature": 3
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 27,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-07-06T13:50:25.070Z",
+      "updated_at": "2020-07-06T13:50:25.070Z",
+      "name": "List View Permission",
+      "code": "list_view.rbac_permission",
+      "is_active": true,
+      "feature": 4
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 28,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-07-06T13:50:44.595Z",
+      "updated_at": "2020-07-06T13:50:44.595Z",
+      "name": "Detail View Permission",
+      "code": "detail_view.rbac_permission",
+      "is_active": true,
+      "feature": 4
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 29,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-07-06T14:18:02.997Z",
+      "updated_at": "2020-07-06T14:18:02.997Z",
+      "name": "View Left Sidebar",
+      "code": "_view_left_sidebar",
+      "is_active": true,
+      "feature": 13
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 30,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-07-08T17:57:30.775Z",
+      "updated_at": "2020-07-08T17:57:30.775Z",
+      "name": "Detail View Feature",
+      "code": "detail_view.rbac_feature",
+      "is_active": true,
+      "feature": 11
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 31,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-07-08T17:57:53.272Z",
+      "updated_at": "2020-07-08T17:57:53.272Z",
+      "name": "List View Feature",
+      "code": "list_view.rbac_feature",
+      "is_active": true,
+      "feature": 11
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 32,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-07-08T17:59:46.585Z",
+      "updated_at": "2020-07-08T17:59:46.585Z",
+      "name": "Detail View Customer",
+      "code": "detail_view.rbac_customer",
+      "is_active": true,
+      "feature": 8
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 33,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-07-08T18:00:11.948Z",
+      "updated_at": "2020-07-08T18:00:11.948Z",
+      "name": "List View Customer",
+      "code": "list_view.rbac_customer",
+      "is_active": true,
+      "feature": 8
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 34,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-07-08T18:02:36.370Z",
+      "updated_at": "2020-07-08T18:02:36.370Z",
+      "name": "Detail View Domain",
+      "code": "detail_view.rbac_domain",
+      "is_active": true,
+      "feature": 10
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 35,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-07-08T18:03:16.447Z",
+      "updated_at": "2020-07-08T18:03:16.447Z",
+      "name": "List View Domain",
+      "code": "list_view.rbac_domain",
+      "is_active": true,
+      "feature": 10
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 36,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-07-08T18:03:48.878Z",
+      "updated_at": "2020-07-08T18:03:48.878Z",
+      "name": "Add Domain",
+      "code": "add.rbac_domain",
+      "is_active": true,
+      "feature": 10
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 37,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-07-08T18:04:10.712Z",
+      "updated_at": "2020-07-08T18:05:01.766Z",
+      "name": "Edit Domain",
+      "code": "change.rbac_domain",
+      "is_active": true,
+      "feature": 10
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 38,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-07-08T18:04:45.071Z",
+      "updated_at": "2020-07-08T18:05:17.945Z",
+      "name": "Delete Domain",
+      "code": "delete.rbac_domain",
+      "is_active": true,
+      "feature": 10
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 39,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-07-10T03:06:04.694Z",
+      "updated_at": "2020-07-10T03:38:58.791Z",
+      "name": "View Sidebar User Management",
+      "code": "_view_sidebar_user_management",
+      "is_active": true,
+      "feature": 1
+    }
+  }
+]

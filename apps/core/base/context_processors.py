@@ -10,16 +10,12 @@ def left_sidebar(request):
         user_permissions = request.user.role.permission.values_list('code', flat=True)        
         if request.user.role.code in ['super_admin']:
             queryset = Feature.objects.all()
-        elif 'list_view.rbac_feature' in user_permissions:
-            queryset = Feature.objects.filter(is_active=True)
-        elif 'self_view.rbac_feature' in user_permissions:
-            # Other users can see those features that they got permission to view
-            view_permissions = request.user.role.permission.filter(code__contains='view.').values_list('feature_id', flat=True)
-            queryset = Feature.objects.filter(is_active=True, permission_feature__in=view_permissions)
         else:
-            queryset = Feature.objects.none()
+            view_permissions = list(set(request.user.role.permission.filter(is_active=True, code__contains='view').values_list('feature_id', flat=True)))
+            queryset = Feature.objects.filter(is_active=True, id__in=view_permissions)
+            
         sidebar_options = json.dumps(FeatureSerializer(queryset.order_by('order_for_sidebar'), many=True).data)
-        
+
         rearranged_list, rearranged_dict = [], dict()
         current_url = request.get_full_path()
         
@@ -42,6 +38,7 @@ def left_sidebar(request):
                     if current_url is not None and current_url == value["url"]:
                         value["status"] = 'active'
                 rearranged_list.append(value)
+        print(sidebar_options)
         variables = {
           'SIDEBAR_OPTIONS': rearranged_list
         }
