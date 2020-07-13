@@ -50,7 +50,6 @@ class PermissionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Permission
         fields = '__all__'
-        depth = 1
 
 
 class RoleSerializer(serializers.ModelSerializer):

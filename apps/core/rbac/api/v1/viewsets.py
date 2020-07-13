@@ -232,13 +232,11 @@ class FeatureViewSet(CustomViewSet):
     model = Feature
 
     
-    
 class PermissionViewSet(CustomViewSet):
     permission_classes = [UserAccessApiBasePermission]
     serializer_class = PermissionSerializer
     queryset = Permission.objects.all()
     model = Permission
- 
 
 
 class RoleViewSet(CustomViewSet):
@@ -289,4 +287,3 @@ class UserViewSet(CustomViewSet):
 
 
 
-    

@@ -38,7 +38,6 @@ def left_sidebar(request):
                     if current_url is not None and current_url == value["url"]:
                         value["status"] = 'active'
                 rearranged_list.append(value)
-        print(sidebar_options)
         variables = {
           'SIDEBAR_OPTIONS': rearranged_list
         }

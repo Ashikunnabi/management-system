@@ -45,7 +45,6 @@ class User {
             "bDestroy": true,
             "bJQueryUI": true,
             // "dom": '<"mb-3"B>flrtip',
-            "searchPanes":true,            
             "searchPanes":{
                 layout: 'columns-4'
             },
@@ -67,6 +66,15 @@ class User {
                     'url': url,
                     'type': 'GET',
                     'headers': { 'Authorization': 'JWT '+self._helper.storage.getStorage('local', 'token').access },
+                    'error': function (x, status, error) {
+                        if (x.status == 401) {
+                            if (error === "Unauthorized"){
+                                $(document).ajaxComplete($.unblockUI);
+                                alert("Sorry, your session has expired. Please login again to continue");
+                                window.location.href ="/logout/";
+                            }
+                        }
+                    },
             },
             "columns": [
                 { "data": "" },
@@ -491,4 +499,3 @@ $(document).ready(function(e){
 });
 
 
-	

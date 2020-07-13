@@ -3,7 +3,6 @@ from django.contrib.auth import logout as auth_logout
 from django.conf import settings
 
 
-
 def registration(request):
     return render(request, 'rbac/registration.html')
 
@@ -37,7 +36,7 @@ def permission_add(request):
     
     
 def permission_edit(request, id):
-    return render(request, 'rbac/permission_edit.html', context={'id':id})
+    return render(request, 'rbac/permission_edit.html', context={'id': id})
     
     
 def role(request):
@@ -53,7 +52,7 @@ def user_add(request):
     
     
 def user_edit(request, id):
-    return render(request, 'rbac/user_edit.html', context={'id':id})
+    return render(request, 'rbac/user_edit.html', context={'id': id})
     
     
 def customer(request):

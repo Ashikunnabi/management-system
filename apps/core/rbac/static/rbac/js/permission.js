@@ -37,6 +37,8 @@ class Permission {
     permission_list(){
         let self = this;
         let url = self.permission_list_url;
+        // calling self.set_feature_in_dropdown() method for features that will store in session storage
+        self.set_feature_in_dropdown();
         self._helper.blockUI();
         $(document).ajaxStop($.unblockUI);
         let table = $('#permission_table').DataTable({
@@ -45,7 +47,6 @@ class Permission {
             "bDestroy": true,
             "bJQueryUI": true,
             // "dom": '<"mb-3"B>flrtip',
-            "searchPanes":true,            
             "searchPanes":{
                 layout: 'columns-4'
             },
@@ -64,9 +65,18 @@ class Permission {
             ],
             "lengthMenu": [ 10, 25, 50, 75, 100 ],
             "ajax": {
-                    'url': url,
-                    'type': 'GET',
-                    'headers': { 'Authorization': 'JWT '+self._helper.storage.getStorage('local', 'token').access },
+                'url': url,
+                'type': 'GET',
+                'headers': { 'Authorization': 'JWT '+self._helper.storage.getStorage('local', 'token').access },
+                'error': function (x, status, error) {
+                    if (x.status == 401) {
+                        if (error === "Unauthorized"){
+                            $(document).ajaxComplete($.unblockUI);
+                            alert("Sorry, your session has expired. Please login again to continue");
+                            window.location.href ="/logout/";
+                        }
+                    }
+                },
             },
             "columns": [
                 { "data": "" },
@@ -99,8 +109,10 @@ class Permission {
                     "targets": [ 2 ],
                     "visible": true,
                     "searchable": true,
-                    "render": function (data, type, row, meta) { 
-                        return data.title;
+                    "render": function (data, type, row, meta) {
+                        let title = '';
+                        $.map(self._helper._storage.getStorage('session', 'feature'), function(v, i){if(v.id==data) title = v.text});
+                        return title;
                     },
                 },
                 {
@@ -199,24 +211,26 @@ class Permission {
             }
         });
     }
-    
-    set_feature_in_dropdown(){        
+
+    set_feature_in_dropdown(){
         let self = this;
-        let url = self._api + 'feature/?format=json';
-        let feature_dropdown = $('#feature');        
-        
+        let url = self._api + 'feature/?format=datatables';
+        let feature_dropdown = $('#feature');
+
         var promise = this._helper.httpRequest(url);
         promise.done(function (response) {
             let data = [];
-            $.each(response.results, function(i, v){
+            $.each(response.data, function(i, v){
                 data.push({
                     id: v.id,
-                    text: v.name,
+                    text: v.title,
                 });
             });
-            role_dropdown.select2({
+            feature_dropdown.select2({
                 data: data
             });
+            // storing features in session storage for further use
+            self._helper._storage.saveStorage('session', 'feature', data);
         });
         promise.fail(function (response) {
             alert(response.responseJSON.detail);
@@ -233,7 +247,7 @@ class Permission {
                 // Invalid Form Data
             }else{
 				let data = new FormData($(this)[0]);
-				if (data.has('account_status') === false) data.append('account_status', '0');
+				if (data.has('is_active') === false) data.append('is_active', '0');
 				
 				let url = self._api+'permission/';
                 
@@ -318,7 +332,7 @@ class Permission {
             }else{
 				let data = new FormData($(this)[0]);
 				if (data.has('is_active') === false) data.append('is_active', '0');
-				
+
 				let url = self._api+'permission/' + permission_id + '/';
                
                 self._helper.blockUI();
@@ -413,4 +427,3 @@ $(document).ready(function(e){
 });
 
 
-	
