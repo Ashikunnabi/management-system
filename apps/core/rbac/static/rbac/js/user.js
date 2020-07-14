@@ -281,12 +281,12 @@ class User {
     clear_image(){
         let self = this;
         $('#profile_picture_clear').click(function(){
-            $('#profile_picture_preview').attr('src', '');
+            $('#profile_picture_preview').removeAttr('src');
             $('#file_profile_picture').val(null);
             self.clear_profile_picture = true;
         });
         $('#signature_clear').click(function(){
-            $('#signature_preview').attr('src', '');
+            $('#signature_preview').removeAttr('src');
             $('#file_signature').val(null);
             self.clear_signature = true;
         });

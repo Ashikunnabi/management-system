@@ -105,8 +105,14 @@ class UserSerializer(serializers.ModelSerializer):
         if 'password' in validated_data:
             instance.set_password(validated_data.get('password'))
         if self.context['request'].data.get('file_profile_picture') is not None:
-            instance.profile_picture = self.context['request'].data['file_profile_picture']
+            if self.context['request'].data.get('file_profile_picture') == 'null':
+                instance.profile_picture = None
+            else:
+                instance.profile_picture = self.context['request'].data['file_profile_picture']
         if self.context['request'].data.get('file_signature') is not None:
-            instance.signature = self.context['request'].data['file_signature']
+            if self.context['request'].data.get('file_signature') == 'null':
+                instance.signature = None
+            else:
+                instance.signature = self.context['request'].data['file_signature']
         instance.save()
         return instance
