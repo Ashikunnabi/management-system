@@ -1,107 +1,55 @@
 {% extends "base/base.html" %}
 {% load static %}
 
+{% block css %}
+<style>
+    .selected {
+        background: antiquewhite !important;
+        font-weight: bold;
+    }
+    tbody>tr.selected>.sorting_1 {
+        background-color: #ffd8a4 !important;
+    }
+    .main-body{
+        display:none;
+    }
+</style>
+{% endblock %}
 {% block content %}
 <div class="main-body">
-<div class="page-wrapper">
-
-<div class="row">
-
-<div class="col-sm-12">
-<div class="card">
-<div class="card-header">
-<h5>Role</h5>
+    <div class="page-wrapper">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Role</h5>
+                        <div style="float:right">
+                            <button type="button" id="add_role" class="btn btn-icon btn-rounded btn-outline-success" data-toggle="tooltip" data-placement="top" title="Add New role"><i class="feather icon-plus"></i></button>
+                            <button type="button" id="edit_role" class="btn btn-icon btn-rounded btn-outline-warning disabled"data-toggle="tooltip" data-placement="top" title="Edit selected role"><i class="feather icon-edit"></i></button>
+                            <button type="button" id="delete_role" class="btn btn-icon btn-rounded btn-outline-danger disabled sweet-multiple" data-toggle="tooltip" data-placement="top" title="Delete selected role"><i class="feather icon-trash-2"></i></button>
+                        </div>
+                    </div>
+                    <div class="card-block">
+                        <div class="table-responsive">
+                            <div id="key-act-button_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                                <table id="role_table" class="display table nowrap table-hover dataTable" style="width: 100%;" role="grid" aria-describedby="key-act-button_info">
+                                    <thead>
+                                        <tr>
+                                            <th>SL</th>
+                                            <th>Name</th>
+                                            <th>Role Status</th>
+                                        </tr>
+                                    </thead>                                    
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<div class="card-block">
-<p></p>
-<div class="table-responsive">
-<div id="key-act-button_wrapper" class="dataTables_wrapper dt-bootstrap4"><div class="dt-buttons btn-group">      <button class="btn btn-secondary buttons-copy buttons-html5" tabindex="0" aria-controls="key-act-button" type="button"><span>Copy</span></button> <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0" aria-controls="key-act-button" type="button"><span>Excel</span></button> <button class="btn btn-secondary buttons-csv buttons-html5" tabindex="0" aria-controls="key-act-button" type="button"><span>CSV</span></button> <button class="btn btn-secondary buttons-pdf buttons-html5" tabindex="0" aria-controls="key-act-button" type="button"><span>PDF</span></button> </div><div id="key-act-button_filter" class="dataTables_filter"><label>Search:<input type="search" class="form-control form-control-sm" placeholder="" aria-controls="key-act-button"></label></div><table id="key-act-button" class="display table nowrap table-striped table-hover dataTable" style="width: 100%;" role="grid" aria-describedby="key-act-button_info">
-<thead>
-<tr role="row"><th class="sorting_asc" tabindex="0" aria-controls="key-act-button" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 177px;">Name</th><th class="sorting" tabindex="0" aria-controls="key-act-button" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 266px;">Position</th><th class="sorting" tabindex="0" aria-controls="key-act-button" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 128px;">Office</th><th class="sorting" tabindex="0" aria-controls="key-act-button" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 59px;">Age</th><th class="sorting" tabindex="0" aria-controls="key-act-button" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" style="width: 121px;">Start date</th><th class="sorting" tabindex="0" aria-controls="key-act-button" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 85px;">Salary</th></tr>
-</thead>
-<tbody>
-<tr role="row" class="odd">
-<td class="sorting_1">Airi Satou</td>
-<td>Accountant</td>
-<td>Tokyo</td>
-<td>33</td>
-<td>2008/11/28</td>
-<td>$162,700</td>
-</tr><tr role="row" class="even">
-<td class="sorting_1">Ashton Cox</td>
-<td>Junior Technical Author</td>
-<td>San Francisco</td>
-<td>66</td>
-<td>2009/01/12</td>
-<td>$86,000</td>
-</tr><tr role="row" class="odd">
-<td class="sorting_1">Brielle Williamson</td>
-<td>Integration Specialist</td>
-<td>New York</td>
-<td>61</td>
-<td>2012/12/02</td>
-<td>$372,000</td>
-</tr><tr role="row" class="even">
-<td class="sorting_1">Cedric Kelly</td>
-<td>Senior Javascript Developer</td>
-<td>Edinburgh</td>
-<td>22</td>
-<td>2012/03/29</td>
-<td>$433,060</td>
-</tr><tr role="row" class="odd">
-<td class="sorting_1">Charde Marshall</td>
-<td>Regional Director</td>
-<td>San Francisco</td>
-<td>36</td>
-<td>2008/10/16</td>
-<td>$470,600</td>
-</tr><tr role="row" class="even">
-<td class="sorting_1">Colleen Hurst</td>
-<td>Javascript Developer</td>
-<td>San Francisco</td>
-<td>39</td>
-<td>2009/09/15</td>
-<td>$205,500</td>
-</tr><tr role="row" class="odd">
-<td class="sorting_1">Garrett Winters</td>
-<td>Accountant</td>
-<td>Tokyo</td>
-<td>63</td>
-<td>2011/07/25</td>
-<td>$170,750</td>
-</tr><tr role="row" class="even">
-<td class="sorting_1">Haley Kennedy</td>
-<td>Senior Marketing Designer</td>
-<td>London</td>
-<td>43</td>
-<td>2012/12/18</td>
-<td>$313,500</td>
-</tr><tr role="row" class="odd">
-<td class="sorting_1">Herrod Chandler</td>
-<td>Sales Assistant</td>
-<td>San Francisco</td>
-<td>59</td>
-<td>2012/08/06</td>
-<td>$137,500</td>
-</tr><tr role="row" class="even">
-<td class="sorting_1">Jena Gaines</td>
-<td>Office Manager</td>
-<td>London</td>
-<td>30</td>
-<td>2008/12/19</td>
-<td>$90,560</td>
-</tr></tbody>
-<tfoot>
-<tr><th rowspan="1" colspan="1">Name</th><th rowspan="1" colspan="1">Position</th><th rowspan="1" colspan="1">Office</th><th rowspan="1" colspan="1">Age</th><th rowspan="1" colspan="1">Start date</th><th rowspan="1" colspan="1">Salary</th></tr>
-</tfoot>
-</table><div class="dataTables_info" id="key-act-button_info" role="status" aria-live="polite">Showing 1 to 10 of 17 entries</div><div class="dataTables_paginate paging_simple_numbers" id="key-act-button_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="key-act-button_previous"><a href="#" aria-controls="key-act-button" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="key-act-button" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item "><a href="#" aria-controls="key-act-button" data-dt-idx="2" tabindex="0" class="page-link">2</a></li><li class="paginate_button page-item next" id="key-act-button_next"><a href="#" aria-controls="key-act-button" data-dt-idx="3" tabindex="0" class="page-link">Next</a></li></ul></div></div>
-</div>
-</div>
-</div>
-</div>
-
-</div>
-
-</div>
-</div>
- {% endblock %}
+{% endblock %}
+{% block js %}
+	<script src="{% static 'rbac/js/role.js' %}"></script>
+{% endblock %}

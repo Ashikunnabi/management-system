@@ -41,6 +41,14 @@ def permission_edit(request, id):
     
 def role(request):
     return render(request, 'rbac/role.html')
+
+
+def role_add(request):
+    return render(request, 'rbac/role_add.html')
+
+
+def role_edit(request, id):
+    return render(request, 'rbac/role_edit.html', context={'id': id})
     
     
 def user(request):

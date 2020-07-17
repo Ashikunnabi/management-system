@@ -14,6 +14,7 @@ from apps.core.rbac.viewset import CustomViewSet
 from .serializers import *  
 from apps.core.rbac.models import *
 from rest_framework_datatables import pagination as dt_pagination
+from rest_framework.authentication import get_authorization_header
 
 
 def store_user_activity(request, store_json='', description=''):

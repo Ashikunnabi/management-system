@@ -26,7 +26,7 @@ let login = new Login();
 let helper = new Helper();
 helper.storage.removeStorage('local', 'token');
 
-$(document).on('click', '#login', function(e){
+function do_login() {
     let username = $('#username').val();
     let password = $('#password').val();
     if (username==='' || password===''){
@@ -35,5 +35,15 @@ $(document).on('click', '#login', function(e){
         login.login(
             {'username': username, 'password': password}
         );
+    }
+}
+
+$(document).on('click', '#login', function(e){
+    do_login();
+});
+
+$(document).on('keypress', function(e){
+    if (e.which == 13){
+        do_login();
     }
 });
