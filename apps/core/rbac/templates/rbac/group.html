@@ -1,0 +1,56 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block css %}
+<style>
+    .selected {
+        background: antiquewhite !important;
+        font-weight: bold;
+    }
+    tbody>tr.selected>.sorting_1 {
+        background-color: #ffd8a4 !important;
+    }
+    .main-body{
+        display:none;
+    }
+</style>
+{% endblock %}
+{% block content %}
+<div class="main-body">
+    <div class="page-wrapper">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Group</h5>
+                        <div style="float:right">
+                            <button type="button" id="add_group" class="btn btn-icon btn-rounded btn-outline-success" data-toggle="tooltip" data-placement="top" title="Add New group"><i class="feather icon-plus"></i></button>
+                            <button type="button" id="edit_group" class="btn btn-icon btn-rounded btn-outline-warning disabled"data-toggle="tooltip" data-placement="top" title="Edit selected group"><i class="feather icon-edit"></i></button>
+                            <button type="button" id="delete_group" class="btn btn-icon btn-rounded btn-outline-danger disabled sweet-multiple" data-toggle="tooltip" data-placement="top" title="Delete selected group"><i class="feather icon-trash-2"></i></button>
+                        </div>
+                    </div>
+                    <div class="card-block">
+                        <div class="table-responsive">
+                            <div id="key-act-button_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                                <table id="group_table" class="display table nowrap table-hover dataTable" style="width: 100%;" group="grid" aria-describedby="key-act-button_info">
+                                    <thead>
+                                        <tr>
+                                            <th>SL</th>
+                                            <th>Name</th>
+                                            <th>Total User</th>
+                                            <th>Group Status</th>
+                                        </tr>
+                                    </thead>                                    
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+	<script src="{% static 'rbac/js/group.js' %}"></script>
+{% endblock %}

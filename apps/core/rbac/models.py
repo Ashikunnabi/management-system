@@ -129,13 +129,10 @@ class User(AbstractUser):
     password_updated_at = models.DateTimeField(null=True, blank=True)
     is_locked = models.BooleanField(null=False, blank=False, default=False)
     locked_at = models.DateTimeField(null=True, blank=True)
-    unsuccessful_attempt = models.IntegerField(null=False, blank=False, default=0)   
-    
-    
+    unsuccessful_attempt = models.IntegerField(null=False, blank=False, default=0)
     
     def get_full_name(self):
         return f'{self.first_name} {self.last_name}'
-        
 
 
 class Group(AuditTrail):
@@ -148,7 +145,7 @@ class Group(AuditTrail):
                                 message='Group contains alphanumeric, underscore, space and period(.). Length: 2 to 100'
                             )]
                             )
-    status = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True)
     user = models.ManyToManyField(User, blank=True, related_name='group_users')
     
     

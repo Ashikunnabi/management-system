@@ -116,3 +116,9 @@ class UserSerializer(serializers.ModelSerializer):
                 instance.signature = self.context['request'].data['file_signature']
         instance.save()
         return instance
+
+
+class GroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Group
+        fields = '__all__'

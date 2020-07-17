@@ -51,6 +51,18 @@ def role_edit(request, id):
     return render(request, 'rbac/role_edit.html', context={'id': id})
     
     
+def group(request):
+    return render(request, 'rbac/group.html')
+
+
+def group_add(request):
+    return render(request, 'rbac/group_add.html')
+
+
+def group_edit(request, id):
+    return render(request, 'rbac/group_edit.html', context={'id': id})
+    
+    
 def user(request):
     return render(request, 'rbac/user.html')
     

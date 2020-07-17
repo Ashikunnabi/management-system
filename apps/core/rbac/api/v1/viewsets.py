@@ -245,6 +245,13 @@ class RoleViewSet(CustomViewSet):
     serializer_class = RoleSerializer
     queryset = Role.objects.all()
     model = Role
+
+
+class GroupViewSet(CustomViewSet):
+    permission_classes = [UserAccessApiBasePermission]
+    serializer_class = GroupSerializer
+    queryset = Group.objects.all()
+    model = Group
     
 
 class UserViewSet(CustomViewSet):

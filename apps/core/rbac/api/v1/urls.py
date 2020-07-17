@@ -15,6 +15,7 @@ router.register('feature', FeatureViewSet) #done
 router.register('sidebar', SidebarViewSet) #done
 router.register('permission', PermissionViewSet) #done
 router.register('role', RoleViewSet) #done
+router.register('group', GroupViewSet) #done
 router.register('user', UserViewSet) #done
 
 urlpatterns = [
