@@ -214,8 +214,6 @@ class Role {
             feature_dropdown.select2({
                 data: data
             });
-            // storing features in session storage for further use
-            self._helper._storage.saveStorage('session', 'permission', data);
         });
         promise.fail(function (response) {
             alert(response.responseJSON.detail);
