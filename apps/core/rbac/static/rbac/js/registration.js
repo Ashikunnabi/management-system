@@ -13,7 +13,7 @@ class Registration {
         });
         promise.fail(function (response) {
             // send back to registration page with an error notification
-            alert(response.responseJSON.detail);
+            $.growl(response.responseJSON.detail, { type: 'danger' });
         });
     }
 }
@@ -27,7 +27,7 @@ $(document).on('click', '#registration', function(e){
     let email = $('#email').val();
     let password = $('#password').val();
     if (first_name==='' || last_name==='' || username==='' || email==='' || password===''){
-        alert('Fill all fields.');
+        $.growl('Fill up all fields.', { type: 'danger' });
     } else {
         registration.registration(
             {'username': username, 'password': password}

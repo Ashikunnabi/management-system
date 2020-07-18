@@ -16,7 +16,7 @@ class Login {
         });
         promise.fail(function (response) {
             // send back to login page with an error notification
-            alert(response.responseJSON.detail);
+            $.growl(response.responseJSON.detail, { type: 'danger' });
         });
     }
 }
@@ -30,7 +30,7 @@ function do_login() {
     let username = $('#username').val();
     let password = $('#password').val();
     if (username==='' || password===''){
-        alert('Fill up both fields.');
+        $.growl('Fill up both fields.', { type: 'danger' });
     } else {
         login.login(
             {'username': username, 'password': password}
@@ -47,3 +47,4 @@ $(document).on('keypress', function(e){
         do_login();
     }
 });
+
