@@ -25,7 +25,6 @@ class UserAccessApiBasePermission(BasePermission):
         has_operation_permissions = [_.split('.')[0] for _ in permissions if app_label_class_name in _]
 
         methods = {
-            'view': ['GET'], # remove this kind of permission
             'detail_view': ['GET'],
             'self_view': ['GET'],
             'list_view': ['GET'],

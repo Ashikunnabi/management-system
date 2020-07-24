@@ -72,7 +72,6 @@ class Permission {
                     if (x.status == 401) {
                         if (error === "Unauthorized"){
                             $(document).ajaxComplete($.unblockUI);
-                            alert("Sorry, your session has expired. Please login again to continue");
                             window.location.href ="/logout/";
                         }
                     }
