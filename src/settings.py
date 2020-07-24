@@ -37,10 +37,11 @@ TENANT_APPS = (
     'django.contrib.staticfiles',
 
     # your tenant-specific apps
-    'apps.core.base',
-    'apps.core.rbac',
     'rest_framework',
     'rest_framework_datatables',
+    'apps.core.base',
+    'apps.core.rbac',
+    'apps.inventory',
 )
 
 
