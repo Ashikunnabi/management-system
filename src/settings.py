@@ -82,8 +82,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'src.context_processors.template_variables',           # custom
-                'apps.core.base.context_processors.left_sidebar',           # custom
+                'src.context_processors.template_variables',           # custom for base changes
+                'apps.core.base.context_processors.left_sidebar',           # custom for left sidebar
             ],
         },
     },
