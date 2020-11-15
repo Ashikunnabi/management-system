@@ -77,11 +77,11 @@ class Sell(AuditTrail):
         (3, 'Discount'),
         (4, 'Full Free'),
     )
-    invoice_no = models.CharField(default=uuid.uuid4().hex[:8])
+    invoice_no = models.CharField(max_length=8, default=uuid.uuid4().hex[:8])
     purchase_type = models.IntegerField(choices=TYPE, blank=False, null=False)
     product = models.ManyToManyField(Product, blank=False)
     product_details = models.TextField(blank=False, null=False)  # all product information in JSON
-    customer = models.ForeignKey(Customer, blank=False, on_delete=models.Protect)
+    customer = models.ForeignKey(Customer, blank=False, on_delete=models.CASCADE)
     quantity = models.TextField(blank=False, null=False)  # total quantity in list 
     actual_price = models.FloatField(blank=False, null=False)  # price before adding (vat+service_charge)-discount
     vat = models.FloatField()  # vat will be in percentage
@@ -98,7 +98,7 @@ class Sell(AuditTrail):
     
     
 class Transfer(AuditTrail):
-    invoice_no = models.CharField(default=uuid.uuid4().hex[:8])
+    invoice_no = models.CharField(max_length=8, default=uuid.uuid4().hex[:8])
     product = models.ForeignKey(Product, blank=False, on_delete=models.CASCADE)
     product_details = models.TextField(blank=False, null=False)  # all product information in JSON
     quantity = models.IntegerField(blank=False, null=False)
