@@ -153,6 +153,47 @@ class UserPassword(AuditTrail):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
     hash = models.CharField(null=False, blank=False, max_length=200)
 
+
+class Branch(AuditTrail):
+    name = models.CharField(max_length=100,
+                            blank=False,
+                            null=False,
+                            unique=True,
+                            validators=[RegexValidator(
+                                regex='[-a-zA-Z0-9_.\s]{2,100}$',
+                                message='Branch contains alphanumeric, underscore, space and period(.). Length: 2 to 100'
+                            )]
+                            )
+    user = models.ManyToManyField(User, blank=True, related_name='branch_users')
+    group = models.ManyToManyField(Group, blank=True, related_name='branch_groups')
+    
+    def get_users(self):
+        # this will return all users id from user and group field
+        user_id = self.user.values_list('id', flat=True)
+        all_user = [(user_id + g.user.values_list('id', flat=True)) for g in self.group]
+        return list(dict.fromkeys(all_user[0]))  # all unique user list
+
+
+class Department(AuditTrail):
+    name = models.CharField(max_length=100,
+                            blank=False,
+                            null=False,
+                            validators=[RegexValidator(
+                                regex='[-a-zA-Z0-9_.\s]{2,100}$',
+                                message='Department contains alphanumeric, underscore, space and period(.). Length: 2 to 100'
+                            )]
+                            )
+    parent = models.ForeignKey('self', blank=True, null=True, on_delete=models.CASCADE)
+    user = models.ManyToManyField(User, blank=True, related_name='department_users')
+    group = models.ManyToManyField(Group, blank=True, related_name='department_groups')
+    
+    def get_users(self):
+        # this will return all users id from user and group field
+        user_id = self.user.values_list('id', flat=True)
+        all_user = [(user_id + g.user.values_list('id', flat=True)) for g in self.group]
+        return list(dict.fromkeys(all_user[0]))  # all unique user list
+        
+
     
     
     
