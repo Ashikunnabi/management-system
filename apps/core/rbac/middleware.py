@@ -1,7 +1,5 @@
-from django.contrib.auth import get_user_model, logout
-from apps.core.rbac.models import User
+from django.contrib.auth import logout
 from django.utils.deprecation import MiddlewareMixin
-from django.conf import settings
 from django.shortcuts import redirect
 from re import compile
 from django.conf import settings
@@ -12,6 +10,7 @@ EXEMPT_URLS = [compile(settings.LOGIN_URL.lstrip('/'))]
 
 if hasattr(settings, 'LOGIN_EXEMPT_URLS'):
     EXEMPT_URLS += [compile(expr) for expr in settings.LOGIN_EXEMPT_URLS]
+
     
 class LoginRequiredMiddleware(MiddlewareMixin):
     """ Checking User authentication before serving response """
@@ -34,5 +33,4 @@ def RequestExposerMiddleware(get_response):
         models.exposed_request = request
         response = get_response(request)
         return response
-
     return middleware
