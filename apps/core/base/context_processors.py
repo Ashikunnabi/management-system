@@ -1,13 +1,10 @@
 import json
-from django.conf import settings
-from apps.core.rbac.api.v1.serializers import FeatureSerializer, PermissionSerializer
-from apps.core.rbac.models import Feature, Permission
+from apps.core.rbac.api.v1.serializers import FeatureSerializer
+from apps.core.rbac.models import Feature
 
 
 def left_sidebar(request):
     if request.user.is_authenticated:
-    
-        user_permissions = request.user.role.permission.values_list('code', flat=True)        
         if request.user.role.code in ['super_admin']:
             queryset = Feature.objects.all()
         else:
