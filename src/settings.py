@@ -265,6 +265,10 @@ SMS_API_TOKEN = os.getenv("SMS_API_TOKEN")
 SMS_API_ENDPOINT = os.getenv("SMS_API_ENDPOINT")
 
 
+# EMAIL API
+EMAIL_HOST = os.getenv("EMAIL_HOST")
+
+
 
 
 

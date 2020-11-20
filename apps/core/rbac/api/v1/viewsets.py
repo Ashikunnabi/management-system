@@ -1,20 +1,15 @@
-import json, requests
-from django.conf import settings
 from django.contrib.auth import authenticate, login as auth_login
 from django.db import transaction
-from django.shortcuts import redirect, reverse, get_object_or_404
+from django.shortcuts import reverse, get_object_or_404
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from apps.core.rbac.permission import UserAccessApiBasePermission
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from apps.core.rbac.utils import *
+from apps.core.base.utils.basic import *
 from apps.core.rbac.viewset import CustomViewSet
 from .serializers import *  
 from apps.core.rbac.models import *
-from rest_framework_datatables import pagination as dt_pagination
-from rest_framework.authentication import get_authorization_header
 
 
 def store_user_activity(request, store_json='', description=''):
