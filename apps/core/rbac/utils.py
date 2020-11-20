@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.http import JsonResponse
 import requests
 
 
@@ -60,6 +61,5 @@ def send_sms(request, mobile_number, message):
         "sms_status": text
     }
     return JsonResponse(data)
-    
     
     
