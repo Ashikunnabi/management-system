@@ -1,24 +1,5 @@
 from django.conf import settings
 from django.http import JsonResponse
-import requests
-import logging
-
-logger = logging.getLogger(__name__)
-
-
-def logger_info(description: str) -> None:
-    # A simple string logged at the "info" level
-    logger.info(description + '\n\n')
-
-
-def logger_warning(description: str) -> None:
-    # A simple string logged at the "warning" level
-    logger.warning(description + '\n\n')
-
-
-def logger_error(description: str) -> None:
-    # A simple string logged at the "error" level
-    logger.error(description + '\n\n')
 
 
 def json_parameter_validation(json_data, required_params):
