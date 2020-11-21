@@ -99,6 +99,34 @@
   },
   {
     "model": "rbac.permission",
+    "pk": 25,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-07-06T13:48:46.506Z",
+      "updated_at": "2020-07-06T13:48:46.506Z",
+      "name": "List View Role",
+      "code": "list_view.rbac_role",
+      "is_active": true,
+      "feature": 3
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 26,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-07-06T13:49:04.689Z",
+      "updated_at": "2020-07-06T13:49:04.689Z",
+      "name": "Detail View Role",
+      "code": "detail_view.rbac_role",
+      "is_active": true,
+      "feature": 3
+    }
+  },
+  {
+    "model": "rbac.permission",
     "pk": 9,
     "fields": {
       "created_by": "1",
@@ -323,34 +351,6 @@
   },
   {
     "model": "rbac.permission",
-    "pk": 25,
-    "fields": {
-      "created_by": "1",
-      "updated_by": "1",
-      "created_at": "2020-07-06T13:48:46.506Z",
-      "updated_at": "2020-07-06T13:48:46.506Z",
-      "name": "List View Role",
-      "code": "list_view.rbac_role",
-      "is_active": true,
-      "feature": 3
-    }
-  },
-  {
-    "model": "rbac.permission",
-    "pk": 26,
-    "fields": {
-      "created_by": "1",
-      "updated_by": "1",
-      "created_at": "2020-07-06T13:49:04.689Z",
-      "updated_at": "2020-07-06T13:49:04.689Z",
-      "name": "Detail View Role",
-      "code": "detail_view.rbac_role",
-      "is_active": true,
-      "feature": 3
-    }
-  },
-  {
-    "model": "rbac.permission",
     "pk": 27,
     "fields": {
       "created_by": "1",
@@ -530,5 +530,93 @@
       "is_active": true,
       "feature": 1
     }
+  },
+
+
+  {
+    "model": "rbac.permission",
+    "pk": 40,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-06T13:47:47.967Z",
+      "name": "Self View Group",
+      "code": "self_view.rbac_group",
+      "is_active": true,
+      "feature": 12
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 41,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-10T02:53:35.463Z",
+      "name": "Add Group",
+      "code": "add.rbac_group",
+      "is_active": true,
+      "feature": 12
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 42,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-10T02:53:27.525Z",
+      "name": "Edit Group",
+      "code": "change.rbac_group",
+      "is_active": true,
+      "feature": 12
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 43,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-10T02:53:19.707Z",
+      "name": "Delete Group",
+      "code": "delete.rbac_group",
+      "is_active": true,
+      "feature": 12
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 44,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-07-06T13:48:46.506Z",
+      "updated_at": "2020-07-06T13:48:46.506Z",
+      "name": "List View Group",
+      "code": "list_view.rbac_group",
+      "is_active": true,
+      "feature": 12
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 45,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-07-06T13:49:04.689Z",
+      "updated_at": "2020-07-06T13:49:04.689Z",
+      "name": "Detail View Group",
+      "code": "detail_view.rbac_group",
+      "is_active": true,
+      "feature": 12
+    }
   }
 ]
+
+

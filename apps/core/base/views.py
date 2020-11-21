@@ -4,6 +4,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
+from apps.core.rbac.models import Branch
+
 
 def handler400(request, *args, **argv):
     return render(request, 'base/handle_errors/400.html')
@@ -22,6 +24,8 @@ def handler500(request, *args, **argv):
     
 
 def dashboard(request):
+    branch = Branch.objects.all()
+    print(branch, '00000000000000000000000000000000000000000')
     return render(request, 'base/dashboard.html')
 
 
@@ -32,6 +36,7 @@ def sidebar(request):
     response = requests.get(url, headers=request.headers).json()
     rearranged_list = []
     rearranged_dict = dict()
+
     
     for value in response:
         if value["parent"] is None:
