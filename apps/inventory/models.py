@@ -3,7 +3,7 @@ from django.db import models
 from django.core.validators import RegexValidator
 from apps.core.rbac.models import AuditTrail, Department
 from apps.core.base.utils.custom_validators import name_validator, mobile_validator
-
+from apps.core.base.utils.basic import random_hex_code
 
 class Category(AuditTrail):
     name = models.CharField(max_length=100,
@@ -14,8 +14,8 @@ class Category(AuditTrail):
     parent = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True)
     department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='category_department')
 
-    def total_product(self):
-        return Product.objects.filter(category=self).count()
+    # def total_product(self):
+    #     return Product.objects.filter(category=self).count()
 
 
 class Vendor(AuditTrail):
@@ -28,7 +28,7 @@ class Vendor(AuditTrail):
     mobile = models.CharField(max_length=14,
                               validators=[RegexValidator(regex=mobile_validator()[0], message=mobile_validator()[1])])
     address = models.TextField()
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='vendor_category')
 
 
 class Product(AuditTrail):
@@ -39,8 +39,8 @@ class Product(AuditTrail):
                             validators=[RegexValidator(regex=name_validator()[0], message=name_validator()[1])]
                             )
     code = models.CharField(max_length=10, unique=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='product_category')
+    vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, related_name='product_vendor')
     box_number = models.CharField(max_length=50, null=True, blank=True)
     physical_location = models.CharField(max_length=50, null=True, blank=True)
     extra_description = models.TextField()  # color=red\nsize=35\nweight=500gm
@@ -61,8 +61,8 @@ class Customer(AuditTrail):
 
 
 class Buy(AuditTrail):
-    product = models.ForeignKey(Product, blank=False, on_delete=models.CASCADE)
-    bought_by = models.ForeignKey(Customer, blank=False, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, blank=False, on_delete=models.CASCADE, related_name='buy_product')
+    bought_by = models.ForeignKey(Customer, blank=False, on_delete=models.CASCADE, related_name='buy_customer')
     document = models.FileField(upload_to='inventory/document/buy/%Y/%m/%d', blank=True, null=True)
     quantity = models.IntegerField()
     unit_price = models.FloatField(default=00.00)
@@ -77,11 +77,11 @@ class Sell(AuditTrail):
         (3, 'Discount'),
         (4, 'Full Free'),
     )
-    invoice_no = models.CharField(max_length=8, default=uuid.uuid4().hex[:8])
+    invoice_no = models.CharField(max_length=8, default=random_hex_code)
     purchase_type = models.IntegerField(choices=TYPE, blank=False, null=False)
     product = models.ManyToManyField(Product, blank=False)
     product_details = models.TextField(blank=False, null=False)  # all product information in JSON
-    customer = models.ForeignKey(Customer, blank=False, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, blank=False, on_delete=models.CASCADE, related_name='sell_customer')
     quantity = models.TextField(blank=False, null=False)  # total quantity in list/dictionary
     actual_price = models.FloatField(blank=False, null=False)  # price before adding (vat+service_charge)-discount
     vat = models.FloatField()  # vat will be in percentage
@@ -100,23 +100,14 @@ class Sell(AuditTrail):
     payment_gateway_information = models.TextField()
     other_information = models.TextField()
 
-    def save(self, *args, **kwargs):
-        """To create a new unique invoice no for each item save."""
-        self.invoice_no = uuid.uuid4().hex[:8]
-        super(Sell, self).save(*args, **kwargs)
 
 
 class Transfer(AuditTrail):
-    invoice_no = models.CharField(max_length=8, default=uuid.uuid4().hex[:8])
-    product = models.ForeignKey(Product, blank=False, on_delete=models.CASCADE)
+    invoice_no = models.CharField(max_length=8, default=random_hex_code)
+    product = models.ForeignKey(Product, blank=False, on_delete=models.CASCADE, related_name='transfer_product')
     product_details = models.TextField(blank=False, null=False)  # all product information in JSON
     quantity = models.IntegerField(blank=False, null=False)
-    department = models.ForeignKey(Department, blank=False, on_delete=models.CASCADE)
+    department = models.ForeignKey(Department, blank=False, on_delete=models.CASCADE, related_name='transfer_department')
     other_information = models.TextField()
-
-    def save(self, *args, **kwargs):
-        """To create a new unique invoice no for each item save."""
-        self.invoice_no = uuid.uuid4().hex[:8]
-        super(Transfer, self).save(*args, **kwargs)
 
 
