@@ -16,7 +16,7 @@ DEBUG = int(os.getenv("DEBUG"))
 ALLOWED_HOSTS = ['*']
 
 # Application definition
-SHARED_APPS = (
+SHARED_APPS = ( # SHARED APPS WILL ONLY SHOW TO THE PUBLIC SCHEMA
     'django_tenants',  # mandatory, should always be before any django app
     'apps.core.rbac', # you must list the app where your tenant model resides in
     
@@ -26,6 +26,9 @@ SHARED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # your tenant-specific apps
+    'apps.inventory',
 )
 
 TENANT_APPS = (
