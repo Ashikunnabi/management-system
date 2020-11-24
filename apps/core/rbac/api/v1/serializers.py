@@ -122,3 +122,15 @@ class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
         fields = '__all__'
+
+
+class BranchSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Branch
+        fields = '__all__'
+
+
+class DepartmentSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Department
+        fields = '__all__'
