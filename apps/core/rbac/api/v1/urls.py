@@ -17,6 +17,8 @@ router.register('permission', PermissionViewSet) #done
 router.register('role', RoleViewSet) #done
 router.register('group', GroupViewSet) #done
 router.register('user', UserViewSet) #done
+router.register('branch', BranchViewSet)
+router.register('department', DepartmentViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
