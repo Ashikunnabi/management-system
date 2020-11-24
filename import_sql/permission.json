@@ -189,8 +189,8 @@
       "updated_by": "1",
       "created_at": "2020-04-22T14:16:23.084Z",
       "updated_at": "2020-07-08T17:59:16.735Z",
-      "name": "Self View Customer",
-      "code": "self_view.rbac_customer",
+      "name": "Self View Client",
+      "code": "self_view.rbac_client",
       "is_active": true,
       "feature": 8
     }
@@ -203,8 +203,8 @@
       "updated_by": "1",
       "created_at": "2020-04-22T14:16:23.084Z",
       "updated_at": "2020-07-10T02:52:48.153Z",
-      "name": "Add Customer",
-      "code": "add.rbac_customer",
+      "name": "Add Client",
+      "code": "add.rbac_client",
       "is_active": true,
       "feature": 8
     }
@@ -217,8 +217,8 @@
       "updated_by": "1",
       "created_at": "2020-04-22T14:16:23.084Z",
       "updated_at": "2020-07-10T02:52:39.743Z",
-      "name": "Edit Customer",
-      "code": "change.rbac_customer",
+      "name": "Edit Client",
+      "code": "change.rbac_client",
       "is_active": true,
       "feature": 8
     }
@@ -231,8 +231,8 @@
       "updated_by": "1",
       "created_at": "2020-04-22T14:16:23.084Z",
       "updated_at": "2020-07-10T02:52:33.220Z",
-      "name": "Delete Customer",
-      "code": "delete.rbac_customer",
+      "name": "Delete Client",
+      "code": "delete.rbac_client",
       "is_active": true,
       "feature": 8
     }
@@ -427,8 +427,8 @@
       "updated_by": "1",
       "created_at": "2020-07-08T17:59:46.585Z",
       "updated_at": "2020-07-08T17:59:46.585Z",
-      "name": "Detail View Customer",
-      "code": "detail_view.rbac_customer",
+      "name": "Detail View Client",
+      "code": "detail_view.rbac_client",
       "is_active": true,
       "feature": 8
     }
@@ -441,8 +441,8 @@
       "updated_by": "1",
       "created_at": "2020-07-08T18:00:11.948Z",
       "updated_at": "2020-07-08T18:00:11.948Z",
-      "name": "List View Customer",
-      "code": "list_view.rbac_customer",
+      "name": "List View Client",
+      "code": "list_view.rbac_client",
       "is_active": true,
       "feature": 8
     }
@@ -531,8 +531,6 @@
       "feature": 1
     }
   },
-
-
   {
     "model": "rbac.permission",
     "pk": 40,
@@ -615,6 +613,524 @@
       "code": "detail_view.rbac_group",
       "is_active": true,
       "feature": 12
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 46,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-06T13:47:47.967Z",
+      "name": "Self View Branch",
+      "code": "self_view.rbac_branch",
+      "is_active": true,
+      "feature": 15
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 47,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-06T13:47:47.967Z",
+      "name": "Add Branch",
+      "code": "add.rbac_branch",
+      "is_active": true,
+      "feature": 15
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 48,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-06T13:47:47.967Z",
+      "name": "Edit Branch",
+      "code": "change.rbac_branch",
+      "is_active": true,
+      "feature": 15
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 49,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-06T13:47:47.967Z",
+      "name": "Delete Branch",
+      "code": "delete.rbac_branch",
+      "is_active": true,
+      "feature": 15
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 50,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-06T13:47:47.967Z",
+      "name": "List View Branch",
+      "code": "list_view.rbac_branch",
+      "is_active": true,
+      "feature": 15
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 51,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-06T13:47:47.967Z",
+      "name": "Detail View Branch",
+      "code": "detail_view.rbac_branch",
+      "is_active": true,
+      "feature": 15
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 52,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-06T13:47:47.967Z",
+      "name": "Self View Department",
+      "code": "self_view.rbac_department",
+      "is_active": true,
+      "feature": 16
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 53,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-06T13:47:47.967Z",
+      "name": "Add Department",
+      "code": "add.rbac_department",
+      "is_active": true,
+      "feature": 16
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 54,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-06T13:47:47.967Z",
+      "name": "Edit Department",
+      "code": "change.rbac_department",
+      "is_active": true,
+      "feature": 16
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 55,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-06T13:47:47.967Z",
+      "name": "Delete Department",
+      "code": "delete.rbac_department",
+      "is_active": true,
+      "feature": 16
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 56,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-06T13:47:47.967Z",
+      "name": "List View Department",
+      "code": "list_view.rbac_department",
+      "is_active": true,
+      "feature": 16
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 57,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-06T13:47:47.967Z",
+      "name": "Detail View Department",
+      "code": "detail_view.rbac_department",
+      "is_active": true,
+      "feature": 16
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 58,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-06T13:47:47.967Z",
+      "name": "Self View Category",
+      "code": "self_view.inventory_category",
+      "is_active": true,
+      "feature": 17
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 59,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-06T13:47:47.967Z",
+      "name": "Add Category",
+      "code": "add.inventory_category",
+      "is_active": true,
+      "feature": 17
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 60,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-06T13:47:47.967Z",
+      "name": "Edit Category",
+      "code": "change.inventory_category",
+      "is_active": true,
+      "feature": 17
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 61,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-06T13:47:47.967Z",
+      "name": "Delete Category",
+      "code": "delete.inventory_category",
+      "is_active": true,
+      "feature": 17
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 62,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-06T13:47:47.967Z",
+      "name": "List View Category",
+      "code": "list_view.inventory_category",
+      "is_active": true,
+      "feature": 17
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 63,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-06T13:47:47.967Z",
+      "name": "Detail View Category",
+      "code": "detail_view.inventory_category",
+      "is_active": true,
+      "feature": 17
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 64,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-06T13:47:47.967Z",
+      "name": "Self View Vendor",
+      "code": "self_view.inventory_vendor",
+      "is_active": true,
+      "feature": 18
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 65,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-06T13:47:47.967Z",
+      "name": "Add Vendor",
+      "code": "add.inventory_vendor",
+      "is_active": true,
+      "feature": 18
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 66,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-06T13:47:47.967Z",
+      "name": "Edit Vendor",
+      "code": "change.inventory_vendor",
+      "is_active": true,
+      "feature": 18
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 67,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-06T13:47:47.967Z",
+      "name": "Delete Vendor",
+      "code": "delete.inventory_vendor",
+      "is_active": true,
+      "feature": 18
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 68,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-06T13:47:47.967Z",
+      "name": "List View Vendor",
+      "code": "list_view.inventory_vendor",
+      "is_active": true,
+      "feature": 18
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 69,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-06T13:47:47.967Z",
+      "name": "Detail View Vendor",
+      "code": "detail_view.inventory_vendor",
+      "is_active": true,
+      "feature": 18
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 70,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-06T13:47:47.967Z",
+      "name": "Self View Product",
+      "code": "self_view.inventory_product",
+      "is_active": true,
+      "feature": 19
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 71,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-06T13:47:47.967Z",
+      "name": "Add Product",
+      "code": "add.inventory_product",
+      "is_active": true,
+      "feature": 19
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 72,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-06T13:47:47.967Z",
+      "name": "Edit Product",
+      "code": "change.inventory_product",
+      "is_active": true,
+      "feature": 19
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 73,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-06T13:47:47.967Z",
+      "name": "Delete Product",
+      "code": "delete.inventory_product",
+      "is_active": true,
+      "feature": 19
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 74,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-06T13:47:47.967Z",
+      "name": "List View Product",
+      "code": "list_view.inventory_product",
+      "is_active": true,
+      "feature": 19
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 75,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-06T13:47:47.967Z",
+      "name": "Detail View Product",
+      "code": "detail_view.inventory_product",
+      "is_active": true,
+      "feature": 19
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 76,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-06T13:47:47.967Z",
+      "name": "Self View Customer",
+      "code": "self_view.inventory_customer",
+      "is_active": true,
+      "feature": 20
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 77,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-06T13:47:47.967Z",
+      "name": "Add Customer",
+      "code": "add.inventory_customer",
+      "is_active": true,
+      "feature": 20
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 78,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-06T13:47:47.967Z",
+      "name": "Edit Customer",
+      "code": "change.inventory_customer",
+      "is_active": true,
+      "feature": 20
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 79,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-06T13:47:47.967Z",
+      "name": "Delete Customer",
+      "code": "delete.inventory_customer",
+      "is_active": true,
+      "feature": 20
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 80,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-06T13:47:47.967Z",
+      "name": "List View Customer",
+      "code": "list_view.inventory_customer",
+      "is_active": true,
+      "feature": 20
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 81,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-04-22T14:16:23.084Z",
+      "updated_at": "2020-07-06T13:47:47.967Z",
+      "name": "Detail View Customer",
+      "code": "detail_view.inventory_customer",
+      "is_active": true,
+      "feature": 20
+    }
+  },
+  {
+    "model": "rbac.permission",
+    "pk": 82,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-07-10T03:06:04.694Z",
+      "updated_at": "2020-07-10T03:38:58.791Z",
+      "name": "View Sidebar Inventory",
+      "code": "_view_sidebar_inventory",
+      "is_active": true,
+      "feature": 14
     }
   }
 ]

@@ -79,10 +79,10 @@
       "updated_by": "1",
       "created_at": "2020-05-09T13:01:58.368Z",
       "updated_at": "2020-05-09T13:21:36.339Z",
-      "title": "Customer",
+      "title": "Client",
       "icon": null,
-      "code": "customer",
-      "url": "/customer/",
+      "code": "client",
+      "url": "/client/",
       "parent": "9",
       "order_for_sidebar": 1111,
       "is_active": true,
@@ -175,6 +175,132 @@
       "url": "/",
       "parent": null,
       "order_for_sidebar": 1,
+      "is_active": true,
+      "customers": []
+    }
+  },
+  {
+    "model": "rbac.feature",
+    "pk": 14,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-11-23T05:45:20.313391Z",
+      "updated_at": "2020-11-23T05:45:20.313391Z",
+      "title": "Inventory",
+      "icon": "<i class=\"fas fa-inventory\"></i>",
+      "code": "inventory",
+      "url": "/inventory/",
+      "parent": null,
+      "order_for_sidebar": 4,
+      "is_active": true,
+      "customers": []
+    }
+  },
+  {
+    "model": "rbac.feature",
+    "pk": 15,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-11-23T05:45:20.313391Z",
+      "updated_at": "2020-11-23T05:45:20.313391Z",
+      "title": "Branch",
+      "icon": null,
+      "code": "branch",
+      "url": "/branch/",
+      "parent": "9",
+      "order_for_sidebar": 1111.2,
+      "is_active": true,
+      "customers": []
+    }
+  },
+  {
+    "model": "rbac.feature",
+    "pk": 16,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-11-23T05:45:20.313391Z",
+      "updated_at": "2020-11-23T05:45:20.313391Z",
+      "title": "Department",
+      "icon": null,
+      "code": "department",
+      "url": "/department/",
+      "parent": "9",
+      "order_for_sidebar": 1111.3,
+      "is_active": true,
+      "customers": []
+    }
+  },
+  {
+    "model": "rbac.feature",
+    "pk": 17,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-11-23T05:45:20.313391Z",
+      "updated_at": "2020-11-23T05:45:20.313391Z",
+      "title": "Category",
+      "icon": null,
+      "code": "category",
+      "url": "/category/",
+      "parent": "14",
+      "order_for_sidebar": 1112.1,
+      "is_active": true,
+      "customers": []
+    }
+  },
+  {
+    "model": "rbac.feature",
+    "pk": 18,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-11-23T05:45:20.313391Z",
+      "updated_at": "2020-11-23T05:45:20.313391Z",
+      "title": "Vendor",
+      "icon": null,
+      "code": "vendor",
+      "url": "/vendor/",
+      "parent": "14",
+      "order_for_sidebar": 1112.2,
+      "is_active": true,
+      "customers": []
+    }
+  },
+  {
+    "model": "rbac.feature",
+    "pk": 19,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-11-23T05:45:20.313391Z",
+      "updated_at": "2020-11-23T05:45:20.313391Z",
+      "title": "Product",
+      "icon": null,
+      "code": "product",
+      "url": "/product/",
+      "parent": "14",
+      "order_for_sidebar": 1112.3,
+      "is_active": true,
+      "customers": []
+    }
+  },
+  {
+    "model": "rbac.feature",
+    "pk": 20,
+    "fields": {
+      "created_by": "1",
+      "updated_by": "1",
+      "created_at": "2020-11-23T05:45:20.313391Z",
+      "updated_at": "2020-11-23T05:45:20.313391Z",
+      "title": "Customer",
+      "icon": null,
+      "code": "customer",
+      "url": "/customer/",
+      "parent": "14",
+      "order_for_sidebar": 1112.4,
       "is_active": true,
       "customers": []
     }
