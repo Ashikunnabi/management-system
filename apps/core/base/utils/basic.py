@@ -1,8 +1,5 @@
 import uuid
 
-from django.conf import settings
-from django.http import JsonResponse
-
 
 def json_parameter_validation(json_data, required_params):
     """ Check parameter is available in json or not
@@ -33,45 +30,17 @@ def get_user_ip_address(request):
 
 def get_user_browser_details(request):    
     return request.headers.get('User-Agent')
-            
 
-def send_sms(request, mobile_number, message):
-    """
-        Send sms to specific phone number
-
-        :parameter
-            phone_no (string): phone number to send sms
-            message (string): message to send
-
-        :return:
-            json: list of parameters
-                    - success (boolean): is data successfully retrieved
-                    - message (string): response message
-                    - response_code (int): response code
-                    - sms_status (string): message sending status
-    """
-
-    response = requests.post(
-        '{}api.php?token={}&to={}&message={}'.format(settings.SMS_API_ENDPOINT, settings.SMS_API_TOKEN,
-                                                     mobile_number, message))
-    text = response.text.split("<")[0]
-    code = response.status_code
-
-    data = {
-        "response_code": code,
-        "sms_status": text
-    }
-    return JsonResponse(data)
 
 def random_hex_code(length: int = 8) -> str:
-        """
-            To create a new random hex code of dynamic length.
+    """
+        To create a new random hex code of dynamic length.
 
-            :parameter
-                length (int): set how many character of hex code will generate. Default is 8 character.
+        :parameter
+            length (int): set how many character of hex code will generate. Default is 8 character.
 
-            :return
-                random hex code with dynamic length.
-        """
-        return uuid.uuid4().hex[:length]
+        :return
+            random hex code with dynamic length.
+    """
+    return uuid.uuid4().hex[:length]
 
