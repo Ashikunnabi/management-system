@@ -44,3 +44,22 @@ def random_hex_code(length: int = 8) -> str:
     """
     return uuid.uuid4().hex[:length]
 
+
+def store_user_activity(request, store_json='', description='') -> None:
+    """
+        Store user activity into ActivityLog table for future reference
+
+        :parameter
+            request (obj): django request object
+            store_json (str): dumps json for request/response data
+            description (str): basic description to represent userside view
+    :return:
+    """
+    from apps.core.rbac.models import ActivityLog
+    ActivityLog.objects.create(store_json=store_json,
+                               description=description,
+                               ip_address=get_user_ip_address(request),
+                               browser_details=get_user_browser_details(request)
+                               )
+
+

@@ -1,5 +1,7 @@
-from django.contrib.auth import authenticate, login as auth_login
+import requests
+from django.conf import settings
 from django.db import transaction
+from django.contrib.auth import authenticate, login as auth_login
 from django.shortcuts import reverse, get_object_or_404
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
@@ -10,15 +12,8 @@ from apps.core.base.utils.basic import *
 from apps.core.rbac.viewset import CustomViewSet
 from .serializers import *  
 from apps.core.rbac.models import *
-import requests
 
 
-def store_user_activity(request, store_json='', description=''):
-    ActivityLog.objects.create(store_json=store_json, description=description, 
-                                ip_address=get_user_ip_address(request), browser_details=get_user_browser_details(request))
-    return True
-
-            
 @api_view(['POST'])
 def registration(request):
     required_params = ['first_name', 'last_name', 'username', 'email', 'password', 'is_active']
@@ -129,7 +124,7 @@ def reset_password(request, activation_url):
     if param['password1'] == param['password2']:
         try:
             user = User.objects.get(activation_url=activation_url)
-            user.set_password(password1)
+            user.set_password(param['password1'])
             user.save()
         except:
             return Response({"details": "Invalid action"}, status=400)
