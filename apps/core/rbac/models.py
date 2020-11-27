@@ -12,7 +12,7 @@ def get_activation_url():
 
 
 class AuditTrail(models.Model):
-    hashed_id = models.CharField(null=True, blank=True, max_length=8, unique=True)
+    hashed_id = models.CharField(null=True, blank=True, max_length=16, unique=True)
     created_by = models.CharField(max_length=500, blank=True, null=True)
     updated_by = models.CharField(max_length=500, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, auto_now=False)
@@ -28,7 +28,7 @@ class AuditTrail(models.Model):
             self.updated_by = self.created_by
             # For each object a new unique hashed id will be generated.
             # This will be used instead of default id of each model.
-            self.hashed_id = random_hex_code()
+            self.hashed_id = random_hex_code(length=16)
         else:
             self.updated_by = exposed_request.user.id
         super(AuditTrail, self).save(*args, **kwargs)
