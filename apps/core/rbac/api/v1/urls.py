@@ -8,7 +8,7 @@ from .viewsets import *
 
 
 router = routers.DefaultRouter()
-router.register('customer', CustomerViewSet) #done
+router.register('client', ClientViewSet) #done
 router.register('domain', DomainViewSet) #done
 router.register('tenant', TenantViewSet) #done
 router.register('feature', FeatureViewSet) #done

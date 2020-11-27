@@ -10,6 +10,7 @@ from apps.core.base.utils.basic import *
 from apps.core.rbac.viewset import CustomViewSet
 from .serializers import *  
 from apps.core.rbac.models import *
+import requests
 
 
 def store_user_activity(request, store_json='', description=''):
@@ -191,9 +192,9 @@ def get_user_info(request):
     return Response(response, status=200)
  
 
-class CustomerViewSet(CustomViewSet):
+class ClientViewSet(CustomViewSet):
     permission_classes = [UserAccessApiBasePermission]
-    serializer_class = CustomerSerializer
+    serializer_class = ClientSerializer
     queryset = Customer.objects.all()
     model = Customer
  
@@ -247,13 +248,31 @@ class GroupViewSet(CustomViewSet):
     serializer_class = GroupSerializer
     queryset = Group.objects.all()
     model = Group
+    name = 'group-detail'
     
+
+class BranchViewSet(CustomViewSet):
+    permission_classes = [UserAccessApiBasePermission]
+    serializer_class = BranchSerializer
+    queryset = Branch.objects.all()
+    model = Branch
+
+
+
+class DepartmentViewSet(CustomViewSet):
+    permission_classes = [UserAccessApiBasePermission]
+    serializer_class = DepartmentSerializer
+    queryset = Department.objects.all()
+    model = Department
+
+
 
 class UserViewSet(CustomViewSet):
     permission_classes = [UserAccessApiBasePermission]
     serializer_class = UserSerializer
     queryset = User.objects.all()
-    model = User 
+    model = User
+    name = 'user-detail'
     
     def get_queryset(self):
         queryset = super().get_queryset()

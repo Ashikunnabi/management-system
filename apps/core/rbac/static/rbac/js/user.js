@@ -11,7 +11,7 @@ class User {
     constructor() {
         this._helper = new Helper();
         this._api = '/api/v1/';
-        this.user_list_url = this._api+'user/?format=datatables';;
+        this.user_list_url = this._api+'user/?format=datatables';
         this.user_add_url = '/user/add/';
         this.user_permissions = request.user.permissions;
         this.clear_profile_picture = false;

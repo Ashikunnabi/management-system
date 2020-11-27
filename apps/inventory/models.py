@@ -1,6 +1,8 @@
 import uuid
 from django.db import models
 from django.core.validators import RegexValidator
+from django.urls import reverse
+
 from apps.core.rbac.models import AuditTrail, Department
 from apps.core.base.utils.custom_validators import name_validator, mobile_validator
 from apps.core.base.utils.basic import random_hex_code
@@ -14,8 +16,13 @@ class Category(AuditTrail):
     parent = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True)
     department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='category_department')
 
+    def __str__(self):
+        return self.name
     # def total_product(self):
     #     return Product.objects.filter(category=self).count()
+
+    def get_absolute_url(self):
+        return reverse('product-detail', args=[self.id])
 
 
 class Vendor(AuditTrail):
@@ -30,6 +37,8 @@ class Vendor(AuditTrail):
     address = models.TextField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='vendor_category')
 
+    def __str__(self):
+        return self.name
 
 class Product(AuditTrail):
     name = models.CharField(max_length=100,
@@ -48,6 +57,8 @@ class Product(AuditTrail):
     available_stock = models.IntegerField()
     safety_stock_limit = models.IntegerField()
 
+    def __str__(self):
+        return self.name
 
 class Customer(AuditTrail):
     name = models.CharField(max_length=100)
@@ -59,6 +70,8 @@ class Customer(AuditTrail):
     organization_name = models.CharField(max_length=50)
     organization_address = models.TextField()
 
+    def __str__(self):
+        return self.name
 
 class Buy(AuditTrail):
     product = models.ForeignKey(Product, blank=False, on_delete=models.CASCADE, related_name='buy_product')
@@ -69,6 +82,8 @@ class Buy(AuditTrail):
     price_changed = models.BooleanField(default=False)  # set True when existing product unit price changed
     comment = models.TextField()  # make the field mandatory if price_changed=True
 
+    def __str__(self):
+        return f"{self.product}: {self.bought_by}"
 
 class Sell(AuditTrail):
     TYPE = (
