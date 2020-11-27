@@ -192,6 +192,7 @@ class ClientViewSet(CustomViewSet):
     serializer_class = ClientSerializer
     queryset = Customer.objects.all()
     model = Customer
+    # lookup_field = 'hashed_id'  # Individual object will be found by this field
  
 
 class DomainViewSet(CustomViewSet):
@@ -199,6 +200,7 @@ class DomainViewSet(CustomViewSet):
     serializer_class = DomainSerializer
     queryset = Domain.objects.all()
     model = Domain
+    # lookup_field = 'hashed_id'  # Individual object will be found by this field
     
 
 class TenantViewSet(CustomViewSet):
@@ -206,6 +208,7 @@ class TenantViewSet(CustomViewSet):
     serializer_class = TenantSerializer
     queryset = Domain.objects.all()
     model = Domain
+    # lookup_field = 'hashed_id'  # Individual object will be found by this field
  
 
 class SidebarViewSet(viewsets.ModelViewSet):
@@ -215,6 +218,7 @@ class SidebarViewSet(viewsets.ModelViewSet):
     render_class = None
     pagination_class = None
     model = Feature
+    # lookup_field = 'hashed_id'  # Individual object will be found by this field
  
 
 class FeatureViewSet(CustomViewSet):
@@ -222,6 +226,7 @@ class FeatureViewSet(CustomViewSet):
     serializer_class = FeatureSerializer
     queryset = Feature.objects.all()
     model = Feature
+    # lookup_field = 'hashed_id'  # Individual object will be found by this field
 
     
 class PermissionViewSet(CustomViewSet):
@@ -229,6 +234,7 @@ class PermissionViewSet(CustomViewSet):
     serializer_class = PermissionSerializer
     queryset = Permission.objects.all()
     model = Permission
+    # lookup_field = 'hashed_id'  # Individual object will be found by this field
 
 
 class RoleViewSet(CustomViewSet):
@@ -236,6 +242,7 @@ class RoleViewSet(CustomViewSet):
     serializer_class = RoleSerializer
     queryset = Role.objects.all()
     model = Role
+    # lookup_field = 'hashed_id'  # Individual object will be found by this field
 
 
 class GroupViewSet(CustomViewSet):
@@ -243,7 +250,7 @@ class GroupViewSet(CustomViewSet):
     serializer_class = GroupSerializer
     queryset = Group.objects.all()
     model = Group
-    name = 'group-detail'
+    # lookup_field = 'hashed_id'  # Individual object will be found by this field
     
 
 class BranchViewSet(CustomViewSet):
@@ -251,6 +258,9 @@ class BranchViewSet(CustomViewSet):
     serializer_class = BranchSerializer
     queryset = Branch.objects.all()
     model = Branch
+    lookup_field = 'hashed_id'  # Individual object will be found by this field
+
+    # def create(self, validate_date):
 
 
 
@@ -259,6 +269,7 @@ class DepartmentViewSet(CustomViewSet):
     serializer_class = DepartmentSerializer
     queryset = Department.objects.all()
     model = Department
+    lookup_field = 'hashed_id'  # Individual object will be found by this field
 
 
 
@@ -267,7 +278,7 @@ class UserViewSet(CustomViewSet):
     serializer_class = UserSerializer
     queryset = User.objects.all()
     model = User
-    name = 'user-detail'
+    # lookup_field = 'hashed_id'  # Individual object will be found by this field
     
     def get_queryset(self):
         queryset = super().get_queryset()

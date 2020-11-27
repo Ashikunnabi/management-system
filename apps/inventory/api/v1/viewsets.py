@@ -1,6 +1,7 @@
 from rest_framework.decorators import api_view
+from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
-from rest_framework import generics
+from rest_framework import generics, pagination
 
 from apps.core.rbac.permission import UserAccessApiBasePermission
 from apps.core.rbac.viewset import CustomViewSet
@@ -13,7 +14,7 @@ class Category(CustomViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     model = Category
-    name = 'category-detail'
+    lookup_field = 'hashed_id'  # Individual object will be found by this field
 
 
 class Product(CustomViewSet):
@@ -21,7 +22,9 @@ class Product(CustomViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     model = Product
-    name = 'product-detail'
+    lookup_field = 'hashed_id'  # Individual object will be found by this field
+    # pagination.PageNumberPagination.page_size = 0  # 
+
 
 
 class Vendor(CustomViewSet):
@@ -29,7 +32,7 @@ class Vendor(CustomViewSet):
     queryset = Vendor.objects.all()
     serializer_class = VendorSerializer
     model = Vendor
-    name = 'vendor-detail'
+    lookup_field = 'hashed_id'  # Individual object will be found by this field
 
 
 class Customer(CustomViewSet):
@@ -37,5 +40,5 @@ class Customer(CustomViewSet):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
     model = Customer
-    name = 'customer-detail'
+    lookup_field = 'hashed_id'  # Individual object will be found by this field
 
