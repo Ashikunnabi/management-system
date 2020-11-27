@@ -1,11 +1,9 @@
-import uuid
 from django.db import models
 from django.core.validators import RegexValidator
-from django.urls import reverse
-
 from apps.core.rbac.models import AuditTrail, Department
 from apps.core.base.utils.custom_validators import name_validator, mobile_validator
 from apps.core.base.utils.basic import random_hex_code
+
 
 class Category(AuditTrail):
     name = models.CharField(max_length=100,
@@ -18,9 +16,9 @@ class Category(AuditTrail):
 
     def __str__(self):
         return self.name
+
     def total_product(self):
         return Product.objects.filter(category=self).count()
-
 
 
 class Vendor(AuditTrail):
@@ -38,6 +36,21 @@ class Vendor(AuditTrail):
     def __str__(self):
         return self.name
 
+
+class UnitType(AuditTrail):
+    name = models.CharField(max_length=100,
+                            blank=False,
+                            null=False,
+                            unique=True,
+                            validators=[RegexValidator(regex=name_validator()[0], message=name_validator()[1])]
+                            )
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True,
+                                 related_name='unit_type_category')
+
+    def __str__(self):
+        return self.name
+
+
 class Product(AuditTrail):
     name = models.CharField(max_length=100,
                             blank=False,
@@ -51,12 +64,15 @@ class Product(AuditTrail):
     box_number = models.CharField(max_length=50, null=True, blank=True)
     physical_location = models.CharField(max_length=50, null=True, blank=True)
     extra_description = models.TextField()  # color=red\nsize=35\nweight=500gm
+    unit = models.ForeignKey(UnitType, on_delete=models.PROTECT, related_name='product_unit')
     unit_price = models.FloatField(default=00.00)
+    lowest_selling_price = models.FloatField(default=00.00)
     available_stock = models.IntegerField()
     safety_stock_limit = models.IntegerField()
 
     def __str__(self):
-        return self.name
+        return f'{self.name} ({self.code})'
+
 
 class Customer(AuditTrail):
     name = models.CharField(max_length=100)
@@ -65,11 +81,10 @@ class Customer(AuditTrail):
     email = models.EmailField()
     address = models.TextField()
     profession = models.CharField(max_length=50)
-    organization_name = models.CharField(max_length=50)
-    organization_address = models.TextField()
 
     def __str__(self):
         return self.name
+
 
 class Buy(AuditTrail):
     product = models.ForeignKey(Product, blank=False, on_delete=models.CASCADE, related_name='buy_product')
@@ -82,6 +97,7 @@ class Buy(AuditTrail):
 
     def __str__(self):
         return f"{self.product}: {self.bought_by}"
+
 
 class Sell(AuditTrail):
     TYPE = (
@@ -112,7 +128,6 @@ class Sell(AuditTrail):
                                        null=True)  # list of dates when customer paid to complete full payment
     payment_gateway_information = models.TextField()
     other_information = models.TextField()
-
 
 
 class Transfer(AuditTrail):
