@@ -127,10 +127,10 @@ class GroupSerializer(serializers.ModelSerializer):
 class BranchSerializer(serializers.ModelSerializer):
     class Meta:
         model = Branch
-        fields = '__all__'
+        exclude = ('id', 'created_at', 'updated_at', 'created_by', 'updated_by')  # These fields will not  send to api response
 
 
 class DepartmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Department
-        fields = '__all__'
+        exclude = ('id', 'created_at', 'updated_at', 'created_by', 'updated_by')  # These fields will not  send to api response

@@ -18,11 +18,9 @@ class Category(AuditTrail):
 
     def __str__(self):
         return self.name
-    # def total_product(self):
-    #     return Product.objects.filter(category=self).count()
+    def total_product(self):
+        return Product.objects.filter(category=self).count()
 
-    def get_absolute_url(self):
-        return reverse('product-detail', args=[self.id])
 
 
 class Vendor(AuditTrail):

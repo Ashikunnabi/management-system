@@ -5,40 +5,40 @@ from apps.inventory.models import *
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = '__all__'
+        exclude = ('id', 'created_at', 'updated_at', 'created_by', 'updated_by')  # These fields will not  send to api response
 
 
 class VendorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vendor
-        fields = '__all__'
+        exclude = ('id', 'created_at', 'updated_at', 'created_by', 'updated_by')  # These fields will not send to api response
 
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = '__all__'
+        exclude = ('id', 'created_at', 'updated_at', 'created_by', 'updated_by')  # These fields will not send to api response
 
 
 class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
-        fields = '__all__'
+        exclude = ('id', 'created_at', 'updated_at', 'created_by', 'updated_by')  # These fields will not send to api response
 
 
 class BuySerializer(serializers.ModelSerializer):
     class Meta:
         model = Buy
-        fields = '__all__'
+        exclude = ('id', 'created_at', 'updated_at', 'created_by', 'updated_by')  # These fields will not send to api response
 
 
 class SellSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sell
-        fields = '__all__'
+        exclude = ('id', 'created_at', 'updated_at', 'created_by', 'updated_by')  # These fields will not send to api response
 
 
 class TransferSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transfer
-        fields = '__all__'
+        exclude = ('id', 'created_at', 'updated_at', 'created_by', 'updated_by')  # These fields will not send to api response
