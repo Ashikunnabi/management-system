@@ -1,5 +1,4 @@
 import uuid
-from apps.core.rbac.models import ActivityLog
 
 
 def json_parameter_validation(json_data, required_params):
@@ -56,6 +55,7 @@ def store_user_activity(request, store_json='', description='') -> None:
             description (str): basic description to represent userside view
     :return:
     """
+    from apps.core.rbac.models import ActivityLog
     ActivityLog.objects.create(store_json=store_json,
                                description=description,
                                ip_address=get_user_ip_address(request),
