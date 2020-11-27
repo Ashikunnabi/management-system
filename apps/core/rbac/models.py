@@ -4,12 +4,15 @@ from django.core.validators import RegexValidator
 from django.db import models
 from django_tenants.models import TenantMixin, DomainMixin
 
+from apps.core.base.utils.basic import random_hex_code
+
 
 def get_activation_url():
     return secrets.token_hex(nbytes=16)
 
 
 class AuditTrail(models.Model):
+    hashed_id = models.CharField(null=True, blank=True, max_length=8, unique=True)
     created_by = models.CharField(max_length=500, blank=True, null=True)
     updated_by = models.CharField(max_length=500, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, auto_now=False)
@@ -23,6 +26,9 @@ class AuditTrail(models.Model):
             # Only set added_by during the first save.
             self.created_by = exposed_request.user.id  # exposed_request comes from RequestExposerMiddleware
             self.updated_by = self.created_by
+            # For each object a new unique hashed id will be generated.
+            # This will be used instead of default id of each model.
+            self.hashed_id = random_hex_code()
         else:
             self.updated_by = exposed_request.user.id
         super(AuditTrail, self).save(*args, **kwargs)
