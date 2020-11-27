@@ -4,10 +4,11 @@ from .viewsets import *
 
 
 router = routers.DefaultRouter()
-router.register('category', Category)
-router.register('product', Product)
-router.register('vendor', Vendor)
-router.register('customer', Customer)
+router.register('category', CategoryViewSet)
+router.register('vendor', VendorViewSet)
+router.register('unit-type', UnitTypeViewSet)
+router.register('product', ProductViewSet)
+router.register('customer', CustomerViewSet)
 
 
 urlpatterns = [

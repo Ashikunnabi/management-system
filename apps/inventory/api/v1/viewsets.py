@@ -9,7 +9,7 @@ from apps.inventory.api.v1.serializers import *
 from apps.inventory.models import *
 
 
-class Category(CustomViewSet):
+class CategoryViewSet(CustomViewSet):
     permission_classes = [UserAccessApiBasePermission]
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
@@ -17,17 +17,7 @@ class Category(CustomViewSet):
     lookup_field = 'hashed_id'  # Individual object will be found by this field
 
 
-class Product(CustomViewSet):
-    permission_classes = [UserAccessApiBasePermission]
-    queryset = Product.objects.all()
-    serializer_class = ProductSerializer
-    model = Product
-    lookup_field = 'hashed_id'  # Individual object will be found by this field
-    # pagination.PageNumberPagination.page_size = 0  # 
-
-
-
-class Vendor(CustomViewSet):
+class VendorViewSet(CustomViewSet):
     permission_classes = [UserAccessApiBasePermission]
     queryset = Vendor.objects.all()
     serializer_class = VendorSerializer
@@ -35,7 +25,24 @@ class Vendor(CustomViewSet):
     lookup_field = 'hashed_id'  # Individual object will be found by this field
 
 
-class Customer(CustomViewSet):
+class UnitTypeViewSet(CustomViewSet):
+    permission_classes = [UserAccessApiBasePermission]
+    queryset = UnitType.objects.all()
+    serializer_class = UnitTypeSerializer
+    model = UnitType
+    lookup_field = 'hashed_id'  # Individual object will be found by this field
+
+
+class ProductViewSet(CustomViewSet):
+    permission_classes = [UserAccessApiBasePermission]
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    model = Product
+    lookup_field = 'hashed_id'  # Individual object will be found by this field
+    # pagination.PageNumberPagination.page_size = 0  #
+
+
+class CustomerViewSet(CustomViewSet):
     permission_classes = [UserAccessApiBasePermission]
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
