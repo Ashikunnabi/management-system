@@ -1,11 +1,10 @@
-
 def mobile_validator() -> list:
     """
     This function return a list of regex code for bd mobile number and the message(description of the regex requirement).
     :return: [regex, message]
     """
-    regex = '\+?(88)?01[3456789][0-9]{8}\b'
-    message = 'Mobile number must start with +8801 or 8801'
+    regex = '\+?(88)?01[3456789][0-9]{8}$'
+    message = 'Mobile number must be a valid bangladeshi number'
     return [regex, message]
 
 
