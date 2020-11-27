@@ -25,7 +25,6 @@ def handler500(request, *args, **argv):
 
 def dashboard(request):
     branch = Branch.objects.all()
-    print(branch, '00000000000000000000000000000000000000000')
     return render(request, 'base/dashboard.html')
 
 
