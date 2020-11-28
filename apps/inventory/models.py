@@ -64,7 +64,7 @@ class Product(AuditTrail):
     box_number = models.CharField(max_length=50, null=True, blank=True)
     physical_location = models.CharField(max_length=50, null=True, blank=True)
     extra_description = models.TextField()  # color=red\nsize=35\nweight=500gm
-    unit = models.ForeignKey(UnitType, on_delete=models.PROTECT, related_name='product_unit')
+    unit_type = models.ForeignKey(UnitType, on_delete=models.PROTECT, related_name='product_unit_type')
     unit_price = models.FloatField(default=00.00)
     lowest_selling_price = models.FloatField(default=00.00)
     available_stock = models.IntegerField()
