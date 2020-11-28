@@ -4,7 +4,7 @@ def mobile_validator() -> list:
     :return: [regex, message]
     """
     regex = '\+?(88)?01[3456789][0-9]{8}$'
-    message = 'Mobile number must be a valid bangladeshi number'
+    message = 'Mobile number must be a valid Bangladeshi number'
     return [regex, message]
 
 
