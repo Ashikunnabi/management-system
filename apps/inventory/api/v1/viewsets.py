@@ -22,20 +22,20 @@ class CategoryViewSet(CustomViewSet):
 
     def perform_create(self, serializer, request):
         """ Create a new category and store activity log. """
-        serializer.save()
         store_user_activity(request,
                             store_json=serializer.data,
                             description=f"Category: A new category '{request.data.get('name')}' added."
                             )
+        serializer.save()
 
     def perform_update(self, instance, serializer, request):
         """ Update an existing category and store activity log. """
         previous_data_before_update = self.model.objects.get(hashed_id=instance.hashed_id)
-        serializer.save()
         store_user_activity(request,
                             store_json=serializer.data,
                             description=f"Category: An existing category '{previous_data_before_update.name}' modified."
                             )
+        serializer.save()
 
     def perform_destroy(self, instance, request):
         """ Delete an existing category and store activity log. """
@@ -48,11 +48,15 @@ class CategoryViewSet(CustomViewSet):
 
     def create(self, request, *args, **kwargs):
         try:
+            if request.data.get('category'):
+                category = get_object_or_404(Category, hashed_id=request.data.get('category'))
+                request.data.update({"category": category.id})
             department = get_object_or_404(Department, hashed_id=request.data.get('department'))
             request.data.update({"department": department.id})
         except Exception as ex:
-            # if department is not found then do not process request further
-            return Response({"department": ["Not found."]}, status=status.HTTP_400_BAD_REQUEST)
+            # if category (optional), department is not found then do not process request further
+            title = ex.__str__().split(' ')[1].lower()
+            return Response({title: ["Not found."]}, status=status.HTTP_400_BAD_REQUEST)
 
         serializer = self.serializer_class(data=request.data)  # validate posted data using serializer
         if serializer.is_valid():
@@ -62,13 +66,17 @@ class CategoryViewSet(CustomViewSet):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, *args, **kwargs):
-        if request.data.get('department'):
-            try:
+        try:
+            if request.data.get('category'):
+                category = get_object_or_404(Category, hashed_id=request.data.get('category'))
+                request.data.update({"category": category.id})
+            if request.data.get('department'):
                 department = get_object_or_404(Department, hashed_id=request.data.get('department'))
                 request.data.update({"department": department.id})
-            except Exception as ex:
-                # if department is not found then do not process request further
-                return Response({"department": ["Not found."]}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as ex:
+            # if category (optional), department is not found then do not process request further
+            title = ex.__str__().split(' ')[1].lower()
+            return Response({title: ["Not found."]}, status=status.HTTP_400_BAD_REQUEST)
 
         instance = self.get_object()  # get the requested object instance
         serializer = self.serializer_class(instance, data=request.data, partial=True)  # validate posted data using serializer
@@ -94,20 +102,20 @@ class VendorViewSet(CustomViewSet):
 
     def perform_create(self, serializer, request):
         """ Create a new vendor and store activity log. """
-        serializer.save()
         store_user_activity(request,
                             store_json=serializer.data,
                             description=f"Vendor: A new vendor '{request.data.get('name')}' added."
                             )
+        serializer.save()
 
     def perform_update(self, instance, serializer, request):
         """ Update an existing vendor and store activity log. """
         previous_data_before_update = self.model.objects.get(hashed_id=instance.hashed_id)
-        serializer.save()
         store_user_activity(request,
                             store_json=serializer.data,
                             description=f"Vendor: An existing vendor '{previous_data_before_update.name}' modified."
                             )
+        serializer.save()
 
     def perform_destroy(self, instance, request):
         """ Delete an existing vendor and store activity log. """
@@ -166,20 +174,20 @@ class UnitTypeViewSet(CustomViewSet):
 
     def perform_create(self, serializer, request):
         """ Create a new unit type and store activity log. """
-        serializer.save()
         store_user_activity(request,
                             store_json=serializer.data,
                             description=f"Unit Type: A new unit type '{request.data.get('name')}' added."
                             )
+        serializer.save()
 
     def perform_update(self, instance, serializer, request):
         """ Update an existing unit type and store activity log. """
         previous_data_before_update = self.model.objects.get(hashed_id=instance.hashed_id)
-        serializer.save()
         store_user_activity(request,
                             store_json=serializer.data,
                             description=f"Unit Type: An existing unit type '{previous_data_before_update.name}' modified."
                             )
+        serializer.save()
 
     def perform_destroy(self, instance, request):
         """ Delete an existing unit type and store activity log. """
@@ -239,20 +247,20 @@ class ProductViewSet(CustomViewSet):
 
     def perform_create(self, serializer, request):
         """ Create a new product and store activity log. """
-        serializer.save()
         store_user_activity(request,
                             store_json=serializer.data,
                             description=f"Product: A new product '{request.data.get('name')}' added."
                             )
+        serializer.save()
 
     def perform_update(self, instance, serializer, request):
         """ Update an existing product and store activity log. """
         previous_data_before_update = self.model.objects.get(hashed_id=instance.hashed_id)
-        serializer.save()
         store_user_activity(request,
                             store_json=serializer.data,
                             description=f"Product: An existing product '{previous_data_before_update.name}' modified."
                             )
+        serializer.save()
 
     def perform_destroy(self, instance, request):
         """ Delete an existing product and store activity log. """
@@ -285,29 +293,21 @@ class ProductViewSet(CustomViewSet):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, *args, **kwargs):
-        if request.data.get('category'):
-            try:
+        try:
+            if request.data.get('category'):
                 category = get_object_or_404(Category, hashed_id=request.data.get('category'))
                 request.data.update({"category": category.id})
-            except Exception as ex:
-                # if category is not found then do not process request further
-                return Response({"category": ["Not found."]}, status=status.HTTP_400_BAD_REQUEST)
-
-        if request.data.get('vendor'):
-            try:
+            if request.data.get('vendor'):
                 vendor = get_object_or_404(Vendor, hashed_id=request.data.get('vendor'))
                 request.data.update({"vendor": vendor.id})
-            except Exception as ex:
-                # if vendor is not found then do not process request further
-                return Response({"vendor": ["Not found."]}, status=status.HTTP_400_BAD_REQUEST)
-
-        if request.data.get('unit_type'):
-            try:
+            if request.data.get('unit_type'):
                 unit_type = get_object_or_404(UnitType, hashed_id=request.data.get('unit_type'))
                 request.data.update({"unit_type": unit_type.id})
-            except Exception as ex:
-                # if unit_type is not found then do not process request further
-                return Response({"unit_type": ["Not found."]}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as ex:
+            # if category, vendor, unit_type is not found then do not process request further
+            title = ex.__str__().split(' ')[1].lower()
+            title = 'unit_type' if title == 'unittype' else title
+            return Response({title: ["Not found."]}, status=status.HTTP_400_BAD_REQUEST)
 
         instance = self.get_object()  # get the requested object instance
         serializer = self.serializer_class(instance, data=request.data, partial=True)  # validate posted data using serializer
@@ -333,20 +333,20 @@ class CustomerViewSet(CustomViewSet):
 
     def perform_create(self, serializer, request):
         """ Create a new customer and store activity log. """
-        serializer.save()
         store_user_activity(request,
                             store_json=serializer.data,
                             description=f"Customer: A new customer '{request.data.get('name')}' added."
                             )
+        serializer.save()
 
     def perform_update(self, instance, serializer, request):
         """ Update an existing customer and store activity log. """
         previous_data_before_update = self.model.objects.get(hashed_id=instance.hashed_id)
-        serializer.save()
         store_user_activity(request,
                             store_json=serializer.data,
                             description=f"Customer: An existing customer '{previous_data_before_update.name}' modified."
                             )
+        serializer.save()
 
     def perform_destroy(self, instance, request):
         """ Delete an existing customer and store activity log. """
