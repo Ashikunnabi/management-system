@@ -6,7 +6,7 @@ from .models import *
 admin.site.register(Permission)
 admin.site.register(Role)
 admin.site.register(User)
-admin.site.register(Client)
+admin.site.register(Customer)
 admin.site.register(Feature)
 admin.site.register(ActivityLog)
 admin.site.register(Department)

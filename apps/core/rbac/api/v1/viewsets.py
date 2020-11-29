@@ -187,11 +187,11 @@ def get_user_info(request):
     return Response(response, status=200)
 
 
-class ClientViewSet(CustomViewSet):
+class CustomerViewSet(CustomViewSet):
     permission_classes = [UserAccessApiBasePermission]
-    serializer_class = ClientSerializer
-    queryset = Client.objects.all()
-    model = Client
+    serializer_class = CustomerSerializer
+    queryset = Customer.objects.all()
+    model = Customer
     # lookup_field = 'hashed_id'  # Individual object will be found by this field
 
 

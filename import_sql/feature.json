@@ -13,8 +13,7 @@
       "url": null,
       "parent": null,
       "order_for_sidebar": 2,
-      "is_active": true,
-      "clients": []
+      "is_active": true
     }
   },
   {
@@ -31,8 +30,7 @@
       "url": "/user/",
       "parent": "1",
       "order_for_sidebar": 2.4,
-      "is_active": true,
-      "clients": []
+      "is_active": true
     }
   },
   {
@@ -49,8 +47,7 @@
       "url": "/role/",
       "parent": "1",
       "order_for_sidebar": 2.2,
-      "is_active": true,
-      "clients": []
+      "is_active": true
     }
   },
   {
@@ -67,8 +64,7 @@
       "url": "/permission/",
       "parent": "1",
       "order_for_sidebar": 2.1,
-      "is_active": true,
-      "clients": []
+      "is_active": true
     }
   },
   {
@@ -79,14 +75,13 @@
       "updated_by": "1",
       "created_at": "2020-05-09T13:01:58.368Z",
       "updated_at": "2020-05-09T13:21:36.339Z",
-      "title": "Client",
+      "title": "Customer",
       "icon": null,
-      "code": "client",
-      "url": "/client/",
+      "code": "customer",
+      "url": "/customer/",
       "parent": "9",
       "order_for_sidebar": 1111,
-      "is_active": true,
-      "clients": []
+      "is_active": true
     }
   },
   {
@@ -103,8 +98,7 @@
       "url": null,
       "parent": null,
       "order_for_sidebar": 3,
-      "is_active": true,
-      "clients": []
+      "is_active": true
     }
   },
   {
@@ -121,8 +115,7 @@
       "url": "/domain/",
       "parent": "9",
       "order_for_sidebar": 1111,
-      "is_active": true,
-      "clients": []
+      "is_active": true
     }
   },
   {
@@ -139,8 +132,7 @@
       "url": "/feature/",
       "parent": "9",
       "order_for_sidebar": 1111,
-      "is_active": true,
-      "clients": []
+      "is_active": true
     }
   },
   {
@@ -157,8 +149,7 @@
       "url": "/group/",
       "parent": "1",
       "order_for_sidebar": 2.3,
-      "is_active": true,
-      "clients": []
+      "is_active": true
     }
   },
   {
@@ -175,8 +166,7 @@
       "url": "/",
       "parent": null,
       "order_for_sidebar": 1,
-      "is_active": true,
-      "clients": []
+      "is_active": true
     }
   },
   {
@@ -193,8 +183,7 @@
       "url": null,
       "parent": null,
       "order_for_sidebar": 4,
-      "is_active": true,
-      "clients": []
+      "is_active": true
     }
   },
   {
@@ -211,8 +200,7 @@
       "url": "/branch/",
       "parent": "9",
       "order_for_sidebar": 1111.2,
-      "is_active": true,
-      "clients": []
+      "is_active": true
     }
   },
   {
@@ -229,8 +217,7 @@
       "url": "/department/",
       "parent": "9",
       "order_for_sidebar": 1111.3,
-      "is_active": true,
-      "clients": []
+      "is_active": true
     }
   },
   {
@@ -247,8 +234,7 @@
       "url": "/category/",
       "parent": "14",
       "order_for_sidebar": 1112.1,
-      "is_active": true,
-      "clients": []
+      "is_active": true
     }
   },
   {
@@ -265,8 +251,7 @@
       "url": "/vendor/",
       "parent": "14",
       "order_for_sidebar": 1112.2,
-      "is_active": true,
-      "clients": []
+      "is_active": true
     }
   },
   {
@@ -283,8 +268,7 @@
       "url": "/product/",
       "parent": "14",
       "order_for_sidebar": 1112.3,
-      "is_active": true,
-      "clients": []
+      "is_active": true
     }
   },
   {
@@ -297,12 +281,11 @@
       "updated_at": "2020-11-23T05:45:20.313391Z",
       "title": "Customer",
       "icon": null,
-      "code": "customer",
+      "code": "asset_customer",
       "url": "/customer/",
       "parent": "14",
       "order_for_sidebar": 1112.4,
-      "is_active": true,
-      "clients": []
+      "is_active": true
     }
   },
   {
@@ -319,8 +302,7 @@
       "url": "/unit-type/",
       "parent": "14",
       "order_for_sidebar": 1112.4,
-      "is_active": true,
-      "clients": []
+      "is_active": true
     }
   }
 ]

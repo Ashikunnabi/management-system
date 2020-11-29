@@ -5,9 +5,10 @@ from apps.core.rbac.models import *
 # These fields will not  send to api response
 exclude_fields = ('id', 'created_at', 'updated_at', 'created_by', 'updated_by')
 
-class ClientSerializer(serializers.ModelSerializer):
+
+class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Client
+        model = Customer
         fields = '__all__'
 
     def validate_schema_name(self, value):
@@ -24,7 +25,7 @@ class DomainSerializer(serializers.ModelSerializer):
 
 
 class TenantSerializer(serializers.ModelSerializer):
-    customer = ClientSerializer()
+    customer = CustomerSerializer()
 
     class Meta:
         model = Domain
@@ -32,7 +33,7 @@ class TenantSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         """ Create and return a new Tenant. """
-        customer = Client.objects.create(**validated_data.get('customer'))
+        customer = Customer.objects.create(**validated_data.get('customer'))
         domain = Domain()
         domain.domain = validated_data.get('domain')
         domain.sub_domain = validated_data.get('sub_domain')

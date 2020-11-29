@@ -44,13 +44,13 @@ class ActivityLog(AuditTrail):
         return self.description
 
 
-class Client(TenantMixin):
+class Customer(TenantMixin):
     STATUS = (
         (1, 'General User'),
         (2, 'Pro User'),
     )
     name = models.CharField(max_length=50, blank=False, null=False, unique=True)
-    logo = models.FileField(upload_to='client/', blank=True, null=True)
+    logo = models.FileField(upload_to='customer/', blank=True, null=True)
     address = models.CharField(max_length=500)
     status = models.IntegerField(choices=STATUS)
     is_active = models.BooleanField(default=False)
@@ -71,17 +71,19 @@ class Domain(DomainMixin):
 
 
 class Feature(AuditTrail):
-    title = models.CharField(max_length=50, blank=False, null=False, unique=True)
+    title = models.CharField(max_length=50, blank=False, null=False)
     icon = models.CharField(max_length=50, blank=True, null=True)
     code = models.CharField(max_length=50, blank=False, null=False, unique=True)
     url = models.CharField(max_length=50, blank=True, null=True)
     parent = models.CharField(max_length=5, blank=True, null=True)
-    clients = models.ManyToManyField(Client, blank=True, related_name='feature_client')
     order_for_sidebar = models.FloatField(default=1111)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        unique_together = ('title', 'parent')
 
 
 class Permission(AuditTrail):
@@ -170,7 +172,6 @@ class Branch(AuditTrail):
                                 message='Branch contains alphanumeric, underscore, space and period(.). Length: 2 to 100'
                             )]
                             )
-    client = models.ForeignKey(Client, related_name='branch_client', on_delete=models.CASCADE)
     parent = models.ForeignKey('self', blank=True, null=True, on_delete=models.CASCADE)
     user = models.ManyToManyField(User, blank=True, related_name='branch_users')
     group = models.ManyToManyField(Group, blank=True, related_name='branch_groups')
@@ -183,7 +184,8 @@ class Branch(AuditTrail):
         return list(dict.fromkeys(all_user[0]))  # all unique user list
 
     def __str__(self):
-        return f"{self.name} ({self.client.name})"
+        return f"{self.name}"
+
 
 class Department(AuditTrail):
     name = models.CharField(max_length=100,
