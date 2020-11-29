@@ -23,20 +23,22 @@ class CategoryViewSet(CustomViewSet):
 
     def perform_create(self, serializer, request):
         """ Create a new category and store activity log. """
+        serializer.save()
         store_user_activity(request,
                             store_json=serializer.data,
                             description=f"Category: A new category '{request.data.get('name')}' added."
                             )
-        serializer.save()
+
 
     def perform_update(self, instance, serializer, request):
         """ Update an existing category and store activity log. """
         previous_data_before_update = self.model.objects.get(hashed_id=instance.hashed_id)
+        serializer.save()
         store_user_activity(request,
                             store_json=serializer.data,
                             description=f"Category: An existing category '{previous_data_before_update.name}' modified."
                             )
-        serializer.save()
+
 
     def perform_destroy(self, instance, request):
         """ Delete an existing category and store activity log. """
@@ -50,8 +52,9 @@ class CategoryViewSet(CustomViewSet):
     def create(self, request, *args, **kwargs):
         try:
             if request.data.get('category'):
+                # Getting 'category' as parent obj and set it to 'parent' field
                 category = get_object_or_404(Category, hashed_id=request.data.get('category'))
-                request.data.update({"category": category.id})  # Changing the value of category value hashed_id to id
+                request.data.update({"parent": category.id})  # Changing the value of category value hashed_id to id
                 # of json. So that other relational operation can be done by id which is default.
             department = get_object_or_404(Department, hashed_id=request.data.get('department'))
             request.data.update({"department": department.id})  # Changing the value of dep value, hashed_id to id
@@ -73,7 +76,7 @@ class CategoryViewSet(CustomViewSet):
         try:
             if request.data.get('category'):
                 category = get_object_or_404(Category, hashed_id=request.data.get('category'))
-                request.data.update({"category": category.id})  # Changing the value of category value, hashed_id to id
+                request.data.update({"parent": category.id})  # Changing the value of category value, hashed_id to id
                 # of json. So that other relational operation can be done by using id which is default.
             if request.data.get('department'):
                 department = get_object_or_404(Department, hashed_id=request.data.get('department'))
@@ -111,20 +114,21 @@ class VendorViewSet(CustomViewSet):
 
     def perform_create(self, serializer, request):
         """ Create a new vendor and store activity log. """
+        serializer.save()
         store_user_activity(request,
                             store_json=serializer.data,
                             description=f"Vendor: A new vendor '{request.data.get('name')}' added."
                             )
-        serializer.save()
 
     def perform_update(self, instance, serializer, request):
         """ Update an existing vendor and store activity log. """
         previous_data_before_update = self.model.objects.get(hashed_id=instance.hashed_id)
+        serializer.save()
         store_user_activity(request,
                             store_json=serializer.data,
                             description=f"Vendor: An existing vendor '{previous_data_before_update.name}' modified."
                             )
-        serializer.save()
+
 
     def perform_destroy(self, instance, request):
         """ Delete an existing vendor and store activity log. """
@@ -187,20 +191,21 @@ class UnitTypeViewSet(CustomViewSet):
 
     def perform_create(self, serializer, request):
         """ Create a new unit type and store activity log. """
+        serializer.save()
+
         store_user_activity(request,
                             store_json=serializer.data,
                             description=f"Unit Type: A new unit type '{request.data.get('name')}' added."
                             )
-        serializer.save()
-
     def perform_update(self, instance, serializer, request):
         """ Update an existing unit type and store activity log. """
         previous_data_before_update = self.model.objects.get(hashed_id=instance.hashed_id)
+        serializer.save()
         store_user_activity(request,
                             store_json=serializer.data,
                             description=f"Unit Type: An existing unit type '{previous_data_before_update.name}' modified."
                             )
-        serializer.save()
+
 
     def perform_destroy(self, instance, request):
         """ Delete an existing unit type and store activity log. """
@@ -264,20 +269,21 @@ class ProductViewSet(CustomViewSet):
 
     def perform_create(self, serializer, request):
         """ Create a new product and store activity log. """
+        serializer.save()
         store_user_activity(request,
                             store_json=serializer.data,
                             description=f"Product: A new product '{request.data.get('name')}' added."
                             )
-        serializer.save()
 
     def perform_update(self, instance, serializer, request):
         """ Update an existing product and store activity log. """
         previous_data_before_update = self.model.objects.get(hashed_id=instance.hashed_id)
+        serializer.save()
         store_user_activity(request,
                             store_json=serializer.data,
                             description=f"Product: An existing product '{previous_data_before_update.name}' modified."
                             )
-        serializer.save()
+
 
     def perform_destroy(self, instance, request):
         """ Delete an existing product and store activity log. """
