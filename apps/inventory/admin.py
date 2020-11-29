@@ -7,5 +7,6 @@ admin.site.register(Customer)
 admin.site.register(Buy)
 admin.site.register(Sell)
 admin.site.register(Transfer)
+admin.site.register(UnitType)
 
 # Register your models here.
