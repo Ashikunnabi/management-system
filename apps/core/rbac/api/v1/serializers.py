@@ -2,6 +2,9 @@ from rest_framework import serializers
 from apps.core.rbac.models import *
 
 
+# These fields will not  send to api response
+exclude_fields = ('id', 'created_at', 'updated_at', 'created_by', 'updated_by')
+
 class ClientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
@@ -127,10 +130,10 @@ class GroupSerializer(serializers.ModelSerializer):
 class BranchSerializer(serializers.ModelSerializer):
     class Meta:
         model = Branch
-        exclude = ('id', 'created_at', 'updated_at', 'created_by', 'updated_by')  # These fields will not  send to api response
+        exclude = exclude_fields
 
 
 class DepartmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Department
-        exclude = ('id', 'created_at', 'updated_at', 'created_by', 'updated_by')  # These fields will not  send to api response
+        exclude = exclude_fields
