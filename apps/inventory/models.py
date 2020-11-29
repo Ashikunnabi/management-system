@@ -15,7 +15,7 @@ class Category(AuditTrail):
     department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='category_department')
 
     def __str__(self):
-        return self.name
+        return f"{self.name} ({self.parent.name if self.parent else self.department})"
 
     def total_product(self):
         return Product.objects.filter(category=self).count()
@@ -25,7 +25,6 @@ class Vendor(AuditTrail):
     name = models.CharField(max_length=100,
                             blank=False,
                             null=False,
-                            unique=True,
                             validators=[RegexValidator(regex=name_validator()[0], message=name_validator()[1])]
                             )
     mobile = models.CharField(max_length=14,
@@ -34,7 +33,7 @@ class Vendor(AuditTrail):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='vendor_category')
 
     def __str__(self):
-        return self.name
+        return f"{self.name} ({self.category.name})"
 
 
 class UnitType(AuditTrail):
