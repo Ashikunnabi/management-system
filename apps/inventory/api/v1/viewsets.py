@@ -17,7 +17,8 @@ class CategoryViewSet(CustomViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     model = Category
-    lookup_field = 'hashed_id'  # Individual object will be found by this field
+    lookup_field = 'hashed_id'  # Individual object will be found by this field. Doing this for security purpose.
+
     # pagination.PageNumberPagination.page_size = 0  # get all objects in response
 
     def perform_create(self, serializer, request):
@@ -50,12 +51,15 @@ class CategoryViewSet(CustomViewSet):
         try:
             if request.data.get('category'):
                 category = get_object_or_404(Category, hashed_id=request.data.get('category'))
-                request.data.update({"category": category.id})
+                request.data.update({"category": category.id})  # Changing the value of category value hashed_id to id
+                # of json. So that other relational operation can be done by id which is default.
             department = get_object_or_404(Department, hashed_id=request.data.get('department'))
-            request.data.update({"department": department.id})
+            request.data.update({"department": department.id})  # Changing the value of dep value, hashed_id to id
+            # of json. So that other relational operation can be done by id which is default.
         except Exception as ex:
             # if category (optional), department is not found then do not process request further
-            title = ex.__str__().split(' ')[1].lower()
+            title = ex.__str__().split(' ')[1].lower()  # The exception is: No Category/Department found.
+            # from this we are taking Category or Department
             return Response({title: ["Not found."]}, status=status.HTTP_400_BAD_REQUEST)
 
         serializer = self.serializer_class(data=request.data)  # validate posted data using serializer
@@ -69,17 +73,21 @@ class CategoryViewSet(CustomViewSet):
         try:
             if request.data.get('category'):
                 category = get_object_or_404(Category, hashed_id=request.data.get('category'))
-                request.data.update({"category": category.id})
+                request.data.update({"category": category.id})  # Changing the value of category value, hashed_id to id
+                # of json. So that other relational operation can be done by using id which is default.
             if request.data.get('department'):
                 department = get_object_or_404(Department, hashed_id=request.data.get('department'))
-                request.data.update({"department": department.id})
+                request.data.update({"department": department.id})  # Changing the value of dep value, hashed_id to id
+                # of json. So that other relational operation can be done by id which is default.
         except Exception as ex:
-            # if category (optional), department is not found then do not process request further
-            title = ex.__str__().split(' ')[1].lower()
+            # if category (optional), department (optional) is not found then do not process request further
+            title = ex.__str__().split(' ')[1].lower()  # The exception is: 'No Category/Department found'.
+            # from this we are taking Category or Department
             return Response({title: ["Not found."]}, status=status.HTTP_400_BAD_REQUEST)
 
         instance = self.get_object()  # get the requested object instance
-        serializer = self.serializer_class(instance, data=request.data, partial=True)  # validate posted data using serializer
+        serializer = self.serializer_class(instance, data=request.data,
+                                           partial=True)  # validate posted data using serializer
         if serializer.is_valid():
             self.perform_update(instance, serializer, request)
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -97,7 +105,8 @@ class VendorViewSet(CustomViewSet):
     queryset = Vendor.objects.all()
     serializer_class = VendorSerializer
     model = Vendor
-    lookup_field = 'hashed_id'  # Individual object will be found by this field
+    lookup_field = 'hashed_id'  # Individual object will be found by this field.  Doing this for security purpose.
+
     # pagination.PageNumberPagination.page_size = 0  # get all objects in response
 
     def perform_create(self, serializer, request):
@@ -129,7 +138,8 @@ class VendorViewSet(CustomViewSet):
     def create(self, request, *args, **kwargs):
         try:
             category = get_object_or_404(Category, hashed_id=request.data.get('category'))
-            request.data.update({"category": category.id})
+            request.data.update({"category": category.id})  # Changing the value of category value, hashed_id to id
+            # of json. So that other relational operation can be done by id which is default.
         except Exception as ex:
             # if category is not found then do not process request further
             return Response({"category": ["Not found."]}, status=status.HTTP_400_BAD_REQUEST)
@@ -145,13 +155,15 @@ class VendorViewSet(CustomViewSet):
         if request.data.get('category'):
             try:
                 category = get_object_or_404(Category, hashed_id=request.data.get('category'))
-                request.data.update({"category": category.id})
+                request.data.update({"category": category.id})  # Changing the value of category value, hashed_id to id
+                # of json. So that other relational operation can be done by id which is default.
             except Exception as ex:
                 # if category is not found then do not process request further
                 return Response({"category": ["Not found."]}, status=status.HTTP_400_BAD_REQUEST)
 
         instance = self.get_object()  # get the requested object instance
-        serializer = self.serializer_class(instance, data=request.data, partial=True)  # validate posted data using serializer
+        serializer = self.serializer_class(instance, data=request.data,
+                                           partial=True)  # validate posted data using serializer
         if serializer.is_valid():
             self.perform_update(instance, serializer, request)
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -169,7 +181,8 @@ class UnitTypeViewSet(CustomViewSet):
     queryset = UnitType.objects.all()
     serializer_class = UnitTypeSerializer
     model = UnitType
-    lookup_field = 'hashed_id'  # Individual object will be found by this field
+    lookup_field = 'hashed_id'  # Individual object will be found by this field.  Doing this for security purpose.
+
     # pagination.PageNumberPagination.page_size = 0  # get all objects in response
 
     def perform_create(self, serializer, request):
@@ -202,7 +215,8 @@ class UnitTypeViewSet(CustomViewSet):
         if request.data.get('category'):
             try:
                 category = get_object_or_404(Category, hashed_id=request.data.get('category'))
-                request.data.update({"category": category.id})
+                request.data.update({"category": category.id})  # Changing the value of category value, hashed_id to id
+                # of json. So that other relational operation can be done by id which is default.
             except Exception as ex:
                 # if category is not found then do not process request further
                 return Response({"category": ["Not found."]}, status=status.HTTP_400_BAD_REQUEST)
@@ -218,13 +232,15 @@ class UnitTypeViewSet(CustomViewSet):
         if request.data.get('category'):
             try:
                 category = get_object_or_404(Category, hashed_id=request.data.get('category'))
-                request.data.update({"category": category.id})
+                request.data.update({"category": category.id})  # Changing the value of category value, hashed_id to id
+                # of json. So that other relational operation can be done by id which is default.
             except Exception as ex:
                 # if category is not found then do not process request further
                 return Response({"category": ["Not found."]}, status=status.HTTP_400_BAD_REQUEST)
 
         instance = self.get_object()  # get the requested object instance
-        serializer = self.serializer_class(instance, data=request.data, partial=True)  # validate posted data using serializer
+        serializer = self.serializer_class(instance, data=request.data,
+                                           partial=True)  # validate posted data using serializer
         if serializer.is_valid():
             self.perform_update(instance, serializer, request)
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -242,7 +258,8 @@ class ProductViewSet(CustomViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     model = Product
-    lookup_field = 'hashed_id'  # Individual object will be found by this field
+    lookup_field = 'hashed_id'  # Individual object will be found by this field.  Doing this for security purpose.
+
     # pagination.PageNumberPagination.page_size = 0  # get all objects in response
 
     def perform_create(self, serializer, request):
@@ -274,15 +291,20 @@ class ProductViewSet(CustomViewSet):
     def create(self, request, *args, **kwargs):
         try:
             category = get_object_or_404(Category, hashed_id=request.data.get('category'))
-            request.data.update({"category": category.id})
+            request.data.update({"category": category.id})   # Changing the value of category value, hashed_id to id
+                # of json. So that other relational operation can be done by id which is default.
             vendor = get_object_or_404(Vendor, hashed_id=request.data.get('vendor'))
-            request.data.update({"vendor": vendor.id})
+            request.data.update({"vendor": vendor.id})   # Changing the value of vendor value, hashed_id to id
+                # of json. So that other relational operation can be done by id which is default.
             unit_type = get_object_or_404(UnitType, hashed_id=request.data.get('unit_type'))
-            request.data.update({"unit_type": unit_type.id})
+            request.data.update({"unit_type": unit_type.id})   # Changing the value of unit_type value, hashed_id to id
+                # of json. So that other relational operation can be done by id which is default.
         except Exception as ex:
             # if category, vendor & unit_type is not found then do not process request further
-            title = ex.__str__().split(' ')[1].lower()
-            title = 'unit_type' if title == 'unittype' else title
+            title = ex.__str__().split(' ')[1].lower()  # The exception is: No Category/Vendor/UnitType found.
+            # from this we are taking Category or Vendor or UnitType
+            title = 'unit_type' if title == 'unittype' else title  # as model has the field like 'unit_type' that's why
+            # setting title value = 'unit_type'
             return Response({title: ["Not found."]}, status=status.HTTP_400_BAD_REQUEST)
 
         serializer = self.serializer_class(data=request.data)  # validate posted data using serializer
@@ -296,7 +318,8 @@ class ProductViewSet(CustomViewSet):
         try:
             if request.data.get('category'):
                 category = get_object_or_404(Category, hashed_id=request.data.get('category'))
-                request.data.update({"category": category.id})
+                request.data.update({"category": category.id})   # Changing the value of category value, hashed_id to id
+                # of json. So that other relational operation can be done by id which is default.
             if request.data.get('vendor'):
                 vendor = get_object_or_404(Vendor, hashed_id=request.data.get('vendor'))
                 request.data.update({"vendor": vendor.id})
@@ -305,12 +328,14 @@ class ProductViewSet(CustomViewSet):
                 request.data.update({"unit_type": unit_type.id})
         except Exception as ex:
             # if category, vendor, unit_type is not found then do not process request further
-            title = ex.__str__().split(' ')[1].lower()
+            title = ex.__str__().split(' ')[1].lower()   # The exception is: No Category/Vendor/UnitType found.
+            # from this we are taking Category or Vendor or UnitType
             title = 'unit_type' if title == 'unittype' else title
             return Response({title: ["Not found."]}, status=status.HTTP_400_BAD_REQUEST)
 
         instance = self.get_object()  # get the requested object instance
-        serializer = self.serializer_class(instance, data=request.data, partial=True)  # validate posted data using serializer
+        serializer = self.serializer_class(instance, data=request.data,
+                                           partial=True)  # validate posted data using serializer
         if serializer.is_valid():
             self.perform_update(instance, serializer, request)
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -328,7 +353,8 @@ class CustomerViewSet(CustomViewSet):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
     model = Customer
-    lookup_field = 'hashed_id'  # Individual object will be found by this field
+    lookup_field = 'hashed_id'  # Individual object will be found by this field.  Doing this for security purpose.
+
     # pagination.PageNumberPagination.page_size = 0  # get all objects in response
 
     def perform_create(self, serializer, request):
@@ -367,7 +393,8 @@ class CustomerViewSet(CustomViewSet):
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()  # get the requested object instance
-        serializer = self.serializer_class(instance, data=request.data, partial=True)  # validate posted data using serializer
+        serializer = self.serializer_class(instance, data=request.data,
+                                           partial=True)  # validate posted data using serializer
         if serializer.is_valid():
             self.perform_update(instance, serializer, request)
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -378,4 +405,3 @@ class CustomerViewSet(CustomViewSet):
         instance = self.get_object()  # get the requested object instance
         self.perform_destroy(instance, request)
         return Response({"detail": "Customer deleted successfully"}, status=status.HTTP_200_OK)
-
