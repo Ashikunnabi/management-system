@@ -10,7 +10,8 @@ from rest_framework.response import Response
 from apps.core.rbac.permission import UserAccessApiBasePermission
 from apps.core.base.utils.basic import *
 from apps.core.rbac.viewset import CustomViewSet
-from .serializers import *  
+from apps.inventory.models import Category
+from .serializers import *
 from apps.core.rbac.models import *
 
 
@@ -18,14 +19,14 @@ from apps.core.rbac.models import *
 def registration(request):
     required_params = ['first_name', 'last_name', 'username', 'email', 'password', 'is_active']
     params = request.data
-    
+
     # validating post data
     if params.get('is_admin') is True:
         required_params.append('secret_code')
     error_param = json_parameter_validation(params, required_params)
     if error_param is not None:
         return Response({"details": "'{}' required.".format(error_param)}, status=400)
-        
+
     if params.get('is_admin') is True:
         if params.get('secret_code') == settings.SECRET_CODE_ADMIN:
             params['is_staff'] = True
@@ -34,52 +35,52 @@ def registration(request):
             del params['secret_code']
         else:
             return Response({"details": "You are not allowed to be an admin"}, status=401)
-        
+
     # creating new user
     with transaction.atomic():
         user = User.objects.create_user(**params)
-    
+
     # send email with activation url
 
-    return Response({"details": "Registration Successful"}, status=201)    
+    return Response({"details": "Registration Successful"}, status=201)
 
-    
+
 @api_view(['GET'])
 def check_username_existence(request):
     param = request.data
     required_params = ['username']
-    
+
     # validating data
     error_param = json_parameter_validation(param, required_params)
     if error_param is not None:
         return Response({"details": "'{}' required.".format(error_param)}, status=400)
-    
+
     user = User.objects.filter(username=param['username'])
-    
+
     if user.exists():
         return Response({"details": "'{}' already exists.".format(param['username'])}, status=405)
     else:
-        return Response({"details": "Valid username."}, status=200)   
+        return Response({"details": "Valid username."}, status=200)
 
-    
+
 @api_view(['GET'])
 def check_email_existence(request):
     param = request.data
     required_params = ['email']
-    
+
     # validating data
     error_param = json_parameter_validation(param, required_params)
     if error_param is not None:
         return Response({"details": "'{}' required.".format(error_param)}, status=400)
-    
+
     user = User.objects.filter(email=param['email'])
-    
+
     if user.exists():
         return Response({"details": "'{}' already exists.".format(param['email'])}, status=405)
     else:
         return Response({"details": "Valid email."}, status=200)
-   
-   
+
+
 @api_view(['GET'])
 def active_user(request, activation_url):
     try:
@@ -91,36 +92,36 @@ def active_user(request, activation_url):
         return Response({"details": "Account activated"}, status=200)
     except:
         return Response({"details": "Invalid Action"}, status=400)
- 
- 
+
+
 @api_view(['GET'])
 def reset_password_send_url(request):
     param = request.data
     required_params = ['username']
-    
+
     # validating data
     error_param = json_parameter_validation(param, required_params)
     if error_param is not None:
         return Response({"details": "'{}' required.".format(error_param)}, status=400)
-    try: 
+    try:
         user = User.objects.get(username=param.get('username'))
         account_activation_url = user.activation_url
         # send and email with profile_activation_url
         return Response({"activation_url": account_activation_url}, status=200)
     except:
         return Response({"details": "Not an associate user."}, status=400)
- 
- 
+
+
 @api_view(['POST'])
 def reset_password(request, activation_url):
     param = request.data
     required_params = ['password1', 'password2']
-    
+
     # validating data
     error_param = json_parameter_validation(param, required_params)
     if error_param is not None:
         return Response({"details": "'{}' required.".format(error_param)}, status=400)
-    
+
     if param['password1'] == param['password2']:
         try:
             user = User.objects.get(activation_url=activation_url)
@@ -130,17 +131,17 @@ def reset_password(request, activation_url):
             return Response({"details": "Invalid action"}, status=400)
     else:
         return Response({"details": "Password does not matched."}, status=400)
-        
+
 
 @api_view(['POST'])
 def login(request):
     param = request.data
-    required_params = ['username', 'password']    
+    required_params = ['username', 'password']
     # validating data
     error_param = json_parameter_validation(param, required_params)
     if error_param is not None:
         return Response({"details": "'{}' required.".format(error_param)}, status=400)
-    
+
     url = f"{request.build_absolute_uri().split('/api')[0]}{reverse('core:rbac:token_obtain_pair')}"
     token = requests.post(url, json=param)
     if token.status_code == 200:
@@ -151,49 +152,48 @@ def login(request):
         user = User.objects.get(username=request.data['username'])
         store_user_activity(
             request,
-            UserSerializer(user).data, 
+            UserSerializer(user).data,
             f'{user.get_full_name()}({user.username}) logged in successfully.'
         )
     return Response(token.json(), status=token.status_code)
-    
-    
+
+
 @api_view(['GET'])
 def logout(request):
     pass
- 
- 
+
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_user_info(request):
     param = request.data
     required_params = ['username']
-    
+
     # validating data
     error_param = json_parameter_validation(param, required_params)
     if error_param is not None:
-        return Response({"details": "'{}' required.".format(error_param)}, status=400)  
-    
-    
+        return Response({"details": "'{}' required.".format(error_param)}, status=400)
+
     user = User.objects.filter(username=param['username'])[0]
-    
+
     response = {
-      'username': user.username,
-      'email': user.email,
-      'role': user.role.id,
-      'permissions': [_.id for _ in user.role.permission.all()],
-      'is_admin': True if user.role.code in ['super_admin', 'admin'] else False,
-      'is_active': user.is_active,
+        'username': user.username,
+        'email': user.email,
+        'role': user.role.id,
+        'permissions': [_.id for _ in user.role.permission.all()],
+        'is_admin': True if user.role.code in ['super_admin', 'admin'] else False,
+        'is_active': user.is_active,
     }
     return Response(response, status=200)
- 
+
 
 class ClientViewSet(CustomViewSet):
     permission_classes = [UserAccessApiBasePermission]
     serializer_class = ClientSerializer
-    queryset = Customer.objects.all()
-    model = Customer
+    queryset = Client.objects.all()
+    model = Client
     # lookup_field = 'hashed_id'  # Individual object will be found by this field
- 
+
 
 class DomainViewSet(CustomViewSet):
     permission_classes = [UserAccessApiBasePermission]
@@ -201,7 +201,7 @@ class DomainViewSet(CustomViewSet):
     queryset = Domain.objects.all()
     model = Domain
     # lookup_field = 'hashed_id'  # Individual object will be found by this field
-    
+
 
 class TenantViewSet(CustomViewSet):
     permission_classes = [UserAccessApiBasePermission]
@@ -209,7 +209,7 @@ class TenantViewSet(CustomViewSet):
     queryset = Domain.objects.all()
     model = Domain
     # lookup_field = 'hashed_id'  # Individual object will be found by this field
- 
+
 
 class SidebarViewSet(viewsets.ModelViewSet):
     permission_classes = [UserAccessApiBasePermission]
@@ -219,7 +219,7 @@ class SidebarViewSet(viewsets.ModelViewSet):
     pagination_class = None
     model = Feature
     # lookup_field = 'hashed_id'  # Individual object will be found by this field
- 
+
 
 class FeatureViewSet(CustomViewSet):
     permission_classes = [UserAccessApiBasePermission]
@@ -228,7 +228,7 @@ class FeatureViewSet(CustomViewSet):
     model = Feature
     # lookup_field = 'hashed_id'  # Individual object will be found by this field
 
-    
+
 class PermissionViewSet(CustomViewSet):
     permission_classes = [UserAccessApiBasePermission]
     serializer_class = PermissionSerializer
@@ -251,7 +251,7 @@ class GroupViewSet(CustomViewSet):
     queryset = Group.objects.all()
     model = Group
     # lookup_field = 'hashed_id'  # Individual object will be found by this field
-    
+
 
 class BranchViewSet(CustomViewSet):
     permission_classes = [UserAccessApiBasePermission]
@@ -259,9 +259,6 @@ class BranchViewSet(CustomViewSet):
     queryset = Branch.objects.all()
     model = Branch
     lookup_field = 'hashed_id'  # Individual object will be found by this field
-
-    # def create(self, validate_date):
-
 
 
 class DepartmentViewSet(CustomViewSet):
@@ -272,46 +269,27 @@ class DepartmentViewSet(CustomViewSet):
     lookup_field = 'hashed_id'  # Individual object will be found by this field
 
 
-
 class UserViewSet(CustomViewSet):
     permission_classes = [UserAccessApiBasePermission]
     serializer_class = UserSerializer
     queryset = User.objects.all()
     model = User
+
     # lookup_field = 'hashed_id'  # Individual object will be found by this field
-    
+
     def get_queryset(self):
         queryset = super().get_queryset()
         return queryset.order_by('-id')
-        
+
     def destroy(self, request, pk=None):
         """ User can not be deleted. """
         queryset = User.objects.all()
         user = get_object_or_404(queryset, pk=pk)
-        
+
         if request.user.role.id == 1:
             user.delete()
             return Response({'details': 'User has been deleted successfully.'})
         else:
-            user.is_active=False
+            user.is_active = False
             user.save()
             return Response(UserSerializer(user).data)
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

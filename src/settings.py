@@ -51,7 +51,7 @@ TENANT_APPS = (
 INSTALLED_APPS = list(set(SHARED_APPS + TENANT_APPS))
 
 
-TENANT_MODEL = 'rbac.Customer'
+TENANT_MODEL = 'rbac.Client'
 TENANT_DOMAIN_MODEL = "rbac.Domain"
 ROOT_URLCONF = 'src.urls'
 AUTH_USER_MODEL = 'rbac.User'

@@ -44,13 +44,13 @@ class ActivityLog(AuditTrail):
         return self.description
 
 
-class Customer(TenantMixin):
+class Client(TenantMixin):
     STATUS = (
         (1, 'General User'),
         (2, 'Pro User'),
     )
     name = models.CharField(max_length=50, blank=False, null=False, unique=True)
-    logo = models.FileField(upload_to='customer/', blank=True, null=True)
+    logo = models.FileField(upload_to='client/', blank=True, null=True)
     address = models.CharField(max_length=500)
     status = models.IntegerField(choices=STATUS)
     is_active = models.BooleanField(default=False)
@@ -76,7 +76,7 @@ class Feature(AuditTrail):
     code = models.CharField(max_length=50, blank=False, null=False, unique=True)
     url = models.CharField(max_length=50, blank=True, null=True)
     parent = models.CharField(max_length=5, blank=True, null=True)
-    customers = models.ManyToManyField(Customer, blank=True, related_name='feature_customers')
+    clients = models.ManyToManyField(Client, blank=True, related_name='feature_client')
     order_for_sidebar = models.FloatField(default=1111)
     is_active = models.BooleanField(default=True)
 
@@ -170,7 +170,7 @@ class Branch(AuditTrail):
                                 message='Branch contains alphanumeric, underscore, space and period(.). Length: 2 to 100'
                             )]
                             )
-    customer = models.ForeignKey(Customer, related_name='branch_customer', on_delete=models.CASCADE)
+    client = models.ForeignKey(Client, related_name='branch_client', on_delete=models.CASCADE)
     parent = models.ForeignKey('self', blank=True, null=True, on_delete=models.CASCADE)
     user = models.ManyToManyField(User, blank=True, related_name='branch_users')
     group = models.ManyToManyField(Group, blank=True, related_name='branch_groups')
@@ -183,7 +183,7 @@ class Branch(AuditTrail):
         return list(dict.fromkeys(all_user[0]))  # all unique user list
 
     def __str__(self):
-        return self.name
+        return f"{self.name} ({self.client.name})"
 
 class Department(AuditTrail):
     name = models.CharField(max_length=100,
@@ -206,8 +206,7 @@ class Department(AuditTrail):
         return list(dict.fromkeys(all_user[0]))  # all unique user list
 
     def __str__(self):
-        return self.name
-
+        return f"{self.name} ({self.branch.name})"
 
 
 

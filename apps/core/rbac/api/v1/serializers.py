@@ -7,7 +7,7 @@ exclude_fields = ('id', 'created_at', 'updated_at', 'created_by', 'updated_by')
 
 class ClientSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Customer
+        model = Client
         fields = '__all__'
 
     def validate_schema_name(self, value):
@@ -32,7 +32,7 @@ class TenantSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         """ Create and return a new Tenant. """
-        customer = Customer.objects.create(**validated_data.get('customer'))
+        customer = Client.objects.create(**validated_data.get('customer'))
         domain = Domain()
         domain.domain = validated_data.get('domain')
         domain.sub_domain = validated_data.get('sub_domain')

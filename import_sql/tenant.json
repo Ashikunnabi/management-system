@@ -1,6 +1,6 @@
 [
   {
-    "model": "rbac.customer",
+    "model": "rbac.client",
     "pk": 1,
     "fields": {
       "schema_name": "public",
@@ -14,7 +14,7 @@
     }
   },
   {
-    "model": "rbac.customer",
+    "model": "rbac.client",
     "pk": 2,
     "fields": {
       "schema_name": "test",
