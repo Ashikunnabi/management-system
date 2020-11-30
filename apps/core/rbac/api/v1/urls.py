@@ -8,15 +8,15 @@ from .viewsets import *
 
 
 router = routers.DefaultRouter()
-router.register('customer', CustomerViewSet) #done
-router.register('domain', DomainViewSet) #done
-router.register('tenant', TenantViewSet) #done
-router.register('feature', FeatureViewSet) #done
-router.register('sidebar', SidebarViewSet) #done
-router.register('permission', PermissionViewSet) #done
-router.register('role', RoleViewSet) #done
-router.register('group', GroupViewSet) #done
-router.register('user', UserViewSet) #done
+router.register('customer', CustomerViewSet)
+router.register('domain', DomainViewSet)
+router.register('tenant', TenantViewSet)
+router.register('feature', FeatureViewSet)
+router.register('sidebar', SidebarViewSet)
+router.register('permission', PermissionViewSet)
+router.register('role', RoleViewSet)
+router.register('group', GroupViewSet)
+router.register('user', UserViewSet)
 router.register('branch', BranchViewSet)
 router.register('department', DepartmentViewSet)
 
