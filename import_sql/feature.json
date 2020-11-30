@@ -177,9 +177,9 @@
       "updated_by": "1",
       "created_at": "2020-11-23T05:45:20.313391Z",
       "updated_at": "2020-11-23T05:45:20.313391Z",
-      "title": "Asset Management",
-      "icon": "<i class=\"fas fa-inventory\"></i>",
-      "code": "asset_management",
+      "title": "Inventory Management",
+      "icon": "<i class=\"fas fa-cube\"></i>",
+      "code": "inventory_management",
       "url": null,
       "parent": null,
       "order_for_sidebar": 4,
@@ -198,7 +198,7 @@
       "icon": null,
       "code": "branch",
       "url": "/branch/",
-      "parent": "9",
+      "parent": "1",
       "order_for_sidebar": 1111.2,
       "is_active": true
     }
@@ -215,7 +215,7 @@
       "icon": null,
       "code": "department",
       "url": "/department/",
-      "parent": "9",
+      "parent": "1",
       "order_for_sidebar": 1111.3,
       "is_active": true
     }
@@ -230,8 +230,8 @@
       "updated_at": "2020-11-23T05:45:20.313391Z",
       "title": "Category",
       "icon": null,
-      "code": "category",
-      "url": "/category/",
+      "code": "inventory_category",
+      "url": "/inventory/category/",
       "parent": "14",
       "order_for_sidebar": 1112.1,
       "is_active": true
@@ -247,8 +247,8 @@
       "updated_at": "2020-11-23T05:45:20.313391Z",
       "title": "Vendor",
       "icon": null,
-      "code": "vendor",
-      "url": "/vendor/",
+      "code": "inventory_vendor",
+      "url": "/inventory/vendor/",
       "parent": "14",
       "order_for_sidebar": 1112.2,
       "is_active": true
@@ -264,8 +264,8 @@
       "updated_at": "2020-11-23T05:45:20.313391Z",
       "title": "Product",
       "icon": null,
-      "code": "product",
-      "url": "/product/",
+      "code": "inventory_product",
+      "url": "/inventory/product/",
       "parent": "14",
       "order_for_sidebar": 1112.3,
       "is_active": true
@@ -281,10 +281,10 @@
       "updated_at": "2020-11-23T05:45:20.313391Z",
       "title": "Customer",
       "icon": null,
-      "code": "asset_customer",
-      "url": "/customer/",
+      "code": "inventory_customer",
+      "url": "/inventory/customer/",
       "parent": "14",
-      "order_for_sidebar": 1112.4,
+      "order_for_sidebar": 1112.5,
       "is_active": true
     }
   },
@@ -298,8 +298,8 @@
       "updated_at": "2020-11-23T05:45:20.313391Z",
       "title": "Unit Type",
       "icon": null,
-      "code": "unit_type",
-      "url": "/unit-type/",
+      "code": "inventory_unit_type",
+      "url": "/inventory/unit-type/",
       "parent": "14",
       "order_for_sidebar": 1112.4,
       "is_active": true

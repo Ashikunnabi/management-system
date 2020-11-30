@@ -1043,7 +1043,7 @@
       "updated_by": "1",
       "created_at": "2020-04-22T14:16:23.084Z",
       "updated_at": "2020-07-06T13:47:47.967Z",
-      "name": "Self View Customer",
+      "name": "Self View Inventory Customer",
       "code": "self_view.inventory_customer",
       "is_active": true,
       "feature": 20
@@ -1057,7 +1057,7 @@
       "updated_by": "1",
       "created_at": "2020-04-22T14:16:23.084Z",
       "updated_at": "2020-07-06T13:47:47.967Z",
-      "name": "Add Customer",
+      "name": "Add Inventory Customer",
       "code": "add.inventory_customer",
       "is_active": true,
       "feature": 20
@@ -1071,7 +1071,7 @@
       "updated_by": "1",
       "created_at": "2020-04-22T14:16:23.084Z",
       "updated_at": "2020-07-06T13:47:47.967Z",
-      "name": "Edit Customer",
+      "name": "Edit Inventory Customer",
       "code": "change.inventory_customer",
       "is_active": true,
       "feature": 20
@@ -1085,7 +1085,7 @@
       "updated_by": "1",
       "created_at": "2020-04-22T14:16:23.084Z",
       "updated_at": "2020-07-06T13:47:47.967Z",
-      "name": "Delete Customer",
+      "name": "Delete Inventory Customer",
       "code": "delete.inventory_customer",
       "is_active": true,
       "feature": 20
@@ -1099,7 +1099,7 @@
       "updated_by": "1",
       "created_at": "2020-04-22T14:16:23.084Z",
       "updated_at": "2020-07-06T13:47:47.967Z",
-      "name": "List View Customer",
+      "name": "List View Inventory Customer",
       "code": "list_view.inventory_customer",
       "is_active": true,
       "feature": 20
@@ -1113,7 +1113,7 @@
       "updated_by": "1",
       "created_at": "2020-04-22T14:16:23.084Z",
       "updated_at": "2020-07-06T13:47:47.967Z",
-      "name": "Detail View Customer",
+      "name": "Detail View Inventory Customer",
       "code": "detail_view.inventory_customer",
       "is_active": true,
       "feature": 20
@@ -1127,7 +1127,7 @@
       "updated_by": "1",
       "created_at": "2020-07-10T03:06:04.694Z",
       "updated_at": "2020-07-10T03:38:58.791Z",
-      "name": "View Sidebar Inventory",
+      "name": "View Sidebar Inventory Inventory",
       "code": "_view_sidebar_inventory",
       "is_active": true,
       "feature": 14
