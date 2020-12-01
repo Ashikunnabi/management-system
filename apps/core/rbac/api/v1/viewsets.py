@@ -384,7 +384,7 @@ class DepartmentViewSet(CustomViewSet):
             request.data.update({"branch": branch.id})
         except Exception as ex:
             # if department (optional), group (optional) and branch is not found then do not process request further
-            title = ex.__str__().split(' ')[1].lower()  # The exception is: The exception is: No Department/Group/Branch matches the given query..
+            title = ex.__str__().split(' ')[1].lower()  # The exception is: No Department/Group/Branch matches the given query..
             # from this we are taking the name.
             return Response({title: ["Not found."]}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -394,6 +394,38 @@ class DepartmentViewSet(CustomViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+    def update(self, request, *args, **kwargs):
+        try:
+            if request.data.get('department'):
+                department = get_object_or_404(Department, hashed_id=request.data.get('department'))
+                request.data.update({"parent": department.id})  # Changing the department value hashed_id to id
+            if request.data.get('group'):
+                group = [get_object_or_404(Group, hashed_id=group).id for group in request.data.get('group')]
+                request.data.update({"group": group})
+            if request.data.get('branch'):
+                branch = get_object_or_404(Branch, hashed_id=request.data.get('branch'))
+                request.data.update({"branch": branch.id})  # changing the branch hashed_id to id
+        except Exception as ex:
+            # if department, group, branch is not found then don't process request further.
+            title = ex.__str__().split(' ')[1].lower()  # The exception is: No Department/Group/Branch matches the given query..
+            return Response({title: ["Not found."]}, status=status.HTTP_400_BAD_REQUEST)
+
+        instance = self.get_object()  # Get the requested object instance
+        serializer = self.serializer_class(instance, data=request.data, partial=True)   # validate posted data using serializer
+
+        if serializer.is_valid():
+            self.perform_update(instance, serializer, request)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()   # Get the requested object instance
+        self.perform_destroy(instance, request)
+        return Response({"Detail": "Department deleted successfully."}, status=status.HTTP_200_OK)
+
 
 class UserViewSet(CustomViewSet):
     permission_classes = [UserAccessApiBasePermission]
