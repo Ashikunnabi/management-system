@@ -35,6 +35,9 @@ class Vendor(AuditTrail):
     def __str__(self):
         return f"{self.name} ({self.category.name})"
 
+    class Meta:
+        unique_together = ('name', 'category')
+
 
 class UnitType(AuditTrail):
     name = models.CharField(max_length=100,
