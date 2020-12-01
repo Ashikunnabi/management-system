@@ -82,7 +82,7 @@ class CategoryViewSet(CustomViewSet):
                 # of json. So that other relational operation can be done by id which is default.
         except Exception as ex:
             # if category (optional), department (optional) is not found then do not process request further
-            title = ex.__str__().split(' ')[1].lower()  # The exception is: 'No Category/Department found'.
+            title = ex.__str__().split(' ')[1].lower()  #The exception is: No Department/Category matches the given query..
             # from this we are taking Category or Department
             return Response({title: ["Not found."]}, status=status.HTTP_400_BAD_REQUEST)
 
