@@ -54,8 +54,7 @@ class CategoryViewSet(CustomViewSet):
             if request.data.get('category'):
                 # Getting 'category' as parent obj and set it to 'parent' field
                 category = get_object_or_404(Category, hashed_id=request.data.get('category'))
-                request.data.update({"parent": category.id})  # Changing the value of category value hashed_id to id
-                # of json. So that other relational operation can be done by id which is default.
+                request.data.update({"parent": category.id})  # updating parent field value null to given category
             department = get_object_or_404(Department, hashed_id=request.data.get('department'))
             request.data.update({"department": department.id})  # Changing the value of dep value, hashed_id to id
             # of json. So that other relational operation can be done by id which is default.
@@ -76,8 +75,7 @@ class CategoryViewSet(CustomViewSet):
         try:
             if request.data.get('category'):
                 category = get_object_or_404(Category, hashed_id=request.data.get('category'))
-                request.data.update({"parent": category.id})  # Changing the value of category value, hashed_id to id
-                # of json. So that other relational operation can be done by using id which is default.
+                request.data.update({"parent": category.id})  # Updating the parent field value with given category value
             if request.data.get('department'):
                 department = get_object_or_404(Department, hashed_id=request.data.get('department'))
                 request.data.update({"department": department.id})  # Changing the value of dep value, hashed_id to id

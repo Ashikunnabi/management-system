@@ -3,7 +3,7 @@ from django.conf import settings
 from django.db import transaction
 from django.contrib.auth import authenticate, login as auth_login
 from django.shortcuts import reverse, get_object_or_404
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
@@ -174,15 +174,16 @@ def get_user_info(request):
     if error_param is not None:
         return Response({"details": "'{}' required.".format(error_param)}, status=400)
 
+
     user = User.objects.filter(username=param['username'])[0]
 
     response = {
-        'username': user.username,
-        'email': user.email,
-        'role': user.role.id,
-        'permissions': [_.id for _ in user.role.permission.all()],
-        'is_admin': True if user.role.code in ['super_admin', 'admin'] else False,
-        'is_active': user.is_active,
+      'username': user.username,
+      'email': user.email,
+      'role': user.role.id,
+      'permissions': [_.id for _ in user.role.permission.all()],
+      'is_admin': True if user.role.code in ['super_admin', 'admin'] else False,
+      'is_active': user.is_active,
     }
     return Response(response, status=200)
 
@@ -260,6 +261,82 @@ class BranchViewSet(CustomViewSet):
     model = Branch
     lookup_field = 'hashed_id'  # Individual object will be found by this field
 
+    def perform_create(self, serializer, request):
+        """ Create a new Branch and store activity log. """
+        serializer.save()
+        store_user_activity(request,
+                            store_json=serializer.data,
+                            description=f"Branch: A new Branch '{request.data.get('name')}' added.")
+
+    def perform_update(self, instance, serializer, request):
+        """ Update an existing Branch and store activity log. """
+        previous_data_before_update = self.model.objects.get(hashed_id=instance.hashed_id)
+        serializer.save()
+        store_user_activity(request,
+                            store_json=serializer.data,
+                            description=f"Branch: An existing Branch '{previous_data_before_update.name}' modified.")
+    def perform_destroy(self, instance, request):
+        """ Delete an existing Branch and store activity log. """
+        serializer = self.serializer_class(instance).data
+        store_user_activity(request,
+                            store_json=serializer,
+                            description=f"Branch: An existing branch '{serializer.get('name')}' deleted.")
+        instance.delete()
+
+    def create(self, request, *args, **kwargs):
+        try:
+            if request.data.get('branch'):
+                # Getting 'branch' object as parent and set it to 'parent' field
+                branch = get_object_or_404(Branch, hashed_id=request.data.get('branch'))
+                request.data.update({"parent": branch.id})  # updating parent value null to given branch
+            if request.data.get('group'):
+                # Using list comprehension as group is in manytomany relationship with branch
+                group = [get_object_or_404(Group, hashed_id=group).id for group in request.data.get('group')]
+                request.data.update({"group": group})
+        except Exception as ex:
+            # if branch (optional), is not found then do not process request further
+            title = ex.__str__().split(' ')[1].lower()  # # The exception is: No Group matches the given query..
+            # from this we are taking Branch or Group
+            return Response({title: ["Not Found."]}, status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = self.serializer_class(data=request.data)   # validate posted data using serializer
+        if serializer.is_valid():
+            self.perform_create(serializer, request)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def update(self, request, *args, **kwargs):
+        try:
+            if request.data.get('branch'):
+                branch = get_object_or_404(Branch, hashed_id=request.data.get('branch'))
+                request.data.update({"parent": branch.id})  # updating the parent field value with given branch value
+            if request.data.get('group'):
+                # Using list comprehension as group is in manytomany relationship with branch
+                group = [get_object_or_404(Group, hashed_id=group).id for group in request.data.get('group')]
+                request.data.update({"group": group})
+        except Exception as ex:
+            # if branch or group is not found then do not process request further
+            title = ex.__str__().split(' ')[1].lower()   # The exception is: The exception is: No Group/Branch matches the given query..
+            # from this we are taking Category or Vendor or UnitType
+            return Response({title: ["Not Found."]}, status=status.HTTP_400_BAD_REQUEST)
+
+        instance = self.get_object()  # get the requested object instance
+        serializer = self.serializer_class(instance,
+                                           data=request.data,
+                                           partial=True)  # validate posted data using serializer
+        if serializer.is_valid():
+            self.perform_update(instance, serializer, request)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()  #  get the requested object instance
+        self.perform_destroy(instance, request)
+        return Response({"detail": "Branch deleted successfully"}, status=status.HTTP_200_OK)
+
+
 
 class DepartmentViewSet(CustomViewSet):
     permission_classes = [UserAccessApiBasePermission]
@@ -268,13 +345,61 @@ class DepartmentViewSet(CustomViewSet):
     model = Department
     lookup_field = 'hashed_id'  # Individual object will be found by this field
 
+    def perform_create(self, serializer, request):
+        """ Create a new Department and store activity log. """
+        serializer.save()
+        store_user_activity(request,
+                            store_json=serializer.data,
+                            description=f"Department: A new department '{request.data.get('name')}' added.")
+
+    def perform_update(self, instance, serializer, request):
+        """ Update an existing department and store activity log. """
+        previous_data_before_update = self.model.objects.get(hashed_id=instance.hashed_id)
+        serializer.save()
+        store_user_activity(request,
+                            store_json=serializer.data,
+                            description=f"Department: An existing department '{previous_data_before_update.name}' modified.")
+
+    def perform_destroy(self, instance, request):
+        """ Delete an existing department and store activity log. """
+        serializer = self.serializer_class(instance).data
+        store_user_activity(request,
+                            store_json=serializer,
+                            description=f"Department: An existing department '{serializer.get('name')}' deleted.")
+        instance.delete()
+
+
+    def create(self, request, *args, **kwargs):
+        """ Create a new department """
+        try:
+            if request.data.get("department"):
+                # Getting 'department' as parent obj and set it to 'parent' field
+                department = get_object_or_404(Department, hashed_id=request.data.get('department'))
+                request.data.update({"parent": department.id})   # updating parent field value null to given department
+            if request.data.get("group"):
+                group = [get_object_or_404(Group, hashed_id=group).id for group in request.data.get("group")]  # Here
+                # from the request we are getting the hashed_id of group then checking it with Group model
+                request.data.update({"group": group})
+            branch = get_object_or_404(Branch, hashed_id=request.data.get('branch'))
+            request.data.update({"branch": branch.id})
+        except Exception as ex:
+            # if department (optional), group (optional) and branch is not found then do not process request further
+            title = ex.__str__().split(' ')[1].lower()  # The exception is: The exception is: No Department/Group/Branch matches the given query..
+            # from this we are taking the name.
+            return Response({title: ["Not found."]}, status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            self.perform_create(serializer, request)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UserViewSet(CustomViewSet):
     permission_classes = [UserAccessApiBasePermission]
     serializer_class = UserSerializer
     queryset = User.objects.all()
     model = User
-
     # lookup_field = 'hashed_id'  # Individual object will be found by this field
 
     def get_queryset(self):
@@ -290,6 +415,25 @@ class UserViewSet(CustomViewSet):
             user.delete()
             return Response({'details': 'User has been deleted successfully.'})
         else:
-            user.is_active = False
+            user.is_active=False
             user.save()
             return Response(UserSerializer(user).data)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
