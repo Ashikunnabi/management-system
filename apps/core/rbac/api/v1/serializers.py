@@ -129,9 +129,17 @@ class GroupSerializer(serializers.ModelSerializer):
 
 
 class BranchSerializer(serializers.ModelSerializer):
+    parent = serializers.StringRelatedField()
+
     class Meta:
         model = Branch
         exclude = exclude_fields
+
+    def get_fields(self):
+        """add this method to add 'subbranches' field"""
+        fields = super(BranchSerializer, self).get_fields()
+        fields['subbranches'] = BranchSerializer(many=True)
+        return fields
 
 
 class DepartmentSerializer(serializers.ModelSerializer):
