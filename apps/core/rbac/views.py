@@ -81,3 +81,7 @@ def customer(request):
     
 def feature(request):
     return render(request, 'rbac/feature.html')
+
+
+def branch(request):
+    return render(request, 'rbac/branch.html')

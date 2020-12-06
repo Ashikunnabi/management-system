@@ -25,4 +25,5 @@ urlpatterns = [
     path('user/<int:id>/', user_edit, name='user_edit'),
     path('customer/', customer, name='customer'),
     path('feature/', feature, name='feature'),
+    path('branch/', branch, name='branch'),
 ]
