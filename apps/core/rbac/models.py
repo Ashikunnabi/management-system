@@ -17,6 +17,7 @@ class AuditTrail(models.Model):
     updated_by = models.CharField(max_length=500, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated_at = models.DateTimeField(auto_now_add=False, auto_now=True)
+    is_active = models.BooleanField(default=True)
 
     class Meta:
         abstract = True
@@ -77,7 +78,6 @@ class Feature(AuditTrail):
     url = models.CharField(max_length=50, blank=True, null=True)
     parent = models.CharField(max_length=5, blank=True, null=True)
     order_for_sidebar = models.FloatField(default=1111)
-    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.title
@@ -90,7 +90,6 @@ class Permission(AuditTrail):
     name = models.CharField(max_length=50, blank=False,
                             null=False, unique=True)
     code = models.CharField(max_length=50, blank=False, unique=True)
-    is_active = models.BooleanField(default=True)
     feature = models.ForeignKey(Feature, on_delete=models.CASCADE, null=False, blank=False, related_name='permission_feature')
 
     def __str__(self):
@@ -100,7 +99,6 @@ class Permission(AuditTrail):
 class Role(AuditTrail):
     name = models.CharField(max_length=50, blank=False, null=False, unique=True)
     code = models.CharField(max_length=50, blank=False, unique=True)
-    is_active = models.BooleanField(default=True)
     permission = models.ManyToManyField(Permission, related_name='role_permissions')
 
     def __str__(self):
@@ -153,7 +151,6 @@ class Group(AuditTrail):
                                 message='Group contains alphanumeric, underscore, space and period(.). Length: 2 to 100'
                             )]
                             )
-    is_active = models.BooleanField(default=True)
     user = models.ManyToManyField(User, blank=True, related_name='group_users')
 
 
@@ -172,7 +169,7 @@ class Branch(AuditTrail):
                                 message='Branch contains alphanumeric, underscore, space and period(.). Length: 2 to 100'
                             )]
                             )
-    parent = models.ForeignKey('self', blank=True, null=True, on_delete=models.CASCADE)
+    parent = models.ForeignKey('self', blank=True, related_name='subbranches', null=True, on_delete=models.CASCADE)
     user = models.ManyToManyField(User, blank=True, related_name='branch_users')
     group = models.ManyToManyField(Group, blank=True, related_name='branch_groups')
     address = models.TextField(blank=True)
