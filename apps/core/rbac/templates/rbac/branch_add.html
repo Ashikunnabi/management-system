@@ -1,0 +1,74 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block css %}
+<style>
+    .parsley-errors-list {
+        color:red;
+    }
+    .main-body{
+        display:none;
+    }
+</style>
+{% endblock %}
+{% block content %}
+<div class="main-body">
+    <div class="page-wrapper">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Add new permission</h5>
+                    </div>
+                    <div class="card-block">
+                        <form id="permission_add_form" action="" method="post" enctype="multipart/form-data" data-parsley-validate="" autocomplete="off">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="form-label">Name</label><span style="color:red">*</span>
+                                        <input type="text" class="form-control" name="name" placeholder="Name" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="form-label">Code</label><span style="color:red">*</span>
+                                        <input type="text" class="form-control" name="code" placeholder="Code" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="form-group">
+                                    <label class="form-label">Feature</label><span style="color:red">*</span>
+                                    <select class="form-control" id="feature" name="feature" required>
+                                        <option value hidden>Select Feature</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Status</label></br>
+                                    <div class="switch d-inline m-r-10">
+                                        <span>Inactive</span>
+                                        <input type="checkbox" class="switcher-input" name="is_active" value="1" id="switch-1">
+                                        <label for="switch-1" class="cr"></label>
+                                        <span>Active</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block js %}
+    <script>let permission_id = {{ id }}; </script>
+	<script src="{% static 'rbac/js/permission.js' %}"></script>
+{% endblock %}
