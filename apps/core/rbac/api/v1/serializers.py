@@ -129,7 +129,8 @@ class GroupSerializer(serializers.ModelSerializer):
 
 
 class BranchSerializer(serializers.ModelSerializer):
-    parent = serializers.StringRelatedField()
+    # As parent is already a field thats why we named 'parent_human_readable' and tell the source field name
+    parent_human_readable = serializers.StringRelatedField(source='parent')
 
     class Meta:
         model = Branch
@@ -138,7 +139,7 @@ class BranchSerializer(serializers.ModelSerializer):
     def get_fields(self):
         """add this method to add 'subbranches' field"""
         fields = super(BranchSerializer, self).get_fields()
-        fields['subbranches'] = BranchSerializer(many=True)
+        fields['subbranches'] = BranchSerializer(many=True, read_only=True, allow_null=True)
         return fields
 
 
