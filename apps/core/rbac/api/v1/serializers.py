@@ -131,10 +131,23 @@ class GroupSerializer(serializers.ModelSerializer):
 class BranchSerializer(serializers.ModelSerializer):
     # As parent is already a field thats why we named 'parent_human_readable' and tell the source field name
     parent_human_readable = serializers.StringRelatedField(source='parent')
+    parent_hashed_id = serializers.SerializerMethodField()
+    group_hashed_id = serializers.SerializerMethodField()
 
     class Meta:
         model = Branch
         exclude = exclude_fields
+
+    def get_parent_hashed_id(self, obj):
+        if obj.parent:
+            return str(obj.parent.hashed_id)
+        return None
+
+    def get_group_hashed_id(self, obj):
+        if obj.group:
+            groups = obj.group.all()
+            return [group.hashed_id for group in groups]
+        return None
 
     def get_fields(self):
         """add this method to add 'subbranches' field"""
