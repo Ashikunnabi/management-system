@@ -184,6 +184,7 @@ class Branch(AuditTrail):
 
     class Meta:
         unique_together = ('name', 'parent')
+        ordering = ('name',)
 
 
 class Department(AuditTrail):

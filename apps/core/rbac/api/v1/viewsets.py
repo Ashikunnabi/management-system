@@ -283,16 +283,49 @@ class BranchViewSet(CustomViewSet):
                             description=f"Branch: An existing branch '{serializer.get('name')}' deleted.")
         instance.delete()
 
+
+    def validate_branch(self, name, parent):
+        """
+            Check duplication of the same branch
+        :param name: branch name
+        :param parent: branch parent (base branch)
+        """
+        branches = Branch.objects.filter(name__iexact=name)
+        if not parent:
+            if branches.filter(parent=None).count():
+                raise serializers.ValidationError('Branch with this name already exists.')
+        else:
+            if branches.filter(parent__hashed_id=parent).count():
+                raise serializers.ValidationError('Sub Branch with this name already exists in this Base branch.')
+
+
     def create(self, request, *args, **kwargs):
+        """
+
+        :param request:
+        :param args:
+        :param kwargs:
+        :return:
+        """
+
+        name = request.data.get('name')
+        # branch = request.data.get('branch')
+        branch = request.data.get('parent')
+        group = request.data.get('group')
+        parent = request.data.get('parent')
+
+        """ Duplicate branch name is not allowed."""
+        self.validate_branch(name, parent)
+
         try:
-            if request.data.get('branch'):
+            if parent:
                 # Getting 'branch' object as parent and set it to 'parent' field
-                branch = get_object_or_404(Branch, hashed_id=request.data.get('branch'))
-                request.data.update({"parent": branch.id})  # updating parent value null to given branch
-            if request.data.get('group'):
+                existing_branch = get_object_or_404(Branch, hashed_id=parent)
+                request.data.update({"parent": existing_branch.id})  # updating parent value null to given branch
+            if group:
                 # Using list comprehension as group is in manytomany relationship with branch
-                group = [get_object_or_404(Group, hashed_id=group).id for group in request.data.get('group')]
-                request.data.update({"group": group})
+                existing_group = [get_object_or_404(Group, hashed_id=group).id for group in group]
+                request.data.update({"group": existing_group})
         except Exception as ex:
             # if branch (optional), is not found then do not process request further
             title = ex.__str__().split(' ')[1].lower()  # # The exception is: No Group matches the given query..
@@ -307,17 +340,28 @@ class BranchViewSet(CustomViewSet):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, *args, **kwargs):
+        name = request.data.get('name')
+        # branch = request.data.get('parent')
+        parent = request.data.get('parent')
+        group = request.data.get('group')
+        selected_branch = Branch.objects.get(hashed_id=kwargs.get('hashed_id'))
+
+            # self.branch_name_validation(name)
+        """ Duplicate branch name is not allowed."""
+        if name or parent:
+            self.validate_branch(name, parent)
+
         try:
-            if request.data.get('branch'):
-                branch = get_object_or_404(Branch, hashed_id=request.data.get('branch'))
-                request.data.update({"parent": branch.id})  # updating the parent field value with given branch value
-            if request.data.get('group'):
+            if parent:
+                existing_branch = get_object_or_404(Branch, hashed_id=parent)
+                request.data.update({"parent": existing_branch.id})  # updating the parent field value with given branch value
+            if group:
                 # Using list comprehension as group is in manytomany relationship with branch
-                group = [get_object_or_404(Group, hashed_id=group).id for group in request.data.get('group')]
-                request.data.update({"group": group})
+                existing_group = [get_object_or_404(Group, hashed_id=group).id for group in group]
+                request.data.update({"group": existing_group})
         except Exception as ex:
             # if branch or group is not found then do not process request further
-            title = ex.__str__().split(' ')[1].lower()   # The exception is: The exception is: No Group/Branch matches the given query..
+            title = ex.__str__().split(' ')[1].upper()   # The exception is: The exception is: No Group/Branch matches the given query..
             # from this we are taking Category or Vendor or UnitType
             return Response({title: ["Not Found."]}, status=status.HTTP_400_BAD_REQUEST)
 

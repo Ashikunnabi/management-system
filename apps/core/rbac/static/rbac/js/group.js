@@ -241,7 +241,7 @@ class Group {
 				if (data.has('is_active') === false) data.append('is_active', '0');
 				
 				let url = self._api+'group/';
-                
+                console.log(data, '-------------')
                 self._helper.blockUI();
                 $(document).ajaxComplete($.unblockUI);
                 

@@ -138,7 +138,7 @@ class User {
         let self = this;
         $('#add_user').on( 'click', '', function () {
             let url = self.user_add_url;
-            window.open(url, "");
+            window.open(url, "_self");
         });     
     }
     
@@ -150,7 +150,7 @@ class User {
             }else{
                 var table = $('#user_table').DataTable();
                 let url = '/user/' + table.row('.selected').data().id;
-                window.open(url, "_blank");
+                window.open(url, "_self");
             }
         });     
     }
