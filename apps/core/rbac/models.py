@@ -163,7 +163,6 @@ class Branch(AuditTrail):
     name = models.CharField(max_length=100,
                             blank=False,
                             null=False,
-                            unique=True,
                             validators=[RegexValidator(
                                 regex='[-a-zA-Z0-9_.\s]{2,100}$',
                                 message='Branch contains alphanumeric, underscore, space and period(.). Length: 2 to 100'
@@ -182,6 +181,9 @@ class Branch(AuditTrail):
 
     def __str__(self):
         return f"{self.name}"
+
+    class Meta:
+        unique_together = ('name', 'parent')
 
 
 class Department(AuditTrail):
