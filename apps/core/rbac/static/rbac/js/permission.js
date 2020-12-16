@@ -11,7 +11,7 @@ class Permission {
     constructor() {
         this._helper = new Helper();
         this._api = '/api/v1/';
-        this.permission_list_url = this._api+'permission/?format=datatables';;
+        this.permission_list_url = this._api+'permission/?format=datatables';
         this.permission_add_url = '/permission/add/';
         this.user_permissions = request.user.permissions;
         this.clear_profile_picture = false;
@@ -43,7 +43,7 @@ class Permission {
         $(document).ajaxStop($.unblockUI);
         let table = $('#permission_table').DataTable({
             "processing": true,
-            // "serverSide": true,
+            "serverSide": true,
             "bDestroy": true,
             "bJQueryUI": true,
             // "dom": '<"mb-3"B>flrtip',
@@ -69,7 +69,7 @@ class Permission {
                 'type': 'GET',
                 'headers': { 'Authorization': 'JWT '+self._helper.storage.getStorage('local', 'token').access },
                 'error': function (x, status, error) {
-                    if (x.status == 401) {
+                    if (x.status === 401) {
                         if (error === "Unauthorized"){
                             $(document).ajaxComplete($.unblockUI);
                             window.location.href ="/logout/";

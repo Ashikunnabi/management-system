@@ -16,6 +16,18 @@ class Branch {
         this.branch_add_url = '/branch/add/';
         this.user_permissions = request.user.permissions;
         this.current_editable_obj = null;
+
+        this.Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
     }
 
     provide_permission_based_access() {
@@ -51,10 +63,9 @@ class Branch {
         // When the ajax request processing is done then ajaxStop() function will be called and unblock the window
         $(document).ajaxStop($.unblockUI);
 
-
         let table = $('#branch_table').DataTable({
             "processing": true,  // Enable or disable the display of a 'processing' indicator when the table is being processed (e.g. a sort).
-            // "serverSide": true,
+            "serverSide": true,
             "bDestroy": true,
             "bJQueryUI": true,
             // "dom": '<"mb-3"B>flrtip',
@@ -92,11 +103,12 @@ class Branch {
             "columns": [
                 {"data": ""},
                 {"data": "name"},
-                {"data": "parent_human_readable"},
+                {"data": "branch_tree_view"},
                 {"data": "subbranches"},
                 {"data": "user"},
                 {"data": "is_active"},
                 {"data": "address"},
+                {"data": "hashed_id"}
             ],
             "columnDefs": [
                 {
@@ -124,8 +136,11 @@ class Branch {
                     "visible": true,
                     "searchable": true,
                     "render": function (data, type, row, meta) {
-                        if (data) return data;
-                        else return 'Base Branch';
+                        if (row.parent !== null) {
+                            let splitText = data.split('/')
+                            let lastPart = splitText.pop()
+                            return splitText.join('/')
+                        } else return 'Base Branch';
                     },
                 },
                 {
@@ -161,9 +176,16 @@ class Branch {
                         return data;
                     },
                 },
+                {
+                    "targets": [7],
+                    "visible": false,
+                    "searchable": false,
+                    "render": function (data, type, row, meta) {
+                        return data;
+                    },
+                },
             ],
         });
-
 
     }
 
@@ -193,11 +215,20 @@ class Branch {
 
     redirect_to_branch_edit_page() {
         let self = this;
+        let table = $('#branch_table').DataTable();
+
         $('#edit_branch').on('click', '', function () {
             if ($(this).hasClass('disabled')) {
                 // button is disabled that means not table row selected, so do nothing
+            } else if (table.row('.selected').data().is_active_parent !== null && !table.row('.selected').data().is_active_parent) {
+                // branch can not be modified if it's parent is inactive
+                self.Toast.fire({
+                    icon: 'info',
+                    title: "<p style='color: dark;'>Please active it's parent branch to edit <p>",
+                    background: '#c2e7ff',
+                    timer: 3000,
+                })
             } else {
-                let table = $('#branch_table').DataTable();
                 let url = '/branch/' + table.row('.selected').data().hashed_id;
                 window.open(url, '_self');
             }
@@ -214,23 +245,30 @@ class Branch {
         promise.done(function (response) {
             let data = [];
             $.each(response.data, function (i, v) {
-                data.push({
-                    id: v.hashed_id,
-                    text: v.name.concat(v.parent_human_readable !== null ? " (" + v.parent_human_readable + ")" : " (Base Branch)"),
-                });
+                if (window.location.pathname === self.branch_add_url) {
+                    if (v.is_active) {
+                        data.push({
+                            id: v.hashed_id,
+                            text: v.branch_tree_view,
+                        });
+                    }
+                } else {
+                    data.push({
+                        id: v.hashed_id,
+                        text: v.branch_tree_view,
+                    });
+                }
             });
             branch_parent_dropdown.select2({
                 data: data
             });
-
-            // if (window.location.pathname.match(/^\/branch\/([a-zA-Z0-9]){1,16}\/$/g)) {
             if (window.location.pathname !== self.branch_add_url) {
                 // if the location is in branch edit then run below function.
-                self.branch_edit_form_fillup();  // As this function take less time to complete response thats why we are
-                // calling it here. to create a dependency.
+                self.branch_edit_form_fillup();  // As this function take less time to complete response that's why we are
+                // calling it here to create a dependency.
             }
-
         });
+
         promise.fail(function (response) {
             alert(response.responseJSON.detail);
         });
@@ -261,12 +299,13 @@ class Branch {
         });
     }
 
+
     set_user_in_dropdown() {
         let self = this;
         let url = self._api + 'user/' + self.request_format;
         let user_dropdown = $("#user");
-
         let promise = self._helper.httpRequest(url);
+
         promise.done(function (response) {
             let data = []
             $.each(response.data, function (index, value) {
@@ -307,12 +346,16 @@ class Branch {
                 data.parent = $("select[name='branch']").val() === "" ? null : $("select[name='branch']").val();
 
                 let url = self._api + 'branch/' + self.request_format;
-                // self._helper.blockUI();
-                // $(document).ajaxComplete($.unblockUI);
+                self._helper.blockUI();
+                $(document).ajaxComplete($.unblockUI);
 
                 let promise = self._helper.httpRequest(url, 'POST', JSON.stringify(data));
                 promise.done(function (response) {
-                    $.growl('Successfully branch added', {type: 'success'});
+                    self.Toast.fire({
+                        icon: 'success',
+                        title: "<p style='color: dark;'>Successfully branch added<p>",
+                        background: '#c4ffda',
+                    })
                     setTimeout(function () {
                         window.location.href = "/branch";
                     }, 1500);
@@ -320,19 +363,31 @@ class Branch {
 
                 promise.fail(function (response) {
                     if (response.status === 403) {
-                        $.growl(response.responseJSON.detail, {type: 'danger'})
+                        self.Toast.fire({
+                            icon: 'error',
+                            title: "<p style='color: dark;'>" + response.responseJSON.detail + "<p>",
+                            background: '#ffabab',
+                        })
                     } else {
-                        // $.unblockUI
                         $.each(response.responseJSON, function (key, v) {
                             if ($.isArray(response.responseJSON)) {
-                                $.growl(v, {type: 'danger'});
+                                self.Toast.fire({
+                                    icon: 'error',
+                                    title: "<p style='color: dark;'>" + v + "<p>",
+                                    background: '#ffabab',
+                                });
                             } else {
                                 $.each(v, function (j, w) {
                                     let message = w
                                     if (w.indexOf("The fields name, parent must make a unique set.") > -1) {
                                         message = "'Sub Branch' with this name already exists for this 'Base Branch'."
                                     }
-                                    $.growl(message, {type: 'danger'});
+                                    self.Toast.fire({
+                                        icon: 'error',
+                                        title: "<p style='color: dark;'>" + message + "<p>",
+                                        background: '#ffabab',
+                                    })
+
                                 });
                             }
 
@@ -356,14 +411,12 @@ class Branch {
             promise.done(function (response) {
                 function populate(formWillBeFilled, data) {
                     $.each(data, function (key, value) {
-                        // console.log('key = ', key , 'value = ', value)
                         if (key === 'parent_hashed_id') $("[name='branch']", formWillBeFilled).val(value).select2();
                         else if (key === 'group_hashed_id') $('[name="group"]', formWillBeFilled).val(value).select2();
                         else if (key === 'user') $('[name=' + key + ']', formWillBeFilled).val(value).select2();
                         else if (key === 'is_active') (value === true) ? $('input[name=is_active]').click() : "";
                         else if (key === 'address') $('[name=' + key + ']', formWillBeFilled).val(value);
                         else $('[name=' + key + ']', formWillBeFilled).val(value);
-
 
                         // IF branch is base branch then add a option written with 'Base Branch'
                         if (key === 'parent' && data[key] === null) {
@@ -379,18 +432,40 @@ class Branch {
 
             promise.fail(function (response) {
                 if (response.status === 403) {
-                    $.growl(response.responseJSON.detail, {type: 'danger'});
+
+                    self.Toast.fire({
+                        icon: 'error',
+                        title: "<p style='color: dark;'>" + response.responseJSON.detail + "<p>",
+                        background: '#ffabab',
+                    });
                 } else if (response.status === 404) {
-                    $.growl('No branch found', {type: 'danger'});
+                    self.Toast.fire({
+                        icon: 'error',
+                        title: "<p style='color: dark;'>No branch found<p>",
+                        background: '#ffabab',
+                    });
                     setTimeout(function () {
                         window.location.href = "/branch";
                     }, 2000);
                 } else {
                     $.each(response.responseJSON, function (index, value) {
-                        $.each(value, function (j, w) {
-                            let message = index + ": " + w
-                            $.growl(message, {type: 'danger'});
-                        });
+                        if ($.isArray(response.responseJSON)) {
+                            self.Toast.fire({
+                                icon: 'error',
+                                title: "<p style='color: dark;'>" + value + "<p>",
+                                background: '#ffabab',
+                            });
+                        } else {
+                            $.each(value, function (j, w) {
+                                let message = index + ": " + w
+                                self.Toast.fire({
+                                    icon: 'error',
+                                    title: "<p style='color: dark;'>" + message + "<p>",
+                                    background: '#ffabab',
+                                });
+                            });
+                        }
+
                     });
                 }
             });
@@ -408,18 +483,17 @@ class Branch {
                 // Invalid Form Data
             } else {
                 let data = {};
-                if (self.current_editable_obj.name !== $("input[name='name']").val() ||
-                    self.current_editable_obj.parent_hashed_id !== $("select[name='branch']").val()) {
+                let parent = $("select[name='branch']").val() === "" ? null : $("select[name='branch']").val();
+                if (self.current_editable_obj.name !== $("input[name='name']").val() || (
+                    self.current_editable_obj.parent_hashed_id !== parent)) {
                     data.name = $("input[name='name']").val();
-                    data.parent = $("select[name='branch']").val() === "" ? null : $("select[name='branch']").val();
+                    data.parent = parent;
                 }
 
                 data.address = $("input[name='address']").val();
-                // data.branch = $("select[name='branch']").val();
                 data.group = $("select[name='group']").val();
                 data.user = $("select[name='user']").val();
                 data.is_active = $("input[name='is_active']").val();
-
 
                 let url = self._api + 'branch/' + branch_hashed_id + '/';
                 self._helper.blockUI();
@@ -427,25 +501,41 @@ class Branch {
 
                 let promise = self._helper.httpRequest(url, 'PATCH', JSON.stringify(data));
                 promise.done(function (response) {
-                    $.growl('Branch successfully updated', {type: 'success'});
+                    self.Toast.fire({
+                        icon: 'success',
+                        title: "<p style='color: dark;'>Branch successfully updated<p>",
+                        background: '#c4ffda',
+                    });
                     setTimeout(function () {
                         window.location.href = '/branch';
                     }, 1500);
                 });
                 promise.fail(function (response) {
                     if (response.status === 403 || response.status === 404) {
-                        $.growl(response.responseJSON.detail, {type: 'danger'});
+                        self.Toast.fire({
+                            icon: 'error',
+                            title: "<p style='color: dark;'>" + response.responseJSON.detail + "<p>",
+                            background: '#ffabab',
+                        });
                     } else {
                         $.each(response.responseJSON, function (key, value) {
                             if ($.isArray(response.responseJSON)) {
-                                $.growl(value, {type: 'danger'});
+                                self.Toast.fire({
+                                    icon: 'error',
+                                    title: "<p style='color: dark;'>" + value + "<p>",
+                                    background: '#ffabab',
+                                });
                             } else {
                                 $.each(value, function (i, w) {
                                     let message = w
                                     if (w.indexOf("The fields name, parent must make a unique set.") > -1) {
                                         message = "'Sub Branch' with this name already exists for this 'Base Branch'."
                                     }
-                                    $.growl(message, {type: 'danger'});
+                                    self.Toast.fire({
+                                        icon: 'error',
+                                        title: "<p style='color: dark;'>" + message + "<p>",
+                                        background: '#ffabab',
+                                    });
                                 });
                             }
 
@@ -465,22 +555,44 @@ class Branch {
             } else {
                 let table = $('#branch_table').DataTable();
                 let selected_row_data = table.row('.selected').data();
-                swal({
-                    title: "Are you sure?",
-                    text: "You are going to delete branch: '" + selected_row_data.name + "'.",
+
+                Swal.fire({
+                    title: "Are you sure to delete branch '" + selected_row_data.name.toUpperCase() + "'?",
+                    html: "Everything under this branch will be deleted.</br> <b style='background-color: yellow;'>You can't recover it again</b>",
                     icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
+                    iconColor: "red",
+                    showDenyButton: true,
+                    // showCancelButton: true,
+                    confirmButtonText: `Yes, delete`,
+                    denyButtonText: `No`,
+                    footer: "<progress id='count_progress' value='100' max='100' style='width: 70%;'></progress>",
+                    didOpen: function () {
+                        $(".swal2-confirm").css('background-color', '#ff5d4f')
+                        $(".swal2-deny").css('background-color', 'gray')
+                        $(".swal2-deny").css('margin-left', '50px')
+                        Swal.disableButtons();
+                        let limit = 10
+                        let progressBarTimer = setInterval(() => {
+                            if (limit === 0) {
+                                clearInterval(progressBarTimer);
+                            }
+                            $('#count_progress').val(limit * 10);
+                            limit--;
+                        }, 1000);
+                        setTimeout(() => {
+                            Swal.enableButtons();
+                        }, 11000);
+                    }
+
                 })
                     .then((willDelete) => {
-                        if (willDelete) {
+                        if (willDelete.isConfirmed) {
                             self._helper.blockUI();
                             $(document).ajaxComplete($.unblockUI);
                             let url = self._api + 'branch/' + selected_row_data.hashed_id + '/';
                             let promise = self._helper.httpRequest(url, 'DELETE');
                             promise.done(function (response) {
-                                //
-                                swal("Branch: '" + selected_row_data.name + "' has been deleted!", {icon: "success",});
+                                Swal.fire("Branch: '" + selected_row_data.name + "' has been deleted!", '', 'success');
                                 setTimeout(function (e) {
                                     window.location.replace("/branch");
                                 }, 1000);
@@ -488,16 +600,26 @@ class Branch {
                             promise.fail(function (response) {
                                 // send back to login page with an error notification
                                 $.each(response.responseJSON, function (index, value) {
-                                    $.each(value, function (j, w) {
-                                        let message = i + ": " + w
-                                        $.growl(message, {type: 'danger'});
-                                    });
+                                    if ($.isArray(response.responseJSON)) {
+                                        self.Toast.fire({
+                                            icon: 'error',
+                                            title: "<p style='color: dark;'>" + value + "<p>",
+                                            background: '#ffabab',
+                                        });
+                                    } else {
+                                        $.each(value, function (j, w) {
+                                            let message = i + ": " + w
+                                            self.Toast.fire({
+                                                icon: 'error',
+                                                title: "<p style='color: dark;'>" + message + "<p>",
+                                                background: '#ffabab',
+                                            });
+                                        });
+                                    }
                                 });
                             });
-                        } else {
-                            swal("Branch: '" + selected_row_data.name + "' is safe and active!", {
-                                icon: "error",
-                            });
+                        } else if (willDelete.isDenied) {
+                            Swal.fire("Branch: '" + selected_row_data.name + "' is safe!", '', 'info');
                         }
                     });
             }
@@ -509,7 +631,6 @@ class Branch {
 let _branch = new Branch();
 
 
-// Getting all branches
 $(document).ready(function (e) {
     let user_permissions = request.user.permissions;
     if (window.location.pathname === '/branch/') {
@@ -524,12 +645,13 @@ $(document).ready(function (e) {
 
         } else {
             $('.main-body').remove();
-            swal({
+            Swal.fire({
                 title: "No Access",
-                text: "Sorry! You do not have permission to view this pabe",
-                icon: "error",
-                dangerMode: true,
-            });
+                text: "Sorry! You do not have permission to view this page",
+                icon: "warning",
+                iconColor: "red",
+            })
+
         }
 
     } else if (window.location.pathname === '/branch/add/') {
@@ -543,12 +665,12 @@ $(document).ready(function (e) {
 
         } else {
             $('.main-body').remove();
-            swal({
+            Swal.fire({
                 title: "No Access",
-                text: "Sorry! you do not have permission to view this page",
-                icon: "error",
-                dangerMode: true,
-            });
+                text: "Sorry! You do not have permission to view this page",
+                icon: "warning",
+                iconColor: "red",
+            })
         }
     } else if (window.location.pathname.match(/^\/branch\/([a-zA-Z0-9]){1,16}\/$/g)) {
         if (user_permissions.indexOf("detail_view.rbac_permission") > -1 && (user_permissions.indexOf("change.rbac_permission") > -1) &&
@@ -561,6 +683,14 @@ $(document).ready(function (e) {
             // _branch.branch_edit_form_fillup();
             _branch.branch_edit();
 
+        } else {
+            $('.main-body').remove();
+            Swal.fire({
+                title: "No Access",
+                text: "Sorry! You do not have permission to view this page",
+                icon: "warning",
+                iconColor: "red",
+            })
         }
     }
 
