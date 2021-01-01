@@ -245,7 +245,7 @@ class PermissionViewSet(CustomViewSet):
     serializer_class = PermissionSerializer
     queryset = Permission.objects.all()
     model = Permission
-    search_keywords = ['name']
+    search_keywords = ['name', 'feature__title']
     # lookup_field = 'hashed_id'  # Individual object will be found by this field
 
 

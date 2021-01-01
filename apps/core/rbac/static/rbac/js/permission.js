@@ -11,7 +11,7 @@ class Permission {
     constructor() {
         this._helper = new Helper();
         this._api = '/api/v1/';
-        this.permission_list_url = this._api+'permission/?format=datatables';;
+        this.permission_list_url = this._api+'permission/';
         this.permission_add_url = '/permission/add/';
         this.user_permissions = request.user.permissions;
         this.clear_profile_picture = false;
@@ -43,14 +43,10 @@ class Permission {
         $(document).ajaxStop($.unblockUI);
         let table = $('#permission_table').DataTable({
             "processing": true,
-            // "serverSide": true,
+            "serverSide": true,
             "bDestroy": true,
             "bJQueryUI": true,
-            // "dom": '<"mb-3"B>flrtip',
-            "searchPanes":{
-                layout: 'columns-4'
-            },
-            "dom": 'P<"mb-3"B>flrtip',
+            "dom": '<"mb-3"B>flrtip',
             "buttons": [
                 'copy',
                 'excel', 
@@ -69,7 +65,7 @@ class Permission {
                 'type': 'GET',
                 'headers': { 'Authorization': 'JWT '+self._helper.storage.getStorage('local', 'token').access },
                 'error': function (x, status, error) {
-                    if (x.status == 401) {
+                    if (x.status === 401) {
                         if (error === "Unauthorized"){
                             $(document).ajaxComplete($.unblockUI);
                             window.location.href ="/logout/";
@@ -80,16 +76,10 @@ class Permission {
             "columns": [
                 { "data": "" },
                 { "data": "name" },
-                { "data": "feature" },
+                { "data": "feature_name_human_readable" },
                 { "data": "is_active" },
             ], 
-            "columnDefs": [            
-                {
-                    searchPanes:{
-                        show: true,
-                    },
-                    targets: [2, 3],
-                },
+            "columnDefs": [
                 {
                     targets: 0,
                     render: function (data, type, row, meta) {
@@ -109,9 +99,7 @@ class Permission {
                     "visible": true,
                     "searchable": true,
                     "render": function (data, type, row, meta) {
-                        let title = '';
-                        $.map(self._helper._storage.getStorage('session', 'feature'), function(v, i){if(v.id==data) title = v.text});
-                        return title;
+                        return data;
                     },
                 },
                 {
@@ -213,13 +201,13 @@ class Permission {
 
     set_feature_in_dropdown(){
         let self = this;
-        let url = self._api + 'feature/?format=datatables';
+        let url = self._api + 'feature/';
         let feature_dropdown = $('#feature');
 
         var promise = this._helper.httpRequest(url);
         promise.done(function (response) {
             let data = [];
-            $.each(response.data, function(i, v){
+            $.each(response, function(i, v){
                 data.push({
                     id: v.id,
                     text: v.title,
@@ -228,8 +216,6 @@ class Permission {
             feature_dropdown.select2({
                 data: data
             });
-            // storing features in session storage for further use
-            self._helper._storage.saveStorage('session', 'feature', data);
         });
         promise.fail(function (response) {
             alert(response.responseJSON.detail);
@@ -267,12 +253,12 @@ class Permission {
 
                     },
                     error: function (response) {
-                        if(response.status == 403){
+                        if(response.status === 403){
                             $.growl(response.responseJSON.detail, { type: 'danger' });
                         }else{
                             $.each(response.responseJSON, function(i, v){
                                 $.each(v, function(j, w){
-                                    let message = i +": " + w
+                                    let message = i +": " + w;
                                     $.growl(message, { type: 'danger' });
                                 });
                             });
@@ -291,27 +277,27 @@ class Permission {
             $(document).ajaxComplete($.unblockUI);
             let url = self._api+'permission/' + permission_id + '/';
             var promise = self._helper.httpRequest(url, 'GET');
-            promise.done(function (response) { 
+            promise.done(function (response) {
                 function populate(frm, data) {
                   $.each(data, function(key, value){
-                      if(key == 'feature') $('[name='+key+']', frm).val(value).select2();
-                      else if(key == 'is_active') (value==true) ? $('input[name=is_active]').click() : "";
+                      if(key === 'feature') $('[name='+key+']', frm).val(value).select2();
+                      else if(key === 'is_active') (value===true) ? $('input[name=is_active]').click() : "";
                       else $('[name='+key+']', frm).val(value);
                   });
                 }
                 populate(permission_edit_form, response);
             });
             promise.fail(function (response) { 
-                if(response.status == 403){
+                if(response.status === 403){
                     $.growl(response.responseJSON.detail, { type: 'danger' });
                 }
-                else if(response.status == 404){
+                else if(response.status === 404){
                     $.growl('No permission found', { type: 'danger' });
                     setTimeout(function(){window.location.href = "/permission";}, 2000);
                 }else{
                     $.each(response.responseJSON, function(i, v){
                         $.each(v, function(j, w){
-                            let message = i +": " + w
+                            let message = i +": " + w;
                             $.growl(message, { type: 'danger' });
                         });
                     });
@@ -347,12 +333,12 @@ class Permission {
                     },
                     error: function (response) {              
                         $('body').unblock();
-                        if(response.status == 403 || response.status == 404){
+                        if(response.status === 403 || response.status === 404){
                             $.growl(response.responseJSON.detail, { type: 'danger' });
                         }else{
                             $.each(response.responseJSON, function(i, v){
                                 $.each(v, function(j, w){
-                                    let message = i +": " + w
+                                    let message = i +": " + w;
                                     $.growl(message, { type: 'danger' });
                                 });
                             });
@@ -372,7 +358,7 @@ let _permission = new Permission();
 // getting all permissions
 $(document).ready(function(e){    
     let user_permissions = request.user.permissions;
-    if(window.location.pathname == '/permission/'){
+    if(window.location.pathname === '/permission/'){
         if ((user_permissions.indexOf("self_view.rbac_permission") > -1) || (user_permissions.indexOf("list_view.rbac_permission") > -1)){
             $('.main-body').css('display', 'block');  // do display block as permission has permission to view
             _permission.provide_permission_based_access();
@@ -391,7 +377,7 @@ $(document).ready(function(e){
             });
         }
     }
-    else if(window.location.pathname == '/permission/add/'){
+    else if(window.location.pathname === '/permission/add/'){
         if ((user_permissions.indexOf("add.rbac_permission") > -1) && (user_permissions.indexOf("list_view.rbac_permission") > -1)){
             $('.main-body').css('display', 'block');  // do display block as permission has permission to view
             _permission.set_feature_in_dropdown();
