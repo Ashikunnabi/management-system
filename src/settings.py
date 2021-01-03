@@ -16,9 +16,9 @@ DEBUG = int(os.getenv("DEBUG"))
 ALLOWED_HOSTS = ['*']
 
 # Application definition
-SHARED_APPS = ( # SHARED APPS WILL ONLY SHOW TO THE PUBLIC SCHEMA
+SHARED_APPS = (  # SHARED APPS WILL ONLY SHOW TO THE PUBLIC SCHEMA
     'django_tenants',  # mandatory, should always be before any django app
-    'apps.core.rbac', # you must list the app where your tenant model resides in
+    'apps.core.rbac',  # you must list the app where your tenant model resides in
     
     'django.contrib.admin',
     'django.contrib.auth',
@@ -41,7 +41,6 @@ TENANT_APPS = (
 
     # your tenant-specific apps
     'rest_framework',
-    'rest_framework_datatables',
     'apps.core.base',
     'apps.core.rbac',
     'apps.inventory',
@@ -137,20 +136,7 @@ AUTH_PASSWORD_VALIDATORS = [
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
-    'DEFAULT_RENDERER_CLASSES': (
-        'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',
-        'rest_framework_datatables.renderers.DatatablesRenderer',
-    ),
-    'DEFAULT_FILTER_BACKENDS': (
-        'rest_framework_datatables.filters.DatatablesFilterBackend',
-    ),    
-    # 'DEFAULT_PARSER_CLASSES': (
-        # 'rest_framework.parsers.JSONParser',
-    # ),
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework_datatables.pagination.DatatablesPageNumberPagination',
-    'PAGE_SIZE': 10,
+    )
 }
 
 # JWT config

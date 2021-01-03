@@ -51,6 +51,8 @@ class FeatureSerializer(serializers.ModelSerializer):
 
 
 class PermissionSerializer(serializers.ModelSerializer):
+    feature_name_human_readable = serializers.StringRelatedField(source='feature.title')
+
     class Meta:
         model = Permission
         fields = '__all__'

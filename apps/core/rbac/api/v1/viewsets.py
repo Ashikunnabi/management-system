@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from apps.core.rbac.permission import UserAccessApiBasePermission
 from apps.core.base.utils.basic import *
 from apps.core.rbac.viewset import CustomViewSet
-from apps.inventory.models import Category
+from apps.core.base.custom_pagination import LargeResultsSetPagination
 from .serializers import *
 from apps.core.rbac.models import *
 
@@ -190,25 +190,31 @@ def get_user_info(request):
 
 class CustomerViewSet(CustomViewSet):
     permission_classes = [UserAccessApiBasePermission]
+    pagination_class = LargeResultsSetPagination
     serializer_class = CustomerSerializer
     queryset = Customer.objects.all()
     model = Customer
+    search_keywords = []
     # lookup_field = 'hashed_id'  # Individual object will be found by this field
 
 
 class DomainViewSet(CustomViewSet):
     permission_classes = [UserAccessApiBasePermission]
+    pagination_class = LargeResultsSetPagination
     serializer_class = DomainSerializer
     queryset = Domain.objects.all()
     model = Domain
+    search_keywords = []
     # lookup_field = 'hashed_id'  # Individual object will be found by this field
 
 
 class TenantViewSet(CustomViewSet):
     permission_classes = [UserAccessApiBasePermission]
+    pagination_class = LargeResultsSetPagination
     serializer_class = TenantSerializer
     queryset = Domain.objects.all()
     model = Domain
+    search_keywords = []
     # lookup_field = 'hashed_id'  # Individual object will be found by this field
 
 
@@ -219,46 +225,57 @@ class SidebarViewSet(viewsets.ModelViewSet):
     render_class = None
     pagination_class = None
     model = Feature
+    search_keywords = []
     # lookup_field = 'hashed_id'  # Individual object will be found by this field
 
 
 class FeatureViewSet(CustomViewSet):
     permission_classes = [UserAccessApiBasePermission]
+    pagination_class = LargeResultsSetPagination
     serializer_class = FeatureSerializer
     queryset = Feature.objects.all()
     model = Feature
+    search_keywords = []
     # lookup_field = 'hashed_id'  # Individual object will be found by this field
 
 
 class PermissionViewSet(CustomViewSet):
     permission_classes = [UserAccessApiBasePermission]
+    pagination_class = LargeResultsSetPagination
     serializer_class = PermissionSerializer
     queryset = Permission.objects.all()
     model = Permission
+    search_keywords = ['name', 'feature__title']
     # lookup_field = 'hashed_id'  # Individual object will be found by this field
 
 
 class RoleViewSet(CustomViewSet):
     permission_classes = [UserAccessApiBasePermission]
+    pagination_class = LargeResultsSetPagination
     serializer_class = RoleSerializer
     queryset = Role.objects.all()
     model = Role
+    search_keywords = []
     # lookup_field = 'hashed_id'  # Individual object will be found by this field
 
 
 class GroupViewSet(CustomViewSet):
     permission_classes = [UserAccessApiBasePermission]
+    pagination_class = LargeResultsSetPagination
     serializer_class = GroupSerializer
     queryset = Group.objects.all()
     model = Group
+    search_keywords = []
     # lookup_field = 'hashed_id'  # Individual object will be found by this field
 
 
 class BranchViewSet(CustomViewSet):
     permission_classes = [UserAccessApiBasePermission]
+    pagination_class = LargeResultsSetPagination
     serializer_class = BranchSerializer
     queryset = Branch.objects.all()
     model = Branch
+    search_keywords = []
     lookup_field = 'hashed_id'  # Individual object will be found by this field
 
     def perform_create(self, serializer, request):
@@ -381,12 +398,13 @@ class BranchViewSet(CustomViewSet):
         return Response({"detail": "Branch deleted successfully"}, status=status.HTTP_200_OK)
 
 
-
 class DepartmentViewSet(CustomViewSet):
     permission_classes = [UserAccessApiBasePermission]
+    pagination_class = LargeResultsSetPagination
     serializer_class = DepartmentSerializer
     queryset = Department.objects.all()
     model = Department
+    search_keywords = []
     lookup_field = 'hashed_id'  # Individual object will be found by this field
 
     def perform_create(self, serializer, request):
@@ -473,9 +491,11 @@ class DepartmentViewSet(CustomViewSet):
 
 class UserViewSet(CustomViewSet):
     permission_classes = [UserAccessApiBasePermission]
+    pagination_class = LargeResultsSetPagination
     serializer_class = UserSerializer
     queryset = User.objects.all()
     model = User
+    search_keywords = []
     # lookup_field = 'hashed_id'  # Individual object will be found by this field
 
     def get_queryset(self):
