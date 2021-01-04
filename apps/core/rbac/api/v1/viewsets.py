@@ -265,7 +265,7 @@ class GroupViewSet(CustomViewSet):
     serializer_class = GroupSerializer
     queryset = Group.objects.all()
     model = Group
-    search_keywords = []
+    search_keywords = ['name']
     # lookup_field = 'hashed_id'  # Individual object will be found by this field
 
 
