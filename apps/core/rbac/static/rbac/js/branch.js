@@ -10,7 +10,7 @@
 class Branch {
     constructor() {
         this._helper = new Helper();
-        this.request_format = '?format=datatables'
+        this.request_format = ''
         this._api = '/api/v1/';
         this.branch_list_url = this._api + 'branch/' + this.request_format;
         this.branch_add_url = '/branch/add/';

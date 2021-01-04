@@ -255,7 +255,7 @@ class RoleViewSet(CustomViewSet):
     serializer_class = RoleSerializer
     queryset = Role.objects.all()
     model = Role
-    search_keywords = []
+    search_keywords = ['name']
     # lookup_field = 'hashed_id'  # Individual object will be found by this field
 
 
