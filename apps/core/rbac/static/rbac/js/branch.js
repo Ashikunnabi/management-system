@@ -20,7 +20,7 @@ class Branch {
             toast: true,
             position: 'top-end',
             showConfirmButton: false,
-            timer: 1500,
+            timer: 1300,
             timerProgressBar: true,
             didOpen: (toast) => {
                 toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -221,10 +221,10 @@ class Branch {
         let url = self._api + 'branch/';
         let branch_parent_dropdown = $('#branch');
 
-        var promise = this._helper.httpRequest(url);
+        let promise = this._helper.httpRequest(url);
         promise.done(function (response) {
             let data = [];
-            $.each(response.data, function (i, v) {
+            $.each(response, function (i, v) {
                 if (window.location.pathname === self.branch_add_url) {
                     if (v.is_active) {
                         data.push({
@@ -262,7 +262,7 @@ class Branch {
         let promise = this._helper.httpRequest(url);
         promise.done(function (response) {
             let data = [];
-            $.each(response.data, function (index, value) {
+            $.each(response, function (index, value) {
                 data.push({
                     id: value.hashed_id,
                     text: value.name
@@ -288,7 +288,7 @@ class Branch {
 
         promise.done(function (response) {
             let data = []
-            $.each(response.data, function (index, value) {
+            $.each(response, function (index, value) {
                 data.push({
                     id: value.id,
                     text: value.first_name
@@ -338,7 +338,7 @@ class Branch {
                     })
                     setTimeout(function () {
                         window.location.href = "/branch";
-                    }, 1500);
+                    }, 1100);
                 });
 
                 promise.fail(function (response) {
@@ -347,7 +347,7 @@ class Branch {
                             icon: 'error',
                             title: "<p style='color: dark;'>" + response.responseJSON.detail + "<p>",
                             background: '#ffabab',
-                        })
+                        });
                     } else {
                         $.each(response.responseJSON, function (key, v) {
                             if ($.isArray(response.responseJSON)) {
