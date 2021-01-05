@@ -495,7 +495,7 @@ class UserViewSet(CustomViewSet):
     serializer_class = UserSerializer
     queryset = User.objects.all()
     model = User
-    search_keywords = []
+    search_keywords = ['username', 'first_name', 'last_name', 'position', 'email']
     # lookup_field = 'hashed_id'  # Individual object will be found by this field
 
     def get_queryset(self):
