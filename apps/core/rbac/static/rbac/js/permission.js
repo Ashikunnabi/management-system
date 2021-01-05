@@ -210,10 +210,12 @@ class Permission {
         promise.done(function (response) {
             let data = [];
             $.each(response, function (i, v) {
-                data.push({
-                    id: v.id,
-                    text: v.title,
-                });
+                if (v.is_active) {
+                    data.push({
+                        id: v.id,
+                        text: v.title,
+                    });
+                }
             });
             feature_dropdown.select2({
                 data: data

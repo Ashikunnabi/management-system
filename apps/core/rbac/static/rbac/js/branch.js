@@ -263,10 +263,12 @@ class Branch {
         promise.done(function (response) {
             let data = [];
             $.each(response, function (index, value) {
-                data.push({
-                    id: value.hashed_id,
-                    text: value.name
-                })
+                if (value.is_active) {
+                    data.push({
+                        id: value.hashed_id,
+                        text: value.name
+                    })
+                }
             });
             group_dropdown.select2({
                 data: data
@@ -289,10 +291,12 @@ class Branch {
         promise.done(function (response) {
             let data = []
             $.each(response, function (index, value) {
-                data.push({
-                    id: value.id,
-                    text: value.first_name
-                });
+                if (value.is_active) {
+                    data.push({
+                        id: value.id,
+                        text: value.first_name
+                    });
+                }
             });
             user_dropdown.select2({
                 data: data

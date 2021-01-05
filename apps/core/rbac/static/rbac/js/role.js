@@ -197,10 +197,12 @@ class Role {
         promise.done(function (response) {
             let data = [];
             $.each(response, function (i, v) {
-                data.push({
-                    id: v.id,
-                    text: v.name,
-                });
+                if (v.is_active){
+                    data.push({
+                        id: v.id,
+                        text: v.name,
+                    });
+                }
             });
             feature_dropdown.select2({
                 data: data

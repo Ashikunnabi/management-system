@@ -205,11 +205,13 @@ class Group {
         var promise = this._helper.httpRequest(url);
         promise.done(function (response) {
             let data = [];
-            $.each(response.data, function (i, v) {
-                data.push({
-                    id: v.id,
-                    text: v.username,
-                });
+            $.each(response, function (i, v) {
+                if (v.is_active) {
+                    data.push({
+                        id: v.id,
+                        text: v.username,
+                    });
+                }
             });
             user_dropdown.select2({
                 data: data
