@@ -202,7 +202,7 @@ class User {
         var promise = this._helper.httpRequest(url);
         promise.done(function (response) {
             let data = [];
-            $.each(response.results, function (i, v) {
+            $.each(response, function (i, v) {
                 data.push({
                     id: v.id,
                     text: v.name,
@@ -312,7 +312,7 @@ class User {
                         $.growl('Successfully user added', {type: 'success'});
                         setTimeout(function () {
                             window.location.href = "/user";
-                        }, 1500);
+                        }, 1100);
 
                     },
                     error: function (response) {
