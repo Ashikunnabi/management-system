@@ -10,9 +10,8 @@
 class Branch {
     constructor() {
         this._helper = new Helper();
-        this.request_format = ''
         this._api = '/api/v1/';
-        this.branch_list_url = this._api + 'branch/' + this.request_format;
+        this.branch_list_url = this._api + 'branch/';
         this.branch_add_url = '/branch/add/';
         this.user_permissions = request.user.permissions;
         this.current_editable_obj = null;
@@ -68,11 +67,7 @@ class Branch {
             "serverSide": true,
             "bDestroy": true,
             "bJQueryUI": true,
-            // "dom": '<"mb-3"B>flrtip',
-            "searchPanes": {
-                layout: 'columns-4'
-            },
-            "dom": 'P<"mb-3"B>flrtip',
+            "dom": '<"mb-3"B>flrtip',
             "buttons": [
                 'colvis',
                 'copy',
@@ -108,15 +103,8 @@ class Branch {
                 {"data": "user"},
                 {"data": "is_active"},
                 {"data": "address"},
-                {"data": "hashed_id"}
             ],
             "columnDefs": [
-                {
-                    searchPanes: {
-                        show: true,
-                    },
-                    targets: [2, 3, 4],
-                },
                 {
                     targets: 0,
                     render: function (data, type, row, meta) {
@@ -176,14 +164,6 @@ class Branch {
                         return data;
                     },
                 },
-                {
-                    "targets": [7],
-                    "visible": false,
-                    "searchable": false,
-                    "render": function (data, type, row, meta) {
-                        return data;
-                    },
-                },
             ],
         });
 
@@ -238,7 +218,7 @@ class Branch {
 
     set_parent_branch_in_dropdown() {
         let self = this;
-        let url = self._api + 'branch/' + self.request_format;
+        let url = self._api + 'branch/';
         let branch_parent_dropdown = $('#branch');
 
         var promise = this._helper.httpRequest(url);
@@ -276,7 +256,7 @@ class Branch {
 
     set_group_in_dropdown() {
         let self = this;
-        let url = self._api + 'group/' + self.request_format;
+        let url = self._api + 'group/';
         let group_dropdown = $('#group');
 
         let promise = this._helper.httpRequest(url);
@@ -302,7 +282,7 @@ class Branch {
 
     set_user_in_dropdown() {
         let self = this;
-        let url = self._api + 'user/' + self.request_format;
+        let url = self._api + 'user/';
         let user_dropdown = $("#user");
         let promise = self._helper.httpRequest(url);
 
@@ -345,7 +325,7 @@ class Branch {
                 data.is_active = $("input[name='is_active']").val();
                 data.parent = $("select[name='branch']").val() === "" ? null : $("select[name='branch']").val();
 
-                let url = self._api + 'branch/' + self.request_format;
+                let url = self._api + 'branch/';
                 self._helper.blockUI();
                 $(document).ajaxComplete($.unblockUI);
 

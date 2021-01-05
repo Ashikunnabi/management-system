@@ -275,7 +275,7 @@ class BranchViewSet(CustomViewSet):
     serializer_class = BranchSerializer
     queryset = Branch.objects.all()
     model = Branch
-    search_keywords = []
+    search_keywords = ['name', 'address']
     lookup_field = 'hashed_id'  # Individual object will be found by this field
 
     def perform_create(self, serializer, request):
