@@ -5,6 +5,7 @@ from .viewsets import *
 
 router = routers.DefaultRouter()
 router.register('category', CategoryViewSet)
+router.register('js-tree-category', JsTreeCategoryViewSet)
 router.register('vendor', VendorViewSet)
 router.register('unit-type', UnitTypeViewSet)
 router.register('product', ProductViewSet)
