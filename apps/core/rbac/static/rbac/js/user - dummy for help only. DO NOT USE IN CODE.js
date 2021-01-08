@@ -12,7 +12,6 @@ class User {
             "bDestroy": true,
             "bJQueryUI": true,
             // "dom": '<"mb-3"B>flrtip',
-            "searchPanes":true,            
             "searchPanes":{
                 layout: 'columns-4'
             },
@@ -283,4 +282,3 @@ $(document).ready(function(e){
 });
 
 
-	
