@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from apps.core.rbac.models import *
 
+from apps.core.rbac.models import *
 
 # These fields will not  send to api response
 exclude_fields = ('id', 'created_at', 'updated_at', 'created_by', 'updated_by')
@@ -131,12 +131,71 @@ class GroupSerializer(serializers.ModelSerializer):
 
 
 class BranchSerializer(serializers.ModelSerializer):
+    # As parent is already a field that's why we named 'parent_human_readable' and tell the source field name
+    parent_human_readable = serializers.StringRelatedField(source='parent')
+    parent_hashed_id = serializers.SerializerMethodField()
+    group_hashed_id = serializers.SerializerMethodField()
+    branch_tree_view = serializers.SerializerMethodField()
+    is_active_parent = serializers.SerializerMethodField()
+
     class Meta:
         model = Branch
         exclude = exclude_fields
+
+    def get_parent_hashed_id(self, obj):
+        if obj.parent:
+            return str(obj.parent.hashed_id)
+        return None
+
+    def get_group_hashed_id(self, obj):
+        if obj.group:
+            groups = obj.group.all()
+            return [group.hashed_id for group in groups]
+        return None
+
+    def get_branch_tree_view(self, obj):
+        path = obj.name
+        if obj.parent:
+            def parent(branch):
+                nonlocal path
+                path = branch.name + "/" + path
+                if branch.parent:
+                    parent(branch.parent)
+                else:
+                    return path
+
+            parent(obj.parent)
+        return path
+
+    def get_is_active_parent(self, obj):
+        """
+        If any parent(immediate or grand parent)'s is_active value of the obj/branch is false then the parent.is_active
+         of the obj/branch's value will be false. As if the parent is not active then user can't edit the child
+         branches...
+        :param obj: is a single branch object
+        :return: a boolean value
+        """
+        is_active_parent_branch = True
+        if obj.parent:
+            def parent(parent_branch):
+                nonlocal is_active_parent_branch
+                if not parent_branch.is_active:
+                    is_active_parent_branch = False
+                if parent_branch.parent:
+                    is_active_parent_branch = parent(parent_branch.parent)
+                return is_active_parent_branch
+            is_active_parent_branch = parent(obj.parent)
+        return is_active_parent_branch
+
+    def get_fields(self):
+        """add this method to add 'subbranches' field"""
+        fields = super(BranchSerializer, self).get_fields()
+        fields['subbranches'] = BranchSerializer(many=True, read_only=True, allow_null=True)
+        return fields
 
 
 class DepartmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Department
         exclude = exclude_fields
+

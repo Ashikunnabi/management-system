@@ -1,0 +1,112 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block css %}
+    <style>
+        .parsley-errors-list {
+            color: red;
+        }
+
+        .main-body {
+            display: none;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="main-body">
+        <div class="page-wrapper">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Edit existing branch</h5>
+                        </div>
+                        <div class="card-block">
+                            <form id="branch_edit_form" action="" method="patch" enctype="multipart/form-data"
+                                  data-parsley-validate="" autocomplete="off">
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Name</label><span style="color:red">*</span>
+                                            <input type="text" class="form-control" id="name" name="name" placeholder="Name"
+                                                   required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Address</label><span
+                                                style="color:red">*</span>
+                                            <input type="text" class="form-control" id="address" name="address"
+                                                   placeholder="Address"
+                                                   required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <div class="form-group">
+                                        <label class="form-label" id="branch_label">Base Branch (If any)</label>
+                                        <select class="form-control" id="branch" name="branch">
+                                            <option value selected>Select a Base branch</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="">
+                                    <div class="form-group">
+                                        <label class="form-label">Groups (If any)</label>
+                                        <select id="group" name="group" class="group_select_multiple  col-sm-12"
+                                                multiple="multiple">
+                                        </select>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="">
+                                    <div class="form-group">
+                                        <label class="form-label">Users</label><span style="color:red">*</span>
+                                        <select id="user" name="user" class="user_select_multiple  col-sm-12"
+                                                multiple="multiple" disabled>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Status</label></br>
+                                        <div class="switch d-inline m-r-10">
+                                            <span>Inactive</span>
+                                            <input type="checkbox" class="switcher-input" name="is_active" value="0"
+                                                   id="switch-1">
+                                            <label for="switch-1" class="cr"></label>
+                                            <span>Active</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block js %}
+    <script>let branch_hashed_id = "{{ hashed_id }}"; </script>
+    <script src="{% static 'rbac/js/branch.js' %}"></script>
+    <script>
+        $(document).ready(function () {
+            // CHANGING THE VALUE OF TOGGLE BUTTON WHEN CLICKING
+            toggle_button = $("input[name='is_active']")
+            toggle_button.on('click', function (e) {
+                if (toggle_button.is(':checked')) {
+                    toggle_button.val(1)
+                } else {
+                    toggle_button.val(0)
+                }
+            });
+        });
+    </script>
+{% endblock %}

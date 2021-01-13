@@ -11,45 +11,41 @@ class Group {
     constructor() {
         this._helper = new Helper();
         this._api = '/api/v1/';
-        this.group_list_url = this._api+'group/?format=datatables';;
+        this.group_list_url = this._api + 'group/';
         this.group_add_url = '/group/add/';
         this.user_permissions = request.user.permissions;
     }
-    
-    provide_permission_based_access(){
+
+    provide_permission_based_access() {
         let self = this;
-        if (!(self.user_permissions.indexOf("add.rbac_group") > -1) || !(self.user_permissions.indexOf("list_view.rbac_group") > -1)){
+        if (!(self.user_permissions.indexOf("add.rbac_group") > -1) || !(self.user_permissions.indexOf("list_view.rbac_group") > -1)) {
             $('#add_group').remove();
         }
         if (!(self.user_permissions.indexOf("detail_view.rbac_group") > -1) || !(self.user_permissions.indexOf("change.rbac_group") > -1)) {
             $('#edit_group').remove();
         }
-        if (!(self.user_permissions.indexOf("self_view.rbac_group") > -1) && !(self.user_permissions.indexOf("list_view.rbac_group") > -1)){
+        if (!(self.user_permissions.indexOf("self_view.rbac_group") > -1) && !(self.user_permissions.indexOf("list_view.rbac_group") > -1)) {
             $('#edit_group').remove();
         }
-        if (!(self.user_permissions.indexOf("delete.rbac_group") > -1) || !(self.user_permissions.indexOf("list_view.rbac_group") > -1)){
+        if (!(self.user_permissions.indexOf("delete.rbac_group") > -1) || !(self.user_permissions.indexOf("list_view.rbac_group") > -1)) {
             $('#delete_group').remove();
         }
     }
-    
-    group_list(){
+
+    group_list() {
         let self = this;
         let url = self.group_list_url;
         self._helper.blockUI();
         $(document).ajaxStop($.unblockUI);
         let table = $('#group_table').DataTable({
             "processing": true,
-            // "serverSide": true,
+            "serverSide": true,
             "bDestroy": true,
             "bJQueryUI": true,
-            // "dom": '<"mb-3"B>flrtip',
-            "searchPanes":{
-                layout: 'columns-4'
-            },
-            "dom": 'P<"mb-3"B>flrtip',
+            "dom": '<"mb-3"B>flrtip',
             "buttons": [
                 'copy',
-                'excel', 
+                'excel',
                 'pdf',
                 'csv',
                 {
@@ -59,33 +55,27 @@ class Group {
                     messageBottom: null
                 }
             ],
-            "lengthMenu": [ 10, 25, 50, 75, 100 ],
+            "lengthMenu": [10, 25, 50, 75, 100],
             "ajax": {
                 'url': url,
                 'type': 'GET',
-                'headers': { 'Authorization': 'JWT '+self._helper.storage.getStorage('local', 'token').access },
+                'headers': {'Authorization': 'JWT ' + self._helper.storage.getStorage('local', 'token').access},
                 'error': function (x, status, error) {
-                    if (x.status == 401) {
-                        if (error === "Unauthorized"){
+                    if (x.status === 401) {
+                        if (error === "Unauthorized") {
                             $(document).ajaxComplete($.unblockUI);
-                            window.location.href ="/logout/";
+                            window.location.href = "/logout/";
                         }
                     }
                 },
             },
             "columns": [
-                { "data": "" },
-                { "data": "name" },
-                { "data": "" },
-                { "data": "is_active" },
-            ], 
-            "columnDefs": [            
-                {
-                    searchPanes:{
-                        show: true,
-                    },
-                    targets: [3],
-                },
+                {"data": ""},
+                {"data": "name"},
+                {"data": ""},
+                {"data": "is_active"},
+            ],
+            "columnDefs": [
                 {
                     targets: 0,
                     render: function (data, type, row, meta) {
@@ -93,15 +83,15 @@ class Group {
                     }
                 },
                 {
-                    "targets": [ 1 ],
+                    "targets": [1],
                     "visible": true,
                     "searchable": true,
-                    "render": function (data, type, row, meta) { 
+                    "render": function (data, type, row, meta) {
                         return data;
                     },
                 },
                 {
-                    "targets": [ 2 ],
+                    "targets": [2],
                     "visible": true,
                     "searchable": true,
                     "render": function (data, type, row, meta) {
@@ -109,7 +99,7 @@ class Group {
                     },
                 },
                 {
-                    "targets": [ 3 ],
+                    "targets": [3],
                     "visible": true,
                     "searchable": true,
                     "render": function (data, type, row, meta) {
@@ -117,14 +107,14 @@ class Group {
                         else return 'Inactive';
                     },
                 },
-            ],         
-        });        
+            ],
+        });
     }
-    
-    group_list_row_select(){
-        $('#group_table tbody').on( 'click', 'tr', function () {
+
+    group_list_row_select() {
+        $('#group_table tbody').on('click', 'tr', function () {
             // deselect a selected row
-            if ($(this).hasClass('selected')){
+            if ($(this).hasClass('selected')) {
                 $(this).toggleClass('selected');
                 $('#edit_group, #delete_group').addClass('disabled');
             } else {
@@ -134,90 +124,94 @@ class Group {
                 $(this).toggleClass('selected');
                 $('#edit_group, #delete_group').removeClass('disabled');
             }
-        });     
+        });
     }
-    
-    redirect_to_group_add_page(){
+
+    redirect_to_group_add_page() {
         let self = this;
-        $('#add_group').on( 'click', '', function () {
+        $('#add_group').on('click', '', function () {
             let url = self.group_add_url;
-            window.open(url, "");
-        });     
+            window.open(url, "_self");
+        });
     }
-    
-    redirect_to_group_edit_page(){
+
+    redirect_to_group_edit_page() {
         let self = this;
-        $('#edit_group').on( 'click', '', function () {
-            if ($(this).hasClass('disabled')){
+        $('#edit_group').on('click', '', function () {
+            if ($(this).hasClass('disabled')) {
                 // button is disabled that means not table row selected, so do nothing
-            }else{
+            } else {
                 var table = $('#group_table').DataTable();
                 let url = '/group/' + table.row('.selected').data().id;
-                window.open(url, "_blank");
-            }
-        });     
-    }
-    
-    group_delete(){
-        let self = this;
-        $('#delete_group').on( 'click', '', function () {
-            if ($(this).hasClass('disabled')){
-                // button is disabled that means not table row selected, so do nothing
-            }else{
-                var table = $('#group_table').DataTable();
-				let selected_row_data = table.row('.selected').data();
-                swal({
-                    title: "Are you sure?",
-                    text: "You are going to delete group: '"+selected_row_data.name+"'",
-                    icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
-                })
-                .then((willDelete) => {
-                    if (willDelete) {
-                        self._helper.blockUI();
-                        $(document).ajaxComplete($.unblockUI);
-                        let url = self._api+'group/' + selected_row_data.id + '/';
-                        var promise = self._helper.httpRequest(url, 'DELETE');
-                        promise.done(function (response) {
-                            // redirect to dashboard
-                            swal("Poof! Group: '"+selected_row_data.name+"' has been deleted!", {
-                                icon: "success",
-                            });
-                            setTimeout(function(e){window.location.replace("/group");}, 1000);                            
-                        });
-                        promise.fail(function (response) {
-                            // send back to login page with an error notification
-                            $.each(response.responseJSON, function(i, v){
-                                $.each(v, function(j, w){
-                                    let message = i +": " + w
-                                    $.growl(message, { type: 'danger' });
-                                });
-                            });                            
-                        });
-                    } else {
-                        swal("Group: '"+selected_row_data.name+"' is safe and active!", {
-                            icon: "error",
-                        });
-                    }
-                });
+                window.open(url, "_self");
             }
         });
     }
 
-    set_user_in_dropdown(){
+    group_delete() {
         let self = this;
-        let url = self._api + 'user/?format=datatables';
+        $('#delete_group').on('click', '', function () {
+            if ($(this).hasClass('disabled')) {
+                // button is disabled that means not table row selected, so do nothing
+            } else {
+                var table = $('#group_table').DataTable();
+                let selected_row_data = table.row('.selected').data();
+                swal({
+                    title: "Are you sure?",
+                    text: "You are going to delete group: '" + selected_row_data.name + "'",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            self._helper.blockUI();
+                            $(document).ajaxComplete($.unblockUI);
+                            let url = self._api + 'group/' + selected_row_data.id + '/';
+                            var promise = self._helper.httpRequest(url, 'DELETE');
+                            promise.done(function (response) {
+                                // redirect to dashboard
+                                swal("Poof! Group: '" + selected_row_data.name + "' has been deleted!", {
+                                    icon: "success",
+                                });
+                                setTimeout(function (e) {
+                                    window.location.replace("/group");
+                                }, 1000);
+                            });
+                            promise.fail(function (response) {
+                                // send back to login page with an error notification
+                                $.each(response.responseJSON, function (i, v) {
+                                    $.each(v, function (j, w) {
+                                        let message = i + ": " + w;
+                                        $.growl(message, {type: 'danger'});
+                                    });
+                                });
+                            });
+                        } else {
+                            swal("Group: '" + selected_row_data.name + "' is safe and active!", {
+                                icon: "error",
+                            });
+                        }
+                    });
+            }
+        });
+    }
+
+    set_user_in_dropdown() {
+        let self = this;
+        let url = self._api + 'user/';
         let user_dropdown = $('#user');
 
         var promise = this._helper.httpRequest(url);
         promise.done(function (response) {
             let data = [];
-            $.each(response.data, function(i, v){
-                data.push({
-                    id: v.id,
-                    text: v.username,
-                });
+            $.each(response, function (i, v) {
+                if (v.is_active) {
+                    data.push({
+                        id: v.id,
+                        text: v.username,
+                    });
+                }
             });
             user_dropdown.select2({
                 data: data
@@ -228,23 +222,23 @@ class Group {
         });
     }
 
-    group_add(){
+    group_add() {
         let self = this;
-		let group_add_form = $('#group_add_form');
+        let group_add_form = $('#group_add_form');
         group_add_form.submit(function (e) {
-			e.preventDefault();
-			let data_parsley = group_add_form.parsley();
-            if (!data_parsley.isValid()){
+            e.preventDefault();
+            let data_parsley = group_add_form.parsley();
+            if (!data_parsley.isValid()) {
                 // Invalid Form Data
-            }else{
-				let data = new FormData($(this)[0]);
-				if (data.has('is_active') === false) data.append('is_active', '0');
-				
-				let url = self._api+'group/';
-                
+            } else {
+                let data = new FormData($(this)[0]);
+                if (data.has('is_active') === false) data.append('is_active', '0');
+
+                let url = self._api + 'group/';
+                console.log(data, '-------------')
                 self._helper.blockUI();
                 $(document).ajaxComplete($.unblockUI);
-                
+
                 $.ajax({
                     type: "post",
                     url: url,
@@ -252,80 +246,82 @@ class Group {
                     processData: false,
                     contentType: false,
                     success: function (data) {
-                        $.growl('Successfully group added', { type: 'success' });
+                        $.growl('Successfully group added', {type: 'success'});
                         setTimeout(function () {
                             window.location.href = "/group";
                         }, 1500);
 
                     },
                     error: function (response) {
-                        if(response.status == 403){
-                            $.growl(response.responseJSON.detail, { type: 'danger' });
-                        }else{
-                            $.each(response.responseJSON, function(i, v){
-                                $.each(v, function(j, w){
-                                    let message = i +": " + w
-                                    $.growl(message, { type: 'danger' });
+                        if (response.status === 403) {
+                            $.growl(response.responseJSON.detail, {type: 'danger'});
+                        } else {
+                            $.each(response.responseJSON, function (i, v) {
+                                $.each(v, function (j, w) {
+                                    let message = i + ": " + w;
+                                    $.growl(message, {type: 'danger'});
                                 });
                             });
                         }
                     }
                 });
             }
-        });                
-    }	
+        });
+    }
 
-    group_edit_form_fillup(){
+    group_edit_form_fillup() {
         let self = this;
-		let group_edit_form = $('#group_edit_form');
+        let group_edit_form = $('#group_edit_form');
         group_edit_form.ready(function (e) {
             self._helper.blockUI();
             $(document).ajaxComplete($.unblockUI);
-            let url = self._api+'group/' + group_id + '/';
+            let url = self._api + 'group/' + group_id + '/';
             var promise = self._helper.httpRequest(url, 'GET');
-            promise.done(function (response) { 
+            promise.done(function (response) {
                 function populate(frm, data) {
-                  $.each(data, function(key, value){
-                      if(key == 'user') $('[name='+key+']', frm).val(value).select2();
-                      else if(key == 'is_active') (value==true) ? $('input[name=is_active]').click() : "";
-                      else $('[name='+key+']', frm).val(value);
-                  });
+                    $.each(data, function (key, value) {
+                        if (key === 'user') $('[name=' + key + ']', frm).val(value).select2();
+                        else if (key === 'is_active') (value === true) ? $('input[name=is_active]').click() : "";
+                        else $('[name=' + key + ']', frm).val(value);
+                    });
                 }
+
                 populate(group_edit_form, response);
             });
-            promise.fail(function (response) { 
-                if(response.status == 403){
-                    $.growl(response.responseJSON.detail, { type: 'danger' });
-                }
-                else if(response.status == 404){
-                    $.growl('No group found', { type: 'danger' });
-                    setTimeout(function(){window.location.href = "/group";}, 2000);
-                }else{
-                    $.each(response.responseJSON, function(i, v){
-                        $.each(v, function(j, w){
-                            let message = i +": " + w
-                            $.growl(message, { type: 'danger' });
+            promise.fail(function (response) {
+                if (response.status === 403) {
+                    $.growl(response.responseJSON.detail, {type: 'danger'});
+                } else if (response.status === 404) {
+                    $.growl('No group found', {type: 'danger'});
+                    setTimeout(function () {
+                        window.location.href = "/group";
+                    }, 2000);
+                } else {
+                    $.each(response.responseJSON, function (i, v) {
+                        $.each(v, function (j, w) {
+                            let message = i + ": " + w;
+                            $.growl(message, {type: 'danger'});
                         });
                     });
                 }
             });
-        });       
+        });
     }
 
-    group_edit(){
+    group_edit() {
         let self = this;
-		let group_edit_form = $('#group_edit_form');
+        let group_edit_form = $('#group_edit_form');
         group_edit_form.submit(function (e) {
-			e.preventDefault();
-			let data_parsley = group_edit_form.parsley();
-            if (!data_parsley.isValid()){
+            e.preventDefault();
+            let data_parsley = group_edit_form.parsley();
+            if (!data_parsley.isValid()) {
                 // Invalid Form Data
-            }else{
-				let data = new FormData($(this)[0]);
-				if (data.has('is_active') === false) data.append('is_active', '0');
+            } else {
+                let data = new FormData($(this)[0]);
+                if (data.has('is_active') === false) data.append('is_active', '0');
 
-				let url = self._api+'group/' + group_id + '/';
-               
+                let url = self._api + 'group/' + group_id + '/';
+
                 self._helper.blockUI();
                 $(document).ajaxStop($.unblockUI);
                 $.ajax({
@@ -335,37 +331,35 @@ class Group {
                     processData: false,
                     contentType: false,
                     success: function (data) {
-                        $.growl('Successfully group updated', { type: 'success' });
+                        $.growl('Successfully group updated', {type: 'success'});
                     },
-                    error: function (response) {              
+                    error: function (response) {
                         $('body').unblock();
-                        if(response.status == 403 || response.status == 404){
-                            $.growl(response.responseJSON.detail, { type: 'danger' });
-                        }else{
-                            $.each(response.responseJSON, function(i, v){
-                                $.each(v, function(j, w){
-                                    let message = i +": " + w
-                                    $.growl(message, { type: 'danger' });
+                        if (response.status === 403 || response.status === 404) {
+                            $.growl(response.responseJSON.detail, {type: 'danger'});
+                        } else {
+                            $.each(response.responseJSON, function (i, v) {
+                                $.each(v, function (j, w) {
+                                    let message = i + ": " + w;
+                                    $.growl(message, {type: 'danger'});
                                 });
                             });
                         }
                     }
-                });                
+                });
             }
-        });        
+        });
     }
 }
-
-
 
 
 let _group = new Group();
 
 // getting all groups
-$(document).ready(function(e){    
+$(document).ready(function (e) {
     let user_permissions = request.user.permissions;
-    if(window.location.pathname == '/group/'){
-        if ((user_permissions.indexOf("self_view.rbac_group") > -1) || (user_permissions.indexOf("list_view.rbac_group") > -1)){
+    if (window.location.pathname === '/group/') {
+        if ((user_permissions.indexOf("self_view.rbac_group") > -1) || (user_permissions.indexOf("list_view.rbac_group") > -1)) {
             $('.main-body').css('display', 'block');  // do display block as group has group to view
             _group.provide_permission_based_access();
             _group.group_list();
@@ -373,7 +367,7 @@ $(document).ready(function(e){
             _group.redirect_to_group_add_page();
             _group.redirect_to_group_edit_page();
             _group.group_delete();
-        } else {            
+        } else {
             $('.main-body').remove();
             swal({
                 title: "No Access",
@@ -382,13 +376,12 @@ $(document).ready(function(e){
                 dangerMode: true,
             });
         }
-    }
-    else if(window.location.pathname == '/group/add/'){
-        if ((user_permissions.indexOf("add.rbac_group") > -1) && (user_permissions.indexOf("list_view.rbac_group") > -1)){
+    } else if (window.location.pathname === '/group/add/') {
+        if ((user_permissions.indexOf("add.rbac_group") > -1) && (user_permissions.indexOf("list_view.rbac_group") > -1)) {
             $('.main-body').css('display', 'block');  // do display block as group has group to view
             _group.set_user_in_dropdown();
             _group.group_add();  // rbac/group_add.html 
-        } else {            
+        } else {
             $('.main-body').remove();
             swal({
                 title: "No Access",
@@ -397,15 +390,14 @@ $(document).ready(function(e){
                 dangerMode: true,
             });
         }
-    }
-    else if(window.location.pathname.match(/[\/group\/\d\/]/g)){
+    } else if (window.location.pathname.match(/[\/group\/\d\/]/g)) {
         if ((user_permissions.indexOf("detail_view.rbac_group") > -1) && (user_permissions.indexOf("change.rbac_group") > -1) &&
-            ((user_permissions.indexOf("self_view.rbac_group") > -1) || (user_permissions.indexOf("list_view.rbac_group") > -1))){
+            ((user_permissions.indexOf("self_view.rbac_group") > -1) || (user_permissions.indexOf("list_view.rbac_group") > -1))) {
             $('.main-body').css('display', 'block');  // do display block as group has group to view
             _group.set_user_in_dropdown();
             _group.group_edit_form_fillup();  // rbac/group_edit.html
             _group.group_edit();  // rbac/group_edit.html
-        } else {            
+        } else {
             $('.main-body').remove();
             swal({
                 title: "No Access",

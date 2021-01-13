@@ -81,3 +81,15 @@ def customer(request):
     
 def feature(request):
     return render(request, 'rbac/feature.html')
+
+
+def branch(request):
+    return render(request, 'rbac/branch.html')
+
+
+def branch_add(request):
+    return render(request, 'rbac/branch_add.html')
+
+
+def branch_edit(request, hashed_id):
+    return render(request, 'rbac/branch_edit.html', context={'hashed_id': hashed_id})
