@@ -101,6 +101,24 @@ class CategoryViewSet(CustomViewSet):
         return Response({"detail": "Category deleted successfully"}, status=status.HTTP_200_OK)
 
 
+class JsTreeCategoryViewSet(CustomViewSet):
+    permission_classes = [UserAccessApiBasePermission]
+    queryset = Category.objects.all()
+    serializer_class = JsTreeCategorySerializer
+    model = Category
+    # Individual object will be found by this field.
+    lookup_field = 'hashed_id'
+    http_method_names = ['get']
+
+    def get_queryset(self):
+        category_id = None if self.request.GET.get('id') == '#' \
+            else self.request.GET.get('id')
+
+        return self.queryset.filter(parent_id=category_id)
+
+
+
+
 class VendorViewSet(CustomViewSet):
     permission_classes = [UserAccessApiBasePermission]
     queryset = Vendor.objects.all()

@@ -11,6 +11,20 @@ class CategorySerializer(serializers.ModelSerializer):
         exclude = exclude_fields
 
 
+class JsTreeCategorySerializer(serializers.ModelSerializer):
+    text = serializers.SerializerMethodField()
+    children = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Category
+        exclude = exclude_fields
+
+    def get_text(self, obj):
+        return obj.name
+
+    def get_children(self, obj):
+        return True if obj.parent is not None else False
+
 class VendorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vendor
