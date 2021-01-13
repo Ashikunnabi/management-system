@@ -33,8 +33,12 @@
 <script src="{% static 'base/plugins/amchart/js/radar.js' %}"></script>
 <script src="{% static 'base/plugins/amchart/js/worldLow.js' %}"></script>
 <script src="{% static 'base/plugins/notification/js/bootstrap-growl.min.js' %}"></script>
-{% comment %} <script src="{% static 'base/plugins/sweetalert/js/sweetalert.min.js' %}"></script> {% endcomment %}
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>  <!-- SWEETALERT2 cdn-->
+<script src="{% static 'base/plugins/sweetalert/js/sweetalert.min.js' %}"></script>
+                            {#==========SWEETALERT2==========#}
+<script src="{% static 'base/plugins/sweetalert2/js/sweetalert2.all.min.js' %}"></script>
+<!-- Optional: include a polyfill for ES6 Promises for IE11 -->
+<script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
+{#<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>  <!-- SWEETALERT2 cdn-->#}
 <script src="{% static 'base/plugins/select2/js/select2.full.min.js' %}"></script>
 <script src="{% static 'base/plugins/modal-window-effects/js/classie.js' %}"></script>
 <script src="{% static 'base/plugins/modal-window-effects/js/modalEffects.js' %}"></script>
