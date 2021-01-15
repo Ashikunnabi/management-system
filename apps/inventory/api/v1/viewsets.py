@@ -47,19 +47,34 @@ class CategoryViewSet(CustomViewSet):
         instance.delete()
 
     def create(self, request, *args, **kwargs):
+        parent = request.data.get('parent')
+        department = request.data.get('department')
         try:
-            if request.data.get('category'):
+            if parent:
                 # Getting 'category' as parent obj and set it to 'parent' field
                 category = get_object_or_404(
-                    Category, hashed_id=request.data.get('category'))
+                    Category,
+                    hashed_id=parent
+                )
                 # updating parent field value null to given category
-                request.data.update({"parent": category.id}) 
-            department = get_object_or_404(
-                Department, hashed_id=request.data.get('department'))
+                request.data.update(
+                    {
+                        "parent": category.id
+                    }
+                )
+
+            department_obj = get_object_or_404(
+                Department,
+                hashed_id=department
+            )
             # Changing the value of dep value, hashed_id to id of json. 
             # So that other relational operation can be done by id 
             # which is default.
-            request.data.update({"department": department.id})  
+            request.data.update(
+                {
+                    "department": department_obj.id
+                }
+            )
         except Exception as ex:
             # if category (optional), department is not found then 
             # do not process request further
@@ -79,19 +94,34 @@ class CategoryViewSet(CustomViewSet):
                             status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, *args, **kwargs):
+        parent = request.data.get('parent')
+        department = request.data.get('department')
         try:
-            if request.data.get('category'):
+            if parent:
+                # Getting 'category' as parent obj and set it to 'parent' field
                 category = get_object_or_404(
-                    Category, hashed_id=request.data.get('category'))
-                # Updating the parent field value with given category value
-                request.data.update({"parent": category.id})  
-            if request.data.get('department'):
-                department = get_object_or_404(
-                    Department, hashed_id=request.data.get('department'))
-                # Changing the value of dep value, hashed_id to id of json. 
-                # So that other relational operation can be done by id 
-                # which is default.
-                request.data.update({"department": department.id})
+                    Category,
+                    hashed_id=parent
+                )
+                # updating parent field value null to given category
+                request.data.update(
+                    {
+                        "parent": category.id
+                    }
+                )
+
+            department_obj = get_object_or_404(
+                Department,
+                hashed_id=department
+            )
+            # Changing the value of dep value, hashed_id to id of json.
+            # So that other relational operation can be done by id
+            # which is default.
+            request.data.update(
+                {
+                    "department": department_obj.id
+                }
+            )
         except Exception as ex:
             # if category (optional), department (optional) 
             # is not found then do not process request further 
