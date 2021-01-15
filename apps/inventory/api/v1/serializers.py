@@ -15,19 +15,15 @@ class JsTreeCategorySerializer(serializers.ModelSerializer):
     id = serializers.StringRelatedField(source='hashed_id')
     text = serializers.StringRelatedField(source='name')
     children = serializers.SerializerMethodField()
-    icon = serializers.SerializerMethodField()
 
     class Meta:
         model = Category
         # exclude = exclude_fields
-        fields = ('id', 'text', 'children', 'icon')
+        fields = ('id', 'text', 'children')
 
     def get_children(self, obj):
         has_children = Category.objects.filter(parent=obj.id).exists()
         return True if has_children else False
-
-    def get_icon(self, obj):
-        return 'fas fa-large fa-folder'
 
 
 class VendorSerializer(serializers.ModelSerializer):
