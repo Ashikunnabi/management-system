@@ -13,26 +13,34 @@
         <div class="page-wrapper">
             <div class="row">
                 <div class="col-sm-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h5>Category</h5>
-                        <div style="float:right">
-                            <button type="button" id="add_category" class="btn btn-icon btn-rounded btn-outline-success" data-toggle="tooltip" data-placement="top" title="Add New category"><i class="feather icon-plus"></i></button>
-                            <button type="button" id="edit_category" class="btn btn-icon btn-rounded btn-outline-warning disabled"data-toggle="tooltip" data-placement="top" title="Edit selected category"><i class="feather icon-edit"></i></button>
-                            <button type="button" id="delete_category" class="btn btn-icon btn-rounded btn-outline-danger disabled sweet-multiple" data-toggle="tooltip" data-placement="top" title="Delete selected category"><i class="feather icon-trash-2"></i></button>
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Category</h5>
+                            <div style="float:right">
+                                <button type="button" id="add_category"
+                                        class="btn btn-icon btn-rounded btn-outline-success md-trigger"
+                                        data-toggle="tooltip"
+                                        data-placement="top"
+                                        data-modal="modal-19"
+                                        title="Add New category"><i
+                                        class="feather icon-plus"></i></button>
+                            </div>
                         </div>
+                        <div id="jstree_div"></div>
+                        <br>
+                        <br>
+                        <br>
                     </div>
-                    <div id="jstree_div"></div>
-                    <br>
-                    <br>
-                    <br>
-                </div>
-            </div>
                 </div>
             </div>
         </div>
     </div>
 {% endblock %}
+
+{% block modal %}
+    {% include "inventory/category_modals.html" %}
+{% endblock %}
+
 {% block js %}
     <script src="{% static 'inventory/js/category.js' %}"></script>
 {% endblock %}

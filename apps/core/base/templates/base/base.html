@@ -71,6 +71,10 @@
         </div>
       </div>
     </div>
+
+    {% block modal %} {% endblock %}
+    <div class="md-overlay"></div>  {# modal overlay #}
+
     {% include "base/js.html" %}
     {% block js %} {% endblock %}
 </body>
