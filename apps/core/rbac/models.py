@@ -197,7 +197,7 @@ class Department(AuditTrail):
                             )]
                             )
     branch = models.ForeignKey(Branch, related_name='department_branch', on_delete=models.CASCADE)
-    parent = models.ForeignKey('self', blank=True, null=True, on_delete=models.CASCADE)
+    parent = models.ForeignKey('self', related_name='sub_departments', blank=True, null=True, on_delete=models.CASCADE)
     user = models.ManyToManyField(User, blank=True, related_name='department_users')
     group = models.ManyToManyField(Group, blank=True, related_name='department_groups')
 
