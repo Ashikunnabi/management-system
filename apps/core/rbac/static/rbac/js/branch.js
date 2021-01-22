@@ -540,6 +540,16 @@ class Branch {
                 let table = $('#branch_table').DataTable();
                 let selected_row_data = table.row('.selected').data();
 
+                //
+                let limit = 10
+                let progressBarTimer = setInterval(() => {
+                    if (limit === 0) {
+                        clearInterval(progressBarTimer);
+                    }
+                    $('#count_progress').val(limit * 10);
+                    limit--;
+                }, 1000);
+
                 Swal.fire({
                     title: "Are you sure to delete branch '" + selected_row_data.name.toUpperCase() + "'?",
                     html: "Everything under this branch will be deleted.</br> <b style='background-color: yellow;'>You can't recover it again</b>",
@@ -555,19 +565,14 @@ class Branch {
                         $(".swal2-deny").css('background-color', 'gray')
                         $(".swal2-deny").css('margin-left', '50px')
                         Swal.disableButtons();
-                        let limit = 10
-                        let progressBarTimer = setInterval(() => {
-                            if (limit === 0) {
-                                clearInterval(progressBarTimer);
-                            }
-                            $('#count_progress').val(limit * 10);
-                            limit--;
-                        }, 1000);
+
                         setTimeout(() => {
                             Swal.enableButtons();
                         }, 11000);
+                    },
+                    didClose: () =>{
+                        clearInterval(progressBarTimer)
                     }
-
                 })
                     .then((willDelete) => {
                         if (willDelete.isConfirmed) {
