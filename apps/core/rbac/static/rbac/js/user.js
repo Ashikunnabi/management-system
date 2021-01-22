@@ -407,6 +407,9 @@ class User {
                     contentType: false,
                     success: function (data) {
                         $.growl('Successfully user updated', {type: 'success'});
+                        setTimeout(function () {
+                            window.location.href = "/user";
+                        }, 1500);
                     },
                     error: function (response) {
                         $('body').unblock();
