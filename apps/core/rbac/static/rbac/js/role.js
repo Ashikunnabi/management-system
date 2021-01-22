@@ -191,7 +191,7 @@ class Role {
     set_permission_in_dropdown() {
         let self = this;
         let url = self._api + 'permission/';
-        let feature_dropdown = $('#permission');
+        let permission_dropdown = $('#permission');
 
         var promise = this._helper.httpRequest(url);
         promise.done(function (response) {
@@ -204,13 +204,19 @@ class Role {
                     });
                 }
             });
-            feature_dropdown.select2({
+            permission_dropdown.select2({
                 data: data
             });
+            // Calling 'role_edit_form_fillup' here because 'set_permission_in_dropdown' take time to set the
+            // permissions in dropdown. If we don't call 'role_edit_form_fillup' here 'role_edit_form_fillup' will
+            // try to fill the form before the permission is set into the dropdown. 
+            self.role_edit_form_fillup();
         });
         promise.fail(function (response) {
             alert(response.responseJSON.detail);
         });
+
+
     }
 
     role_add() {
@@ -387,7 +393,7 @@ $(document).ready(function (e) {
             ((user_permissions.indexOf("self_view.rbac_role") > -1) || (user_permissions.indexOf("list_view.rbac_role") > -1))) {
             $('.main-body').css('display', 'block');  // do display block as role has role to view
             _role.set_permission_in_dropdown();
-            _role.role_edit_form_fillup();  // rbac/role_edit.html
+            // _role.role_edit_form_fillup();  // rbac/role_edit.html
             _role.role_edit();  // rbac/role_edit.html
         } else {
             $('.main-body').remove();

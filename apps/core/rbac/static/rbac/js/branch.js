@@ -404,8 +404,9 @@ class Branch {
 
                         // IF branch is base branch then add a option written with 'Base Branch'
                         if (key === 'parent' && data[key] === null) {
-                            $("#branch_label").append('  (This is BASE BRANCH)')
-                            $("#branch_label").css('color', 'blue')
+                            $("#is_base_branch").text('  (This is BASE BRANCH)');
+                            $("#is_base_branch").css('color', 'blue');
+                            $("#is_base_branch").css('fontWeight', 'bold');
                         }
                     });
                 }
