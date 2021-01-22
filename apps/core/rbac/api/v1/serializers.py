@@ -184,6 +184,7 @@ class BranchSerializer(serializers.ModelSerializer):
                 if parent_branch.parent:
                     is_active_parent_branch = parent(parent_branch.parent)
                 return is_active_parent_branch
+
             is_active_parent_branch = parent(obj.parent)
         return is_active_parent_branch
 
@@ -195,7 +196,66 @@ class BranchSerializer(serializers.ModelSerializer):
 
 
 class DepartmentSerializer(serializers.ModelSerializer):
+    # As parent is already a field that's why we named 'parent_human_readable' and tell the source field name
+    branch_human_readable = serializers.StringRelatedField(source='branch')
+    parent_human_readable = serializers.StringRelatedField(source='parent')
+    parent_hashed_id = serializers.SerializerMethodField()
+    group_hashed_id = serializers.SerializerMethodField()
+    department_tree_view = serializers.SerializerMethodField()
+    is_active_parent = serializers.SerializerMethodField()
+
     class Meta:
         model = Department
         exclude = exclude_fields
 
+    def get_parent_hashed_id(self, obj):
+        if obj.parent:
+            return str(obj.parent.hashed_id)
+        return None
+
+    def get_group_hashed_id(self, obj):
+        if obj.group:
+            groups = obj.group.all()
+            return [group.hashed_id for group in groups]
+        return None
+
+    def get_department_tree_view(self, obj):
+        path = obj.name
+        if obj.parent:
+            def parent(department):
+                nonlocal path
+                path = department.name + "/" + path
+                if department.parent:
+                    parent(department.parent)
+                else:
+                    return path
+
+            parent(obj.parent)
+        return path
+
+    def get_is_active_parent(self, obj):
+        """
+        If any parent(immediate or grand parent)'s is_active value of the obj/department is false then the parent.is_active
+         of the obj/department's value will be false. As if the parent is not active then user can't edit the child
+         departments...
+        :param obj: is a single department object
+        :return: a boolean value
+        """
+        is_active_parent_department = True
+        if obj.parent:
+            def parent(parent_department):
+                nonlocal is_active_parent_department
+                if not parent_department.is_active:
+                    is_active_parent_department = False
+                if parent_department.parent:
+                    is_active_parent_department = parent(parent_department.parent)
+                return is_active_parent_department
+
+            is_active_parent_department = parent(obj.parent)
+        return is_active_parent_department
+
+    def get_fields(self):
+        """add this method to add 'subdepartments' field"""
+        fields = super(DepartmentSerializer, self).get_fields()
+        fields['sub_departments'] = DepartmentSerializer(many=True, read_only=True, allow_null=True)
+        return fields

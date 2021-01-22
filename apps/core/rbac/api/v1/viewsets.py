@@ -1,18 +1,19 @@
 import requests
 from django.conf import settings
-from django.db import transaction
 from django.contrib.auth import authenticate, login as auth_login
+from django.db import transaction
 from django.shortcuts import reverse, get_object_or_404
 from rest_framework import viewsets, status
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from apps.core.rbac.permission import UserAccessApiBasePermission
-from apps.core.base.utils.basic import *
-from apps.core.rbac.viewset import CustomViewSet
+
 from apps.core.base.custom_pagination import LargeResultsSetPagination
-from .serializers import *
+from apps.core.base.utils.basic import *
 from apps.core.rbac.models import *
+from apps.core.rbac.permission import UserAccessApiBasePermission
+from apps.core.rbac.viewset import CustomViewSet
+from .serializers import *
 
 
 @api_view(['POST'])
@@ -174,16 +175,15 @@ def get_user_info(request):
     if error_param is not None:
         return Response({"details": "'{}' required.".format(error_param)}, status=400)
 
-
     user = User.objects.filter(username=param['username'])[0]
 
     response = {
-      'username': user.username,
-      'email': user.email,
-      'role': user.role.id,
-      'permissions': [_.id for _ in user.role.permission.all()],
-      'is_admin': True if user.role.code in ['super_admin', 'admin'] else False,
-      'is_active': user.is_active,
+        'username': user.username,
+        'email': user.email,
+        'role': user.role.id,
+        'permissions': [_.id for _ in user.role.permission.all()],
+        'is_admin': True if user.role.code in ['super_admin', 'admin'] else False,
+        'is_active': user.is_active,
     }
     return Response(response, status=200)
 
@@ -292,6 +292,7 @@ class BranchViewSet(CustomViewSet):
         store_user_activity(request,
                             store_json=serializer.data,
                             description=f"Branch: An existing Branch '{previous_data_before_update.name}' modified.")
+
     def perform_destroy(self, instance, request):
         """ Delete an existing Branch and store activity log. """
         serializer = self.serializer_class(instance).data
@@ -299,7 +300,6 @@ class BranchViewSet(CustomViewSet):
                             store_json=serializer,
                             description=f"Branch: An existing branch '{serializer.get('name')}' deleted.")
         instance.delete()
-
 
     def validate_branch(self, name, parent):
         """
@@ -314,7 +314,6 @@ class BranchViewSet(CustomViewSet):
         else:
             if branches.filter(parent__hashed_id=parent).count():
                 raise serializers.ValidationError('Sub Branch with this name already exists in this Base branch.')
-
 
     def create(self, request, *args, **kwargs):
         """
@@ -349,7 +348,7 @@ class BranchViewSet(CustomViewSet):
             # from this we are taking Branch or Group
             return Response({title: ["Not Found."]}, status=status.HTTP_400_BAD_REQUEST)
 
-        serializer = self.serializer_class(data=request.data)   # validate posted data using serializer
+        serializer = self.serializer_class(data=request.data)  # validate posted data using serializer
         if serializer.is_valid():
             self.perform_create(serializer, request)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -363,7 +362,7 @@ class BranchViewSet(CustomViewSet):
         group = request.data.get('group')
         selected_branch = Branch.objects.get(hashed_id=kwargs.get('hashed_id'))
 
-            # self.branch_name_validation(name)
+        # self.branch_name_validation(name)
         """ Duplicate branch name is not allowed."""
         if name or parent:
             self.validate_branch(name, parent)
@@ -371,14 +370,16 @@ class BranchViewSet(CustomViewSet):
         try:
             if parent:
                 existing_branch = get_object_or_404(Branch, hashed_id=parent)
-                request.data.update({"parent": existing_branch.id})  # updating the parent field value with given branch value
+                request.data.update(
+                    {"parent": existing_branch.id})  # updating the parent field value with given branch value
             if group:
                 # Using list comprehension as group is in manytomany relationship with branch
                 existing_group = [get_object_or_404(Group, hashed_id=group).id for group in group]
                 request.data.update({"group": existing_group})
         except Exception as ex:
             # if branch or group is not found then do not process request further
-            title = ex.__str__().split(' ')[1].upper()   # The exception is: The exception is: No Group/Branch matches the given query..
+            title = ex.__str__().split(' ')[
+                1].upper()  # The exception is: The exception is: No Group/Branch matches the given query..
             # from this we are taking Category or Vendor or UnitType
             return Response({title: ["Not Found."]}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -393,7 +394,7 @@ class BranchViewSet(CustomViewSet):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, *args, **kwargs):
-        instance = self.get_object()  #  get the requested object instance
+        instance = self.get_object()  # get the requested object instance
         self.perform_destroy(instance, request)
         return Response({"detail": "Branch deleted successfully"}, status=status.HTTP_200_OK)
 
@@ -430,27 +431,52 @@ class DepartmentViewSet(CustomViewSet):
                             description=f"Department: An existing department '{serializer.get('name')}' deleted.")
         instance.delete()
 
+    def validate_department(self, name, parent):
+        """
+            Check duplication of the same branch
+        :param name: department name
+        :param parent: department parent (base branch)
+        """
+        departments = Department.objects.filter(name__iexact=name)
+        if not parent:
+            if departments.filter(parent=None).count():
+                raise serializers.ValidationError('Department with this name already exists.')
+        else:
+            if departments.filter(parent__hashed_id=parent).count():
+                raise serializers.ValidationError('Sub Department with this name already exists in this Base '
+                                                  'department.')
 
     def create(self, request, *args, **kwargs):
         """ Create a new department """
+
+        name = request.data.get('name')
+        # branch = request.data.get('branch')
+        # parent_department = request.data.get('department')
+        group = request.data.get('group')
+        parent = request.data.get('parent')
+
+        """ Duplicate department name is not allowed."""
+        self.validate_department(name, parent)
+
         try:
-            if request.data.get("department"):
-                # Getting 'department' as parent obj and set it to 'parent' field
-                department = get_object_or_404(Department, hashed_id=request.data.get('department'))
-                request.data.update({"parent": department.id})   # updating parent field value null to given department
-            if request.data.get("group"):
-                group = [get_object_or_404(Group, hashed_id=group).id for group in request.data.get("group")]  # Here
-                # from the request we are getting the hashed_id of group then checking it with Group model
-                request.data.update({"group": group})
+            if parent:
+                # Getting 'department' object as parent and set it to 'parent' field
+                existing_department = get_object_or_404(Department, hashed_id=parent)
+                request.data.update(
+                    {"parent": existing_department.id})  # updating parent value null to given department
+            if group:
+                # Using list comprehension as group is in manytomany relationship with department
+                existing_group = [get_object_or_404(Group, hashed_id=group).id for group in group]
+                request.data.update({"group": existing_group})
             branch = get_object_or_404(Branch, hashed_id=request.data.get('branch'))
             request.data.update({"branch": branch.id})
         except Exception as ex:
-            # if department (optional), group (optional) and branch is not found then do not process request further
-            title = ex.__str__().split(' ')[1].lower()  # The exception is: No Department/Group/Branch matches the given query..
-            # from this we are taking the name.
-            return Response({title: ["Not found."]}, status=status.HTTP_400_BAD_REQUEST)
+            # if department (optional), is not found then do not process request further
+            title = ex.__str__().split(' ')[1].lower()  # # The exception is: No Group matches the given query..
+            # from this we are taking Department or Group
+            return Response({title: ["Not Found."]}, status=status.HTTP_400_BAD_REQUEST)
 
-        serializer = self.serializer_class(data=request.data)
+        serializer = self.serializer_class(data=request.data)  # validate posted data using serializer
         if serializer.is_valid():
             self.perform_create(serializer, request)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -471,11 +497,13 @@ class DepartmentViewSet(CustomViewSet):
                 request.data.update({"branch": branch.id})  # changing the branch hashed_id to id
         except Exception as ex:
             # if department, group, branch is not found then don't process request further.
-            title = ex.__str__().split(' ')[1].lower()  # The exception is: No Department/Group/Branch matches the given query..
+            title = ex.__str__().split(' ')[
+                1].lower()  # The exception is: No Department/Group/Branch matches the given query..
             return Response({title: ["Not found."]}, status=status.HTTP_400_BAD_REQUEST)
 
         instance = self.get_object()  # Get the requested object instance
-        serializer = self.serializer_class(instance, data=request.data, partial=True)   # validate posted data using serializer
+        serializer = self.serializer_class(instance, data=request.data,
+                                           partial=True)  # validate posted data using serializer
 
         if serializer.is_valid():
             self.perform_update(instance, serializer, request)
@@ -484,7 +512,7 @@ class DepartmentViewSet(CustomViewSet):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, *args, **kwargs):
-        instance = self.get_object()   # Get the requested object instance
+        instance = self.get_object()  # Get the requested object instance
         self.perform_destroy(instance, request)
         return Response({"Detail": "Department deleted successfully."}, status=status.HTTP_200_OK)
 
@@ -496,6 +524,7 @@ class UserViewSet(CustomViewSet):
     queryset = User.objects.all()
     model = User
     search_keywords = ['username', 'first_name', 'last_name', 'position', 'email']
+
     # lookup_field = 'hashed_id'  # Individual object will be found by this field
 
     def get_queryset(self):
@@ -511,25 +540,6 @@ class UserViewSet(CustomViewSet):
             user.delete()
             return Response({'details': 'User has been deleted successfully.'})
         else:
-            user.is_active=False
+            user.is_active = False
             user.save()
             return Response(UserSerializer(user).data)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

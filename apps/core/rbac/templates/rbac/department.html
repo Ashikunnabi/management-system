@@ -22,26 +22,26 @@
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-header">
-                        <h5>Branch</h5>
+                        <h5>Department</h5>
                         <div style="float:right">
-                            <button type="button" id="add_branch" class="btn btn-icon btn-rounded btn-outline-success" data-toggle="tooltip" data-placement="top" title="Add New Branch"><i class="feather icon-plus"></i></button>
-                            <button type="button" id="edit_branch" class="btn btn-icon btn-rounded btn-outline-warning disabled"data-toggle="tooltip" data-placement="top" title="Edit selected branch"><i class="feather icon-edit"></i></button>
-                            <button type="button" id="delete_branch" class="btn btn-icon btn-rounded btn-outline-danger disabled sweet-multiple" data-toggle="tooltip" data-placement="top" title="Delete selected branch"><i class="feather icon-trash-2"></i></button>
+                            <button type="button" id="add_department" class="btn btn-icon btn-rounded btn-outline-success" data-toggle="tooltip" data-placement="top" title="Add New department"><i class="feather icon-plus"></i></button>
+                            <button type="button" id="edit_department" class="btn btn-icon btn-rounded btn-outline-warning disabled"data-toggle="tooltip" data-placement="top" title="Edit selected department"><i class="feather icon-edit"></i></button>
+                            <button type="button" id="delete_department" class="btn btn-icon btn-rounded btn-outline-danger disabled sweet-multiple" data-toggle="tooltip" data-placement="top" title="Delete selected department"><i class="feather icon-trash-2"></i></button>
                         </div>
                     </div>
                     <div class="card-block">
                         <div class="table-responsive">
                             <div id="key-act-button_wrapper" class="dataTables_wrapper dt-bootstrap4">
-                                <table id="branch_table" class="display table nowrap table-hover dataTable" style="width: 100%;" role="grid" aria-describedby="key-act-button_info">
+                                <table id="department_table" class="display table nowrap table-hover dataTable" style="width: 100%;" role="grid" aria-describedby="key-act-button_info">
                                     <thead>
                                         <tr>
                                             <th>SL</th>
                                             <th>Name</th>
-                                            <th>Base Branch</th>
-                                            <th>Total Sub-Branch</th>
+                                            <th>Base Department</th>
+                                            <th>Total Sub-Department</th>
+                                            <th>Branch</th>
                                             <th>Total Employee</th>
-                                            <th>Branch Status</th>
-                                            <th>Address</th>
+                                            <th>Department Status</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -55,5 +55,5 @@
 </div>
 {% endblock %}
 {% block js %}
-	<script src="{% static 'rbac/js/branch.js' %}"></script>
+	<script src="{% static 'rbac/js/department.js' %}"></script>
 {% endblock %}
