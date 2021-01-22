@@ -93,3 +93,15 @@ def branch_add(request):
 
 def branch_edit(request, hashed_id):
     return render(request, 'rbac/branch_edit.html', context={'hashed_id': hashed_id})
+
+
+def department(request):
+    return render(request, 'rbac/department.html')
+
+
+def department_add(request):
+    return render(request, 'rbac/department_add.html')
+
+
+def department_edit(request, hashed_id):
+    return render(request, 'rbac/department_edit.html', context={'hashed_id': hashed_id})

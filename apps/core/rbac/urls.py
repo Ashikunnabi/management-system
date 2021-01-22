@@ -28,4 +28,7 @@ urlpatterns = [
     path('branch/', branch, name='branch'),
     path('branch/add/', branch_add, name='branch_add'),
     path('branch/<str:hashed_id>/', branch_edit, name='branch_edit'),
+    path('department/', department, name='department'),
+    path('department/add/', department_add, name='department_add'),
+    path('department/<str:hashed_id>/', department_edit, name='department_edit'),
 ]
