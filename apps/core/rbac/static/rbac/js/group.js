@@ -252,6 +252,16 @@ class Group {
             user_dropdown.select2({
                 data: data
             });
+
+            if (window.location.pathname !== self.group_add_url) {
+                // if the location is in group edit then run below function.
+
+                // Calling 'group_edit_form_fillup' here because 'set_user_in_dropdown' take time to set the
+                // permissions in dropdown. If we don't call 'group_edit_form_fillup' here 'group_edit_form_fillup' will
+                // try to fill the form before the users is set into the dropdown as it take less time to
+                //  complete response.
+                self.group_edit_form_fillup();
+            }
         });
         promise.fail(function (response) {
             alert(response.responseJSON.detail);
@@ -368,6 +378,9 @@ class Group {
                     contentType: false,
                     success: function (data) {
                         $.growl('Successfully group updated', {type: 'success'});
+                        setTimeout(function () {
+                            window.location.href = "/group";
+                        }, 1000);
                     },
                     error: function (response) {
                         $('body').unblock();
@@ -431,7 +444,7 @@ $(document).ready(function (e) {
             ((user_permissions.indexOf("self_view.rbac_group") > -1) || (user_permissions.indexOf("list_view.rbac_group") > -1))) {
             $('.main-body').css('display', 'block');  // do display block as group has group to view
             _group.set_user_in_dropdown();
-            _group.group_edit_form_fillup();  // rbac/group_edit.html
+            // _group.group_edit_form_fillup();  // rbac/group_edit.html
             _group.group_edit();  // rbac/group_edit.html
         } else {
             $('.main-body').remove();

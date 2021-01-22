@@ -256,6 +256,17 @@ class Permission {
             feature_dropdown.select2({
                 data: data
             });
+
+            if (window.location.pathname !== self.role_add_url) {
+                // if the location is in permission edit then run below function.
+
+                // Calling 'permission_edit_form_fillup' here because 'set_feature_in_dropdown' take time to set the
+                // permissions in dropdown. If we don't call 'permission_edit_form_fillup' here 'permission_edit_form_fillup' will
+                // try to fill the form before the features are set into the dropdown as it take less time to
+                //  complete response.
+                self.permission_edit_form_fillup();
+            }
+
         });
         promise.fail(function (response) {
             alert(response.responseJSON.detail);
@@ -436,7 +447,7 @@ $(document).ready(function (e) {
             ((user_permissions.indexOf("self_view.rbac_permission") > -1) || (user_permissions.indexOf("list_view.rbac_permission") > -1))) {
             $('.main-body').css('display', 'block');  // do display block as permission has permission to view
             _permission.set_feature_in_dropdown();
-            _permission.permission_edit_form_fillup();  // rbac/permission_edit.html
+            // _permission.permission_edit_form_fillup();  // rbac/permission_edit.html
             _permission.permission_edit();  // rbac/permission_edit.html
         } else {
             $('.main-body').remove();

@@ -251,6 +251,16 @@ class User {
             role_dropdown.select2({
                 data: data
             });
+
+            if (window.location.pathname !== self.user_add_url) {
+                // if the location is in user edit then call below function.
+
+                // Calling 'user_edit_form_fillup' here because 'set_role_in_dropdown' take time to set the
+                // permissions in dropdown. If we don't call 'user_edit_form_fillup' here 'user_edit_form_fillup' will
+                // try to fill the form before the role is set into the dropdown as it take less time to
+                //  complete response.
+                self.user_edit_form_fillup();
+            }
         });
         promise.fail(function (response) {
             alert(response.responseJSON.detail);
@@ -516,7 +526,7 @@ $(document).ready(function (e) {
             user.clear_image();
             user.set_role_in_dropdown();
             user.set_country_in_dropdown();
-            user.user_edit_form_fillup();  // rbac/user_edit.html
+            // user.user_edit_form_fillup();  // rbac/user_edit.html
             user.user_edit();  // rbac/user_edit.html
         } else {
             $('.main-body').remove();
