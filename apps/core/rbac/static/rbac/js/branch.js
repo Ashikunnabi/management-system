@@ -543,6 +543,7 @@ class Branch {
 
                 //
                 let limit = 10
+                let timer;  // timer is for clear the settimeout
                 let progressBarTimer = setInterval(() => {
                     if (limit === 0) {
                         clearInterval(progressBarTimer);
@@ -567,12 +568,13 @@ class Branch {
                         $(".swal2-deny").css('margin-left', '50px')
                         Swal.disableButtons();
 
-                        setTimeout(() => {
+                       timer = setTimeout(() => {
                             Swal.enableButtons();
                         }, 11000);
                     },
                     didClose: () =>{
                         clearInterval(progressBarTimer)
+                        clearTimeout(timer)
                     }
                 })
                     .then((willDelete) => {
