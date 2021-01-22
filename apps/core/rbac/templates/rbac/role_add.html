@@ -68,6 +68,6 @@
 
 {% endblock %}
 {% block js %}
-    <script>let role_id = {{ id }}; </script>
+    <script>let role_id = "{{ id }}"; </script>
 	<script src="{% static 'rbac/js/role.js' %}"></script>
 {% endblock %}

@@ -147,41 +147,77 @@ class Role {
             } else {
                 var table = $('#role_table').DataTable();
                 let selected_row_data = table.row('.selected').data();
-                swal({
-                    title: "Are you sure?",
-                    text: "You are going to delete role: '" + selected_row_data.name + "'",
+
+                let limit = 10
+                let timer;  // timer is for clear the settimeout
+                let progressBarTimer = setInterval(() => {
+                    if (limit === 0) {
+                        clearInterval(progressBarTimer);
+                    }
+                    $('#count_progress').val(limit * 10);
+                    limit--;
+                }, 1000);
+
+                Swal.fire({
+                    title: "Are you sure to delete role '" + selected_row_data.name.toUpperCase() + "'?",
+                    html: "Everything under this role will be deleted.</br> <b style='background-color: yellow;'>You can't recover it again</b>",
                     icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
+                    iconColor: "red",
+                    showDenyButton: true,
+                    // showCancelButton: true,
+                    confirmButtonText: `Yes, delete`,
+                    denyButtonText: `No`,
+                    footer: "<progress id='count_progress' value='100' max='100' style='width: 70%;'></progress>",
+                    didOpen: function () {
+                        $(".swal2-confirm").css('background-color', '#ff5d4f')
+                        $(".swal2-deny").css('background-color', 'gray')
+                        $(".swal2-deny").css('margin-left', '50px')
+                        Swal.disableButtons();
+
+                        timer = setTimeout(() => {
+                            Swal.enableButtons();
+                        }, 11000);
+                    },
+                    didClose: () => {
+                        clearInterval(progressBarTimer)
+                        clearTimeout(timer)
+                    }
                 })
                     .then((willDelete) => {
-                        if (willDelete) {
+                        if (willDelete.isConfirmed) {
                             self._helper.blockUI();
                             $(document).ajaxComplete($.unblockUI);
                             let url = self._api + 'role/' + selected_row_data.id + '/';
-                            var promise = self._helper.httpRequest(url, 'DELETE');
+                            let promise = self._helper.httpRequest(url, 'DELETE');
                             promise.done(function (response) {
-                                // redirect to dashboard
-                                swal("Poof! Role: '" + selected_row_data.name + "' has been deleted!", {
-                                    icon: "success",
-                                });
+                                Swal.fire("Role: '" + selected_row_data.name.toUpperCase() + "' has been deleted!", '', 'success');
                                 setTimeout(function (e) {
                                     window.location.replace("/role");
                                 }, 1000);
                             });
                             promise.fail(function (response) {
                                 // send back to login page with an error notification
-                                $.each(response.responseJSON, function (i, v) {
-                                    $.each(v, function (j, w) {
-                                        let message = i + ": " + w;
-                                        $.growl(message, {type: 'danger'});
-                                    });
+                                $.each(response.responseJSON, function (index, value) {
+                                    if ($.isArray(response.responseJSON)) {
+                                        self.Toast.fire({
+                                            icon: 'error',
+                                            title: "<p style='color: dark;'>" + value + "<p>",
+                                            background: '#ffabab',
+                                        });
+                                    } else {
+                                        $.each(value, function (j, w) {
+                                            let message = i + ": " + w
+                                            self.Toast.fire({
+                                                icon: 'error',
+                                                title: "<p style='color: dark;'>" + message + "<p>",
+                                                background: '#ffabab',
+                                            });
+                                        });
+                                    }
                                 });
                             });
-                        } else {
-                            swal("Role: '" + selected_row_data.name + "' is safe and active!", {
-                                icon: "error",
-                            });
+                        } else if (willDelete.isDenied) {
+                            Swal.fire("Role: '" + selected_row_data.name.toUpperCase() + "' is safe!", '', 'info');
                         }
                     });
             }
@@ -197,7 +233,7 @@ class Role {
         promise.done(function (response) {
             let data = [];
             $.each(response, function (i, v) {
-                if (v.is_active){
+                if (v.is_active) {
                     data.push({
                         id: v.id,
                         text: v.name,
@@ -207,10 +243,16 @@ class Role {
             permission_dropdown.select2({
                 data: data
             });
-            // Calling 'role_edit_form_fillup' here because 'set_permission_in_dropdown' take time to set the
-            // permissions in dropdown. If we don't call 'role_edit_form_fillup' here 'role_edit_form_fillup' will
-            // try to fill the form before the permission is set into the dropdown. 
-            self.role_edit_form_fillup();
+
+            if (window.location.pathname !== self.role_add_url) {
+                // if the location is in branch edit then run below function.
+
+                // Calling 'role_edit_form_fillup' here because 'set_permission_in_dropdown' take time to set the
+                // permissions in dropdown. If we don't call 'role_edit_form_fillup' here 'role_edit_form_fillup' will
+                // try to fill the form before the permission is set into the dropdown as it take less time to
+                //  complete response.
+                self.role_edit_form_fillup();
+            }
         });
         promise.fail(function (response) {
             alert(response.responseJSON.detail);
