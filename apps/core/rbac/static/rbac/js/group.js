@@ -156,41 +156,77 @@ class Group {
             } else {
                 var table = $('#group_table').DataTable();
                 let selected_row_data = table.row('.selected').data();
-                swal({
-                    title: "Are you sure?",
-                    text: "You are going to delete group: '" + selected_row_data.name + "'",
+
+                let limit = 10
+                let timer;  // timer is for clear the settimeout
+                let progressBarTimer = setInterval(() => {
+                    if (limit === 0) {
+                        clearInterval(progressBarTimer);
+                    }
+                    $('#count_progress').val(limit * 10);
+                    limit--;
+                }, 1000);
+
+                Swal.fire({
+                    title: "Are you sure to delete group '" + selected_row_data.name.toUpperCase() + "'?",
+                    html: "Everything under this group will be deleted.</br> <b style='background-color: yellow;'>You can't recover it again</b>",
                     icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
+                    iconColor: "red",
+                    showDenyButton: true,
+                    // showCancelButton: true,
+                    confirmButtonText: `Yes, delete`,
+                    denyButtonText: `No`,
+                    footer: "<progress id='count_progress' value='100' max='100' style='width: 70%;'></progress>",
+                    didOpen: function () {
+                        $(".swal2-confirm").css('background-color', '#ff5d4f')
+                        $(".swal2-deny").css('background-color', 'gray')
+                        $(".swal2-deny").css('margin-left', '50px')
+                        Swal.disableButtons();
+
+                        timer = setTimeout(() => {
+                            Swal.enableButtons();
+                        }, 11000);
+                    },
+                    didClose: () => {
+                        clearInterval(progressBarTimer)
+                        clearTimeout(timer)
+                    }
                 })
                     .then((willDelete) => {
-                        if (willDelete) {
+                        if (willDelete.isConfirmed) {
                             self._helper.blockUI();
                             $(document).ajaxComplete($.unblockUI);
                             let url = self._api + 'group/' + selected_row_data.id + '/';
-                            var promise = self._helper.httpRequest(url, 'DELETE');
+                            let promise = self._helper.httpRequest(url, 'DELETE');
                             promise.done(function (response) {
-                                // redirect to dashboard
-                                swal("Poof! Group: '" + selected_row_data.name + "' has been deleted!", {
-                                    icon: "success",
-                                });
+                                Swal.fire("Group: '" + selected_row_data.name.toUpperCase() + "' has been deleted!", '', 'success');
                                 setTimeout(function (e) {
                                     window.location.replace("/group");
                                 }, 1000);
                             });
                             promise.fail(function (response) {
                                 // send back to login page with an error notification
-                                $.each(response.responseJSON, function (i, v) {
-                                    $.each(v, function (j, w) {
-                                        let message = i + ": " + w;
-                                        $.growl(message, {type: 'danger'});
-                                    });
+                                $.each(response.responseJSON, function (index, value) {
+                                    if ($.isArray(response.responseJSON)) {
+                                        self.Toast.fire({
+                                            icon: 'error',
+                                            title: "<p style='color: dark;'>" + value + "<p>",
+                                            background: '#ffabab',
+                                        });
+                                    } else {
+                                        $.each(value, function (j, w) {
+                                            let message = i + ": " + w
+                                            self.Toast.fire({
+                                                icon: 'error',
+                                                title: "<p style='color: dark;'>" + message + "<p>",
+                                                background: '#ffabab',
+                                            });
+                                        });
+                                    }
                                 });
                             });
-                        } else {
-                            swal("Group: '" + selected_row_data.name + "' is safe and active!", {
-                                icon: "error",
-                            });
+                        } else if (willDelete.isDenied) {
+                            Swal.fire("Group: '" + selected_row_data.name.toUpperCase() + "' is safe!", '', 'info');
                         }
                     });
             }
