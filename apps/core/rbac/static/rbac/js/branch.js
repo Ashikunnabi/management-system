@@ -98,7 +98,7 @@ class Branch {
             "columns": [
                 {"data": ""},
                 {"data": "name"},
-                {"data": "branch_tree_view"},
+                {"data": "path"},
                 {"data": "subbranches"},
                 {"data": "user"},
                 {"data": "is_active"},
@@ -229,13 +229,13 @@ class Branch {
                     if (v.is_active) {
                         data.push({
                             id: v.hashed_id,
-                            text: v.branch_tree_view,
+                            text: v.path === '/' ? v.name : v.path,
                         });
                     }
                 } else {
                     data.push({
                         id: v.hashed_id,
-                        text: v.branch_tree_view,
+                        text: v.path === '/' ? v.name : v.path,
                     });
                 }
             });

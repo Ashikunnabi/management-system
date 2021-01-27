@@ -57,7 +57,7 @@ class CustomViewSet(viewsets.ModelViewSet):
         user_permissions = self.request.user.role.permission.values_list('code', flat=True)
         app_label = str(self.model._meta.app_label)
         object_class_name = str(self.model._meta.model_name)  
-        app_label_class_name = app_label+ '_' + object_class_name
+        app_label_class_name = app_label + '_' + object_class_name
         queryset = self.model.objects.filter()
         
         if app_label_class_name in ['rbac_feature']:

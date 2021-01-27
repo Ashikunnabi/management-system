@@ -21,7 +21,7 @@ class UserAccessApiBasePermission(BasePermission):
             permissions = [_ for i in request.user.role.permission.filter(is_active=True).values_list('code') for _ in i]
         app_label = str(obj._meta.app_label)
         object_class_name = str(obj._meta.model_name)
-        app_label_class_name = app_label+ '_' + object_class_name
+        app_label_class_name = app_label + '_' + object_class_name
         has_operation_permissions = [_.split('.')[0] for _ in permissions if app_label_class_name in _]
 
         methods = {

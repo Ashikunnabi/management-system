@@ -172,6 +172,17 @@ class Branch(AuditTrail):
     user = models.ManyToManyField(User, blank=True, related_name='branch_users')
     group = models.ManyToManyField(Group, blank=True, related_name='branch_groups')
     address = models.TextField(blank=True)
+    path = models.TextField(default="")
+
+    def get_absolute_path(self):
+        if not self.parent:
+            self.path = '/'
+        if self.parent:
+            if self.parent.path == '/':
+                self.path = str(self.parent) + '/' + self.name
+            else:
+                self.path = self.parent.path + "/" + self.name
+        return self.path
 
     def get_users(self):
         # this will return all users id from user and group field
@@ -182,9 +193,15 @@ class Branch(AuditTrail):
     def __str__(self):
         return f"{self.name}"
 
+    def save(self, *args, **kwargs):
+        self.get_absolute_path()
+        super(Branch, self).save()
+
     class Meta:
         unique_together = ('name', 'parent')
         ordering = ('name',)
+
+
 
 
 class Department(AuditTrail):

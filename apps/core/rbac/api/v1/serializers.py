@@ -138,34 +138,12 @@ class BranchSerializer(serializers.ModelSerializer):
     branch_tree_view = serializers.SerializerMethodField()
     is_active_parent = serializers.SerializerMethodField()
 
-    class Meta:
-        model = Branch
-        exclude = exclude_fields
+    def get_fields(self):
+        """add this method to add 'subbranches' field"""
+        fields = super(BranchSerializer, self).get_fields()
+        fields['subbranches'] = BranchSerializer(many=True, read_only=True, allow_null=True)
+        return fields
 
-    def get_parent_hashed_id(self, obj):
-        if obj.parent:
-            return str(obj.parent.hashed_id)
-        return None
-
-    def get_group_hashed_id(self, obj):
-        if obj.group:
-            groups = obj.group.all()
-            return [group.hashed_id for group in groups]
-        return None
-
-    def get_branch_tree_view(self, obj):
-        path = obj.name
-        if obj.parent:
-            def parent(branch):
-                nonlocal path
-                path = branch.name + "/" + path
-                if branch.parent:
-                    parent(branch.parent)
-                else:
-                    return path
-
-            parent(obj.parent)
-        return path
 
     def get_is_active_parent(self, obj):
         """
@@ -188,11 +166,38 @@ class BranchSerializer(serializers.ModelSerializer):
             is_active_parent_branch = parent(obj.parent)
         return is_active_parent_branch
 
-    def get_fields(self):
-        """add this method to add 'subbranches' field"""
-        fields = super(BranchSerializer, self).get_fields()
-        fields['subbranches'] = BranchSerializer(many=True, read_only=True, allow_null=True)
-        return fields
+    class Meta:
+        model = Branch
+        exclude = exclude_fields
+
+
+    def get_parent_hashed_id(self, obj):
+        if obj.parent:
+            return str(obj.parent.hashed_id)
+        return None
+
+    def get_group_hashed_id(self, obj):
+        if obj.group:
+            groups = obj.group.all()
+            return [group.hashed_id for group in groups]
+        return None
+
+    def get_branch_tree_view(self, obj):
+        # path = obj.name
+        # if obj.parent:
+        #     def parent(branch):
+        #         nonlocal path
+        #         path = branch.name + "/" + path
+        #         if branch.parent:
+        #             parent(branch.parent)
+        #         else:
+        #             return path
+        #
+        #     parent(obj.parent)
+        return 'path'
+
+
+
 
 
 class DepartmentSerializer(serializers.ModelSerializer):
