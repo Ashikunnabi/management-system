@@ -315,6 +315,16 @@ class BranchViewSet(CustomViewSet):
             if branches.filter(parent__hashed_id=parent).count():
                 raise serializers.ValidationError('Sub Branch with this name already exists in this Base branch.')
 
+    def update_branch_path_on_parent_edit(self, instance, previous_path):
+        if Branch.objects.filter(parent=instance.id).exists():
+            have_to_change_branch_path = Branch.objects.filter(path__icontains=previous_path)
+            for branch in have_to_change_branch_path:
+                if instance.path == '/':
+                    branch.path = branch.path.replace(previous_path, f"/{instance.name}")
+                else:
+                    branch.path = branch.path.replace(previous_path, instance.path)
+            Branch.objects.bulk_update(have_to_change_branch_path, ['path'])
+
     def create(self, request, *args, **kwargs):
         """
 
@@ -384,11 +394,18 @@ class BranchViewSet(CustomViewSet):
             return Response({title: ["Not Found."]}, status=status.HTTP_400_BAD_REQUEST)
 
         instance = self.get_object()  # get the requested object instance
+        previous_path = instance.path
+        if previous_path == '/':
+            # if the branch is root then the path is '/'. That's why we are passing previous_path = /branch name
+            previous_path = f"/{instance.name}"
+
         serializer = self.serializer_class(instance,
                                            data=request.data,
                                            partial=True)  # validate posted data using serializer
         if serializer.is_valid():
             self.perform_update(instance, serializer, request)
+            if previous_path != instance.path:
+                self.update_branch_path_on_parent_edit(instance, previous_path)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

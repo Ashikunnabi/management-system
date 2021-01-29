@@ -175,13 +175,12 @@ class Branch(AuditTrail):
     path = models.TextField(default="")
 
     def get_absolute_path(self):
-        if not self.parent:
-            self.path = '/'
+        self.path = '/'
         if self.parent:
             if self.parent.path == '/':
-                self.path = str(self.parent) + '/' + self.name
+                self.path = f"/{self.parent.name}/{self.name}/"
             else:
-                self.path = self.parent.path + "/" + self.name
+                self.path = f"{self.parent.path}{self.name}/"
         return self.path
 
     def get_users(self):

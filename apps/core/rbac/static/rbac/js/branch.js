@@ -126,8 +126,9 @@ class Branch {
                     "render": function (data, type, row, meta) {
                         if (row.parent !== null) {
                             let splitText = data.split('/')
-                            let lastPart = splitText.pop()
-                            return splitText.join('/')
+                            splitText.pop()
+                            splitText.pop()
+                            return splitText.join('/') + "/"
                         } else return 'Base Branch';
                     },
                 },
@@ -329,6 +330,7 @@ class Branch {
                 data.is_active = $("input[name='is_active']").val();
                 data.parent = $("select[name='branch']").val() === "" ? null : $("select[name='branch']").val();
 
+                console.log(data)
                 let url = self._api + 'branch/';
                 self._helper.blockUI();
                 $(document).ajaxComplete($.unblockUI);
@@ -342,7 +344,7 @@ class Branch {
                     })
                     setTimeout(function () {
                         window.location.href = "/branch";
-                    }, 1100);
+                    }, 700);
                 });
 
                 promise.fail(function (response) {
